@@ -1,0 +1,67 @@
+# Arquivos e pastas do Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+
+# Arquivos e pastas do Gradle (caso esteja usando Gradle)
+.gradle/
+build/
+!gradle-wrapper.jar
+gradle/wrapper/gradle-wrapper.properties
+
+# Arquivos de configuração do Eclipse
+.classpath
+.project
+.settings/
+
+# Arquivos de configuração do IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+out/
+
+# Arquivos de log
+*.log
+
+# Arquivos temporários do sistema
+*.class
+*.war
+*.ear
+*.jar
+
+# Diretórios de cache e temporários
+tmp/
+temp/
+*.swp
+*.swo
+
+# Arquivos de propriedades locais
+application-local.properties
+.env
+
+# Arquivos de controle de versão de dependências (Maven ou Gradle)
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+# Arquivos de cache de IDEs
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sistema de controle de versionamento do Spring Boot DevTools
+.spring-boot-devtools.properties
+
+# Arquivos de configuração de teste (pode ajustar conforme necessário)
+test-output/
+.vscode/
+
+# Arquivos binários de configuração e IDEs
+bin/
+gen/
