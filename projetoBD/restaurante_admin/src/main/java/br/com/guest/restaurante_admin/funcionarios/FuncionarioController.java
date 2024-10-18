@@ -1,5 +1,6 @@
 package br.com.guest.restaurante_admin.funcionarios;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +19,9 @@ public class FuncionarioController {
 
     @PostMapping("")
     public ResponseEntity<String> novoFuncionario(@RequestBody Funcionario funcionario) {
-
+        if(funcionarioService.salvarFuncionario(funcionario)){
+            return new ResponseEntity<>("Funcionario Salvo com sucesso!", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("CPF não encontrado!", HttpStatus.BAD_REQUEST);
     }
 }
