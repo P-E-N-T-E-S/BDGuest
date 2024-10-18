@@ -1,5 +1,6 @@
 package br.com.guest.restaurante_admin.pessoa;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface PessoaService {
@@ -9,6 +10,6 @@ public interface PessoaService {
     boolean deletarPessoaPorCpf(String cpf);
     boolean atualizarPessoaPorCpf(String cpf, Pessoa pessoa);
     List<Pessoa> buscarPessoaPorFiltro(String filtro, String valor);
-    boolean deletarPessoaPorFiltro(String filtro, String valor);
-    boolean atualizarPessoaPorFiltro(String filtro, String valor);
+    void deletarPessoaPorFiltro(String filtro, String valor);
+    void atualizarPessoaPorFiltro(String filtro, String valor, String campoAlterado, String valorAlterado);
 }

@@ -1,21 +1,20 @@
 package br.com.guest.restaurante_admin.pessoa.impl;
 
+import br.com.guest.restaurante_admin.execoes.CampoDeAlteracaoNaoEncontradoException;
 import br.com.guest.restaurante_admin.execoes.FiltroNaoDisponivelException;
 import br.com.guest.restaurante_admin.pessoa.Pessoa;
 import br.com.guest.restaurante_admin.pessoa.PessoaRepository;
 import br.com.guest.restaurante_admin.pessoa.PessoaService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class PessoaServiceImpl implements PessoaService {
 
     private final PessoaRepository pessoaRepository;
 
-    List<String> filtrosDisponiveis = Arrays.asList("cpf", "nome", "rua", "bairro", "estado", "cidade", "cep", "email", "data_nascimento", "telefone");
+    List<String> colunasPessoa = Arrays.asList("cpf", "nome", "rua", "bairro", "estado", "cidade", "cep", "email", "data_nascimento", "telefone");
 
     public PessoaServiceImpl(PessoaRepository pessoaRepository) {
         this.pessoaRepository = pessoaRepository;
@@ -56,14 +55,41 @@ public class PessoaServiceImpl implements PessoaService {
 
     @Override
     public List<Pessoa> buscarPessoaPorFiltro(String filtro, String valor) throws FiltroNaoDisponivelException {
-        if(filtrosDisponiveis.contains(filtro)){
+        if(colunasPessoa.contains(filtro)){
             if(filtro.equals("telefone")){
                 return pessoaRepository.buscarPessoaPorTelefone(valor);
             }
             return pessoaRepository.buscarPessoaPorFiltro(filtro, valor);
         }
-        throw new FiltroNaoDisponivelException("O filtro informado não está disponível");
+        throw new FiltroNaoDisponivelException(filtro);
     }
 
+    @Override
+    public void deletarPessoaPorFiltro(String filtro, String valor) {
+        if(colunasPessoa.contains(filtro)){
+            if(filtro.equals("telefone")){
+                pessoaRepository.deletarPessoaPorTelefone(valor);
+                return;
+            }
+            pessoaRepository.deletarPessoaPorFiltro(filtro, valor);
+            return;
+        }
+        throw new FiltroNaoDisponivelException(filtro);
+    }
 
+    @Override
+    public void atualizarPessoaPorFiltro(String filtro, String valor, String campoAlterado, String valorAlterado) throws CampoDeAlteracaoNaoEncontradoException, FiltroNaoDisponivelException {
+        if (colunasPessoa.contains(filtro)) {
+            if (colunasPessoa.contains(campoAlterado)) {
+                if (filtro.equals("telefone")) {
+                    pessoaRepository.atualizarPessoaPorTelefone(valor, campoAlterado, valorAlterado);
+                    return;
+                }
+                pessoaRepository.atualizarPessoaPorFiltro(filtro, valor, campoAlterado, valorAlterado);
+                return;
+            }
+            throw new CampoDeAlteracaoNaoEncontradoException(campoAlterado);
+        }
+        throw new FiltroNaoDisponivelException(filtro);
+    }
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class PessoaRepositoryImpl implements PessoaRepository {
@@ -65,7 +66,8 @@ public class PessoaRepositoryImpl implements PessoaRepository {
     @Override
     public void atualizarPessoaPorCpf(String cpf, Pessoa pessoa) {
         String sql = "UPDATE Pessoas SET nome = ?, rua = ?, bairro = ?, estado = ?, cidade = ?, cep = ?, email = ?, data_nascimento = ?, telefone = ?, telefone_2 = ? WHERE cpf = ?";
-        jdbcTemplate.update(sql,                 pessoa.getNome(),
+        jdbcTemplate.update(sql,
+                pessoa.getNome(),
                 pessoa.getRua(),
                 pessoa.getBairro(),
                 pessoa.getEstado(),
@@ -89,18 +91,6 @@ public class PessoaRepositoryImpl implements PessoaRepository {
     }
 
     @Override
-    public void deletarPessoaPorFiltro(String filtro, String valor) {
-        String sql = "DELETE FROM Pessoas WHERE " + filtro + " LIKE ?";
-        jdbcTemplate.update(sql, new MapeadorPessoa(), "%" + valor + "%");
-    }
-
-    @Override
-    public boolean atualizarPessoaPorFiltro(String filtro, String valor, HashMap<String, Object> alteracoes) {
-        //Esse aqui vai ser pegado
-        return false;
-    }
-
-    @Override
     public List<Pessoa> buscarPessoaPorTelefone(String telefone) {
         String sql = "SELECT * FROM Pessoas WHERE telefone = ? OR telefone_2 = ?";
         try{
@@ -110,5 +100,28 @@ public class PessoaRepositoryImpl implements PessoaRepository {
         }
     }
 
+    @Override
+    public void deletarPessoaPorFiltro(String filtro, String valor) {
+        String sql = "DELETE FROM Pessoas WHERE " + filtro + " LIKE ?";
+        jdbcTemplate.update(sql, "%"+valor+"%");
+    }
 
+    @Override
+    public void deletarPessoaPorTelefone(String valor) {
+        String sql = "DELETE FROM Pessoas WHERE telefone = ? OR telefone_2 = ?";
+        jdbcTemplate.update(sql, valor);
+    }
+
+    @Override
+    public void atualizarPessoaPorFiltro(String filtro, String valor, String campoAlterado, String valorAlterado) {
+        //Esse aqui vai ser pegado
+        String sql = "UPDATE Pessoas SET "+ campoAlterado + "= ?  WHERE "+filtro+" LIKE ?";
+        jdbcTemplate.update(sql, valorAlterado, "%"+valor+"%");
+        }
+
+    @Override
+    public void atualizarPessoaPorTelefone(String valor, String campoAlterado, String valorAlterado) {
+        String sql = "UPDATE Pessoas SET "+ campoAlterado + "= ?  WHERE telefone LIKE ? or telefone_2 LIKE ?";
+        jdbcTemplate.update(sql, valorAlterado, "%"+valor+"%", "%"+valor+"%");
+    }
 }
