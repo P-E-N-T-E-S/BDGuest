@@ -56,12 +56,11 @@ public class PessoaServiceImpl implements PessoaService {
 
     @Override
     public List<Pessoa> buscarPessoaPorFiltro(String filtro, String valor) throws FiltroNaoDisponivelException {
-        boolean telefoneFlag = false;
         if(filtrosDisponiveis.contains(filtro)){
             if(filtro.equals("telefone")){
-                telefoneFlag = true;
+                return pessoaRepository.buscarPessoaPorTelefone(valor);
             }
-            return pessoaRepository.buscarPessoaPorFiltro(filtro, valor, telefoneFlag);
+            return pessoaRepository.buscarPessoaPorFiltro(filtro, valor);
         }
         throw new FiltroNaoDisponivelException("O filtro informado não está disponível");
     }

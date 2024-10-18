@@ -78,21 +78,24 @@ public class PessoaRepositoryImpl implements PessoaRepository {
     }
 
     @Override
-    public List<Pessoa> buscarPessoaPorFiltro(String filtro, String valor, boolean telefoneFlag) {
-        if (telefoneFlag) {
-            String sql = "SELECT * FROM Pessoas WHERE telefone = ? OR telefone_2 = ?";
-            try{
-                return jdbcTemplate.query(sql, new MapeadorPessoa(), valor, valor);
-            }catch(EmptyResultDataAccessException e){
-                return null;
-            }
-        }else{
-            String sql = "SELECT * FROM Pessoas WHERE " + filtro + " LIKE ?";
-            try{
-                return jdbcTemplate.query(sql, new MapeadorPessoa(), "%" + valor + "%");
-            }catch(EmptyResultDataAccessException e){
-                return null;
-            }
+    public List<Pessoa> buscarPessoaPorFiltro(String filtro, String valor) {
+        String sql = "SELECT * FROM Pessoas WHERE " + filtro + " LIKE ?";
+        try{
+            return jdbcTemplate.query(sql, new MapeadorPessoa(), "%" + valor + "%");
+        }catch(EmptyResultDataAccessException e){
+            return null;
         }
     }
+
+    @Override
+    public List<Pessoa> buscarPessoaPorTelefone(String telefone) {
+        String sql = "SELECT * FROM Pessoas WHERE telefone = ? OR telefone_2 = ?";
+        try{
+            return jdbcTemplate.query(sql, new MapeadorPessoa(), telefone, telefone);
+        }catch(EmptyResultDataAccessException e){
+            return null;
+        }
+    }
+
+
 }
