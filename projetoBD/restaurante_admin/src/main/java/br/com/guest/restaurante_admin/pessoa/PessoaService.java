@@ -8,4 +8,5 @@ public interface PessoaService {
     Pessoa buscarPessoaPorCpf(String cpf);
     boolean deletarPessoa(String cpf);
     boolean atualizarPessoa(String cpf, Pessoa pessoa);
+    List<Pessoa> buscarPessoaPorFiltro(String filtro, String valor);
 }

@@ -1,5 +1,6 @@
 package br.com.guest.restaurante_admin.pessoa;
 
+import br.com.guest.restaurante_admin.execoes.FiltroNaoDisponivelException;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,14 +29,14 @@ public class PessoaControler {
         return new ResponseEntity<>(pessoaService.listarPessoas(), HttpStatus.OK);
     }
 
-    @GetMapping("/{cpf}")
-    public ResponseEntity<Pessoa> buscarPessoa(@PathVariable String cpf){
-        Pessoa pessoa = pessoaService.buscarPessoaPorCpf(cpf);
-        if (pessoa == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(pessoa, HttpStatus.OK);
-    }
+//    @GetMapping("/{cpf}")
+//    public ResponseEntity<Pessoa> buscarPessoa(@PathVariable String cpf){
+//        Pessoa pessoa = pessoaService.buscarPessoaPorCpf(cpf);
+//        if (pessoa == null) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        return new ResponseEntity<>(pessoa, HttpStatus.OK);
+//    }
 
     @DeleteMapping("/{cpf}")
     public ResponseEntity<String> deletarPessoa(@PathVariable String cpf){
@@ -51,5 +52,15 @@ public class PessoaControler {
             return new ResponseEntity<>("Pessoa atualizada com sucesso!", HttpStatus.OK);
         }
         return new ResponseEntity<>("CPF não encontrado", HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/{filtro}")
+    public ResponseEntity<List<Pessoa>> buscarPessoasFiltro(@PathVariable String filtro, @RequestParam String valor){
+        //Perguntar a Gabi se vamos precisar filtra por mais de um valor :))))
+        try{
+            return new ResponseEntity<>(pessoaService.buscarPessoaPorFiltro(filtro, valor), HttpStatus.OK);
+        } catch (FiltroNaoDisponivelException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

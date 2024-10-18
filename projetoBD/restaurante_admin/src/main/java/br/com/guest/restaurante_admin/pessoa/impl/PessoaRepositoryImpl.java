@@ -76,4 +76,24 @@ public class PessoaRepositoryImpl implements PessoaRepository {
                 pessoa.getTelefone2(),
                 pessoa.getCpf());
     }
+
+    @Override
+    public List<Pessoa> buscarPessoaPorFiltro(String filtro, String valor, boolean telefoneFlag) {
+        if (telefoneFlag) {
+            String sql = "SELECT * FROM Pessoas WHERE telefone = ? OR telefone_2 = ?";
+            try{
+                return jdbcTemplate.query(sql, new MapeadorPessoa(), valor, valor);
+            }catch(EmptyResultDataAccessException e){
+                return null;
+            }
+        }else{
+            String sql = "SELECT * FROM Pessoas WHERE " + filtro + " LIKE ?";
+            try{
+                System.out.println(filtro + " " + valor);
+                return jdbcTemplate.query(sql, new MapeadorPessoa(), "%" + valor + "%");
+            }catch(EmptyResultDataAccessException e){
+                return null;
+            }
+        }
+    }
 }
