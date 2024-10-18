@@ -30,4 +30,24 @@ public class PessoaServiceImpl implements PessoaService {
     public Pessoa buscarPessoaPorCpf(String cpf) {
         return pessoaRepository.buscarPessoaPorCpf(cpf);
     }
+
+    @Override
+    public boolean deletarPessoa(String cpf) {
+        if (pessoaRepository.buscarPessoaPorCpf(cpf) == null) {
+            return false;
+        }
+        pessoaRepository.deletarPessoa(cpf);
+        return true;
+    }
+
+    @Override
+    public boolean atualizarPessoa(String cpf, Pessoa pessoa) {
+        if (pessoaRepository.buscarPessoaPorCpf(cpf) == null) {
+            return false;
+        }
+        pessoaRepository.atualizarPessoa(cpf, pessoa);
+        return true;
+    }
+
+
 }

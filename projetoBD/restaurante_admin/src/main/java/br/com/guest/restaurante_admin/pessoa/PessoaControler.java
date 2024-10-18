@@ -30,6 +30,26 @@ public class PessoaControler {
 
     @GetMapping("/{cpf}")
     public ResponseEntity<Pessoa> buscarPessoa(@PathVariable String cpf){
-        return new ResponseEntity<>(pessoaService.buscarPessoaPorCpf(cpf), HttpStatus.OK);
+        Pessoa pessoa = pessoaService.buscarPessoaPorCpf(cpf);
+        if (pessoa == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(pessoa, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{cpf}")
+    public ResponseEntity<String> deletarPessoa(@PathVariable String cpf){
+        if(pessoaService.deletarPessoa(cpf)){
+            return new ResponseEntity<>("Pessoa deletada com sucesso!", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("CPF não encontrado", HttpStatus.NOT_FOUND);
+    }
+
+    @PutMapping("/{cpf}")
+    public  ResponseEntity<String> atualizarPessoa(@PathVariable String cpf, @RequestBody Pessoa pessoa){
+        if(pessoaService.atualizarPessoa(cpf, pessoa)){
+            return new ResponseEntity<>("Pessoa atualizada com sucesso!", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("CPF não encontrado", HttpStatus.NOT_FOUND);
     }
 }

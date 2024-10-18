@@ -6,4 +6,6 @@ public interface PessoaRepository {
     void salvarNovaPessoa(Pessoa pessoa);
     List<Pessoa> listarPessoas();
     Pessoa buscarPessoaPorCpf(String cpf);
+    void deletarPessoa(String cpf);
+    void atualizarPessoa(String cpf, Pessoa pessoa);
 }
