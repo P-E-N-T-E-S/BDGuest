@@ -65,3 +65,6 @@ test-output/
 # Arquivos binários de configuração e IDEs
 bin/
 gen/
+
+#Arquivos do Mac
+.DS_Store
