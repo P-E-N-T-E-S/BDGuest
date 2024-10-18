@@ -89,7 +89,6 @@ public class PessoaRepositoryImpl implements PessoaRepository {
         }else{
             String sql = "SELECT * FROM Pessoas WHERE " + filtro + " LIKE ?";
             try{
-                System.out.println(filtro + " " + valor);
                 return jdbcTemplate.query(sql, new MapeadorPessoa(), "%" + valor + "%");
             }catch(EmptyResultDataAccessException e){
                 return null;
