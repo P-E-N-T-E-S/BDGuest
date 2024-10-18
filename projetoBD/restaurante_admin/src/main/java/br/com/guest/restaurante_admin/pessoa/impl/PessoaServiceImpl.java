@@ -37,20 +37,20 @@ public class PessoaServiceImpl implements PessoaService {
     }
 
     @Override
-    public boolean deletarPessoa(String cpf) {
+    public boolean deletarPessoaPorCpf(String cpf) {
         if (pessoaRepository.buscarPessoaPorCpf(cpf) == null) {
             return false;
         }
-        pessoaRepository.deletarPessoa(cpf);
+        pessoaRepository.deletarPessoaPorCpf(cpf);
         return true;
     }
 
     @Override
-    public boolean atualizarPessoa(String cpf, Pessoa pessoa) {
+    public boolean atualizarPessoaPorCpf(String cpf, Pessoa pessoa) {
         if (pessoaRepository.buscarPessoaPorCpf(cpf) == null) {
             return false;
         }
-        pessoaRepository.atualizarPessoa(cpf, pessoa);
+        pessoaRepository.atualizarPessoaPorCpf(cpf, pessoa);
         return true;
     }
 

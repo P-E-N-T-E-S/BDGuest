@@ -6,8 +6,10 @@ public interface PessoaRepository {
     void salvarNovaPessoa(Pessoa pessoa);
     List<Pessoa> listarPessoas();
     Pessoa buscarPessoaPorCpf(String cpf);
-    void deletarPessoa(String cpf);
-    void atualizarPessoa(String cpf, Pessoa pessoa);
+    void deletarPessoaPorCpf(String cpf);
+    void atualizarPessoaPorCpf(String cpf, Pessoa pessoa);
     List<Pessoa> buscarPessoaPorFiltro(String filtro, String valor);
     List<Pessoa> buscarPessoaPorTelefone(String telefone);
+    void deletarPessoaPorFiltro(String filtro, String valor);
+    boolean atualizarPessoaPorFiltro(String filtro, String valor);
 }

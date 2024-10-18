@@ -7,6 +7,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -56,13 +57,13 @@ public class PessoaRepositoryImpl implements PessoaRepository {
     }
 
     @Override
-    public void deletarPessoa(String cpf) {
+    public void deletarPessoaPorCpf(String cpf) {
         String sql = "DELETE FROM Pessoas WHERE cpf = ?";
         jdbcTemplate.update(sql, cpf);
     }
 
     @Override
-    public void atualizarPessoa(String cpf, Pessoa pessoa) {
+    public void atualizarPessoaPorCpf(String cpf, Pessoa pessoa) {
         String sql = "UPDATE Pessoas SET nome = ?, rua = ?, bairro = ?, estado = ?, cidade = ?, cep = ?, email = ?, data_nascimento = ?, telefone = ?, telefone_2 = ? WHERE cpf = ?";
         jdbcTemplate.update(sql,                 pessoa.getNome(),
                 pessoa.getRua(),
@@ -85,6 +86,18 @@ public class PessoaRepositoryImpl implements PessoaRepository {
         }catch(EmptyResultDataAccessException e){
             return null;
         }
+    }
+
+    @Override
+    public void deletarPessoaPorFiltro(String filtro, String valor) {
+        String sql = "DELETE FROM Pessoas WHERE " + filtro + " LIKE ?";
+        jdbcTemplate.update(sql, new MapeadorPessoa(), "%" + valor + "%");
+    }
+
+    @Override
+    public boolean atualizarPessoaPorFiltro(String filtro, String valor, HashMap<String, Object> alteracoes) {
+        //Esse aqui vai ser pegado
+        return false;
     }
 
     @Override
