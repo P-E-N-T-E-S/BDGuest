@@ -45,6 +45,7 @@ public class FuncionarioController {
             funcionarioService.atualizarFuncionarioPorFiltro(filtro, valor, (String)alteracoes.get("campo"), (String)alteracoes.get("valor"));
             return new ResponseEntity<>("Funcionário(s) alterados com sucesso", HttpStatus.OK);
         }catch (Exception e){
+            //todo diferenciar as respostas por exception
             return new ResponseEntity<>("Erro ao alterar", HttpStatus.BAD_REQUEST);
         }
     }

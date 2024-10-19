@@ -80,6 +80,7 @@ public class PessoaControler {
             pessoaService.atualizarPessoaPorFiltro(filtro, valor, (String)alteracoes.get("campo"), (String)alteracoes.get("valor"));
             return new ResponseEntity<>("Pessoa atualizada com sucesso!", HttpStatus.OK);
         }catch (FiltroNaoDisponivelException e) {
+            //todo diferenciar as respostas por exception
             return new ResponseEntity<>("Filtro não encontrado",HttpStatus.NOT_FOUND);
         }
     }
