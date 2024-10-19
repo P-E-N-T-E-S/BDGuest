@@ -14,6 +14,7 @@ import java.util.List;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
+    //todo fazer funções para filtrar por atributos da classe Pessoa
 
     private ClienteRepository clienteRepository;
     private PessoaService pessoaService;
