@@ -13,17 +13,17 @@ public class Funcionario {
     private Double salario;
     @JsonProperty("hora_entrada")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
-    private LocalTime horaEntrada;
+    private LocalTime horarioEntrada;
     @JsonProperty("hora_saida")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
-    private LocalTime horaSaida;
+    private LocalTime horarioSaida;
 
     public Funcionario(String cpf, Date dataContratacao, Double salario, LocalTime horaEntrada, LocalTime horaSaida) {
         this.cpf = cpf;
         this.dataContratacao = dataContratacao;
         this.salario = salario;
-        this.horaEntrada = horaEntrada;
-        this.horaSaida = horaSaida;
+        this.horarioEntrada = horaEntrada;
+        this.horarioSaida = horaSaida;
     }
 
     public String getCpf() {
@@ -50,19 +50,19 @@ public class Funcionario {
         this.salario = salario;
     }
 
-    public LocalTime getHoraEntrada() {
-        return horaEntrada;
+    public LocalTime getHorarioEntrada() {
+        return horarioEntrada;
     }
 
-    public void setHoraEntrada(LocalTime horaEntrada) {
-        this.horaEntrada = horaEntrada;
+    public void setHorarioEntrada(LocalTime horaEntrada) {
+        this.horarioEntrada = horaEntrada;
     }
 
-    public LocalTime getHoraSaida() {
-        return horaSaida;
+    public LocalTime getHorarioSaida() {
+        return horarioSaida;
     }
 
-    public void setHoraSaida(LocalTime horaSaida) {
-        this.horaSaida = horaSaida;
+    public void setHorarioSaida(LocalTime horaSaida) {
+        this.horarioSaida = horaSaida;
     }
 }

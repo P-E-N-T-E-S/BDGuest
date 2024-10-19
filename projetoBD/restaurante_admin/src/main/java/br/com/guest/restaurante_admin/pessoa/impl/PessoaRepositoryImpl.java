@@ -114,7 +114,6 @@ public class PessoaRepositoryImpl implements PessoaRepository {
 
     @Override
     public void atualizarPessoaPorFiltro(String filtro, String valor, String campoAlterado, String valorAlterado) {
-        //Esse aqui vai ser pegado
         String sql = "UPDATE Pessoas SET "+ campoAlterado + "= ?  WHERE "+filtro+" LIKE ?";
         jdbcTemplate.update(sql, valorAlterado, "%"+valor+"%");
         }
