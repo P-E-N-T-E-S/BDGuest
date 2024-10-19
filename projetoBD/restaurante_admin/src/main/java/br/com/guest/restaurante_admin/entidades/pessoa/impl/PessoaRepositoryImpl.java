@@ -1,15 +1,13 @@
-package br.com.guest.restaurante_admin.pessoa.impl;
+package br.com.guest.restaurante_admin.entidades.pessoa.impl;
 
-import br.com.guest.restaurante_admin.pessoa.Pessoa;
-import br.com.guest.restaurante_admin.pessoa.PessoaRepository;
-import br.com.guest.restaurante_admin.pessoa.mapper.MapeadorPessoa;
+import br.com.guest.restaurante_admin.entidades.pessoa.Pessoa;
+import br.com.guest.restaurante_admin.entidades.pessoa.PessoaRepository;
+import br.com.guest.restaurante_admin.entidades.pessoa.mapper.MapeadorPessoa;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import java.sql.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class PessoaRepositoryImpl implements PessoaRepository {

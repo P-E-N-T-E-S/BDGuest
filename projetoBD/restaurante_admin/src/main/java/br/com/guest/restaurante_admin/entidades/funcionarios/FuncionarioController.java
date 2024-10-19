@@ -1,4 +1,4 @@
-package br.com.guest.restaurante_admin.funcionarios;
+package br.com.guest.restaurante_admin.entidades.funcionarios;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
-package br.com.guest.restaurante_admin.funcionarios.mapper;
+package br.com.guest.restaurante_admin.entidades.funcionarios.mapper;
 
-import br.com.guest.restaurante_admin.funcionarios.Funcionario;
+import br.com.guest.restaurante_admin.entidades.funcionarios.Funcionario;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

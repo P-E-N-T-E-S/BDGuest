@@ -1,7 +1,6 @@
-package br.com.guest.restaurante_admin.pessoa;
+package br.com.guest.restaurante_admin.entidades.pessoa;
 
 import br.com.guest.restaurante_admin.execoes.FiltroNaoDisponivelException;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

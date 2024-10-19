@@ -1,4 +1,4 @@
-package br.com.guest.restaurante_admin.pessoa;
+package br.com.guest.restaurante_admin.entidades.pessoa;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

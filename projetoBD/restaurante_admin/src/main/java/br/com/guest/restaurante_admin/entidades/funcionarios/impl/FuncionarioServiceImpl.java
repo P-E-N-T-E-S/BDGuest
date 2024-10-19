@@ -1,12 +1,12 @@
-package br.com.guest.restaurante_admin.funcionarios.impl;
+package br.com.guest.restaurante_admin.entidades.funcionarios.impl;
 
 import br.com.guest.restaurante_admin.execoes.CampoDeAlteracaoNaoEncontradoException;
 import br.com.guest.restaurante_admin.execoes.FiltroNaoDisponivelException;
-import br.com.guest.restaurante_admin.funcionarios.Funcionario;
-import br.com.guest.restaurante_admin.funcionarios.FuncionarioRepository;
-import br.com.guest.restaurante_admin.funcionarios.FuncionarioService;
-import br.com.guest.restaurante_admin.pessoa.Pessoa;
-import br.com.guest.restaurante_admin.pessoa.PessoaService;
+import br.com.guest.restaurante_admin.entidades.funcionarios.Funcionario;
+import br.com.guest.restaurante_admin.entidades.funcionarios.FuncionarioRepository;
+import br.com.guest.restaurante_admin.entidades.funcionarios.FuncionarioService;
+import br.com.guest.restaurante_admin.entidades.pessoa.Pessoa;
+import br.com.guest.restaurante_admin.entidades.pessoa.PessoaService;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;

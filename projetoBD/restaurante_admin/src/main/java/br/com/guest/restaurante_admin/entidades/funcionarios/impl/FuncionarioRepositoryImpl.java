@@ -1,9 +1,8 @@
-package br.com.guest.restaurante_admin.funcionarios.impl;
+package br.com.guest.restaurante_admin.entidades.funcionarios.impl;
 
-import br.com.guest.restaurante_admin.funcionarios.Funcionario;
-import br.com.guest.restaurante_admin.funcionarios.FuncionarioRepository;
-import br.com.guest.restaurante_admin.funcionarios.mapper.MapeadorFuncionario;
-import br.com.guest.restaurante_admin.pessoa.mapper.MapeadorPessoa;
+import br.com.guest.restaurante_admin.entidades.funcionarios.Funcionario;
+import br.com.guest.restaurante_admin.entidades.funcionarios.FuncionarioRepository;
+import br.com.guest.restaurante_admin.entidades.funcionarios.mapper.MapeadorFuncionario;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -22,7 +21,7 @@ public class FuncionarioRepositoryImpl implements FuncionarioRepository {
 
     @Override
     public void salvarFuncionario(Funcionario funcionario) {
-        String sql = "INSERT INTO Funcionarios (cpf, data_contratacao, salario, horario_entrada, horario_saida) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Funcionario (cpf, data_contratacao, salario, horario_entrada, horario_saida) VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 funcionario.getCpf(),
                 new Date(funcionario.getDataContratacao().getTime()),
@@ -33,7 +32,7 @@ public class FuncionarioRepositoryImpl implements FuncionarioRepository {
 
     @Override
     public List<Funcionario> listarFuncionarios() {
-        String sql = "SELECT * FROM Funcionarios";
+        String sql = "SELECT * FROM Funcionario";
         try {
             return jdbcTemplate.query(sql, new MapeadorFuncionario());
         }catch (Exception e) {
@@ -43,7 +42,7 @@ public class FuncionarioRepositoryImpl implements FuncionarioRepository {
 
     @Override
     public Funcionario buscarFuncionarioPorCpf(String cpf) {
-        String sql = "SELECT * FROM Funcionarios WHERE cpf = ?";
+        String sql = "SELECT * FROM Funcionario WHERE cpf = ?";
         return jdbcTemplate.queryForObject(sql, new MapeadorFuncionario(), cpf);
     }
 
@@ -59,7 +58,7 @@ public class FuncionarioRepositoryImpl implements FuncionarioRepository {
 
     @Override
     public void atualizarFuncionarioPorCpf(String cpf, Funcionario funcionario) {
-        String sql = "UPDATE Funcionarios SET data_contratacao = ?, salario = ?, horario_entrada = ?, horario_saida = ? Where cpf = ?";
+        String sql = "UPDATE Funcionario SET data_contratacao = ?, salario = ?, horario_entrada = ?, horario_saida = ? Where cpf = ?";
 
         jdbcTemplate.update(sql,
                 new Date(funcionario.getDataContratacao().getTime()),
@@ -71,8 +70,8 @@ public class FuncionarioRepositoryImpl implements FuncionarioRepository {
 
     @Override
     public void atualizarFuncionarioPorFiltro(String filtro, String valor, String campoAlterado, String valorAlterado) {
-        String sql = "UPDATE Funcionarios SET " + campoAlterado + " = ? WHERE " + filtro + " = ?";
-        jdbcTemplate.update(sql, valorAlterado, valor);
+        String sql = "UPDATE Funcionarios SET " + campoAlterado + " = ? WHERE " + filtro + " LIKE ?";
+        jdbcTemplate.update(sql, valorAlterado, "%"+valor+"%");
     }
 
     @Override
@@ -83,7 +82,7 @@ public class FuncionarioRepositoryImpl implements FuncionarioRepository {
 
     @Override
     public void deletarFuncionarioPorFiltro(String filtro, String valor) {
-        String sql = "DELETE FROM Funcionarios WHERE " + filtro + " = ?";
-        jdbcTemplate.update(sql, valor);
+        String sql = "DELETE FROM Funcionarios WHERE " + filtro + " LIKE ?";
+        jdbcTemplate.update(sql, "%"+valor+"%");
     }
 }
