@@ -1,5 +1,6 @@
 package br.com.guest.restaurante_admin.funcionarios.impl;
 
+import br.com.guest.restaurante_admin.execoes.CampoDeAlteracaoNaoEncontradoException;
 import br.com.guest.restaurante_admin.execoes.FiltroNaoDisponivelException;
 import br.com.guest.restaurante_admin.funcionarios.Funcionario;
 import br.com.guest.restaurante_admin.funcionarios.FuncionarioRepository;
@@ -54,6 +55,28 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     @Override
     public void deletarFuncionarioPorCpf(String cpf) {
         funcionarioRepository.deletarFuncionarioPorCpf(cpf);
+    }
+
+    @Override
+    public void deletarFuncionarioPorFiltro(String filtro, String valor) {
+        //todo fazer uma funcao para procurar se a pessoa é cliente, se ela não for, deletar ela também
+        if(colunasFuncionario.contains(filtro)) {
+            funcionarioRepository.deletarFuncionarioPorFiltro(filtro, valor);
+            return;
+        }
+        throw new FiltroNaoDisponivelException(filtro);
+    }
+
+    @Override
+    public void atualizarFuncionarioPorFiltro(String filtro, String valor, String campoAlterado, String valorAlterado) throws FiltroNaoDisponivelException, CampoDeAlteracaoNaoEncontradoException {
+        if(colunasFuncionario.contains(filtro)) {
+            if(colunasFuncionario.contains(campoAlterado)) {
+                funcionarioRepository.atualizarFuncionarioPorFiltro(filtro, valor, campoAlterado, valorAlterado);
+                return;
+            }
+            throw new CampoDeAlteracaoNaoEncontradoException(campoAlterado);
+        }
+        throw new FiltroNaoDisponivelException(filtro);
     }
 
     @Override

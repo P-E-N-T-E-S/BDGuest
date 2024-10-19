@@ -11,10 +11,10 @@ public class Funcionario {
     @JsonProperty("data_contratacao")
     private Date dataContratacao;
     private Double salario;
-    @JsonProperty("hora_entrada")
+    @JsonProperty("horario_entrada")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private LocalTime horarioEntrada;
-    @JsonProperty("hora_saida")
+    @JsonProperty("horario_saida")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private LocalTime horarioSaida;
 

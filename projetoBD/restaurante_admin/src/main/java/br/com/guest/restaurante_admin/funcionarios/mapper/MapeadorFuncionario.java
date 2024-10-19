@@ -17,7 +17,7 @@ public class MapeadorFuncionario implements RowMapper<Funcionario> {
         Date dataContratacao = rs.getDate("data_contratacao");
         double salario = rs.getDouble("salario");
         LocalTime horaEntrada = rs.getTime("horario_entrada").toLocalTime();
-        LocalTime horaSaida = rs.getTime("hora_saida").toLocalTime();
+        LocalTime horaSaida = rs.getTime("horario_saida").toLocalTime();
         return new Funcionario(cpf, dataContratacao, salario, horaEntrada, horaSaida);
     }
 }

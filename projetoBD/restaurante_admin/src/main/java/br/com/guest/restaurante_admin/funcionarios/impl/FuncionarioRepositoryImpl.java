@@ -71,7 +71,7 @@ public class FuncionarioRepositoryImpl implements FuncionarioRepository {
 
     @Override
     public void atualizarFuncionarioPorFiltro(String filtro, String valor, String campoAlterado, String valorAlterado) {
-        String sql = "UPDATE Funcionarios SET " + campoAlterado + " = ? WHERE " + valor + " = ?";
+        String sql = "UPDATE Funcionarios SET " + campoAlterado + " = ? WHERE " + filtro + " = ?";
         jdbcTemplate.update(sql, valorAlterado, valor);
     }
 
