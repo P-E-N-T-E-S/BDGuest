@@ -42,17 +42,7 @@ public class GarcomServiceImpl implements GarcomService {
     }
 
     @Override
-    public List<Garcom> buscarGarcomPorFiltro(String filtro, String valor) {
-        return List.of();
-    }
-
-    @Override
     public void removerGarcomPorCpf(String cpf) {
-
-    }
-
-    @Override
-    public void removerGarcomPorFiltro(String filtro, String valor) {
-
+        garcomRepository.removerGarcomPorCpf(cpf);
     }
 }

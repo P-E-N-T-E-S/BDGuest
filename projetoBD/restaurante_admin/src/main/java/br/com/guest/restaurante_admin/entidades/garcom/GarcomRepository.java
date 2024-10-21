@@ -10,5 +10,4 @@ public interface GarcomRepository {
     Garcom buscarGarcomPorCpf(String cpf);
     List<Garcom> buscarGarcomPorFiltro(String filtro, String valor);
     void removerGarcomPorCpf(String cpf);
-    void removerGarcomPorFiltro(String filtro, String valor);
 }

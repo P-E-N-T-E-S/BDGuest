@@ -3,7 +3,6 @@ package br.com.guest.restaurante_admin.entidades.garcom.impl;
 import br.com.guest.restaurante_admin.entidades.garcom.Garcom;
 import br.com.guest.restaurante_admin.entidades.garcom.GarcomRepository;
 import br.com.guest.restaurante_admin.entidades.garcom.mapper.MapeadorGarcom;
-import br.com.guest.restaurante_admin.entidades.gerente.mapper.MapeadorGerente;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -32,21 +31,19 @@ public class GarcomRepositoryImpl implements GarcomRepository {
 
     @Override
     public Garcom buscarGarcomPorCpf(String cpf) {
-        return null;
+        String sql = "SELECT * FROM Garcom G JOIN Funcionario F on G.cpf = F.cpf JOIN Pessoa P on F.cpf = P.cpf WHERE Cpf = ?";
+        return jdbcTemplate.queryForObject(sql, new MapeadorGarcom(), cpf);
     }
 
     @Override
     public List<Garcom> buscarGarcomPorFiltro(String filtro, String valor) {
-        return List.of();
+        String sql = "SELECT * FROM Garcom G JOIN Funcionario F on G.cpf = F.cpf JOIN Pessoa P on F.cpf = P.cpf WHERE " + filtro + " LIKE ?";
+        return jdbcTemplate.query(sql, new MapeadorGarcom(), "%"+valor+"%");
     }
 
     @Override
     public void removerGarcomPorCpf(String cpf) {
-
-    }
-
-    @Override
-    public void removerGarcomPorFiltro(String filtro, String valor) {
-
+        String sql = "DELETE FROM Garcom WHERE Cpf = ?";
+        jdbcTemplate.update(sql, cpf);
     }
 }
