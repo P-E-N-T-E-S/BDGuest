@@ -6,6 +6,7 @@ import br.com.guest.restaurante_admin.entidades.clientes.ClienteService;
 import br.com.guest.restaurante_admin.entidades.pessoa.PessoaService;
 import br.com.guest.restaurante_admin.execoes.CampoDeAlteracaoNaoEncontradoException;
 import br.com.guest.restaurante_admin.execoes.FiltroNaoDisponivelException;
+import br.com.guest.restaurante_admin.execoes.PessoaNaoEncontradaException;
 import org.springframework.stereotype.Service;
 
 
@@ -27,12 +28,11 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public boolean salvarCliente(Cliente cliente){
+    public void salvarCliente(Cliente cliente) throws PessoaNaoEncontradaException {
         if(pessoaService.buscarPessoaPorCpf(cliente.getCpf()) == null) {
-            return false;
+            throw new PessoaNaoEncontradaException("Cpf não pertence a ninguem");
         }
         clienteRepository.salvarCliente(cliente);
-        return true;
     }
 
     @Override

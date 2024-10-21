@@ -3,7 +3,7 @@ package br.com.guest.restaurante_admin.entidades.clientes;
 import java.util.List;
 
 public interface ClienteService {
-    boolean salvarCliente(Cliente cliente);
+    void salvarCliente(Cliente cliente);
     Cliente buscarClientPorCpf(String cpf);
     List<Cliente> listarClientes();
     List<Cliente> buscarClientePorFiltro(String filtro, String valor);

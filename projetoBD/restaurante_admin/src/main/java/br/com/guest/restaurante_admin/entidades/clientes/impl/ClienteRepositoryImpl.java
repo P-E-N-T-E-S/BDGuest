@@ -25,13 +25,13 @@ public class ClienteRepositoryImpl implements ClienteRepository {
 
     @Override
     public Cliente buscarClientePorCpf(String cpf) {
-        String sql = "SELECT * FROM Cliente WHERE cpf = ?";
+        String sql = "SELECT * FROM Pessoa p join Cliente C on p.cpf = C.cpf WHERE cpf = ?";
         return jdbcTemplate.queryForObject(sql, new ClienteMapper(), cpf);
     }
 
     @Override
     public List<Cliente> listarClientes() {
-        String sql = "SELECT * FROM Cliente";
+        String sql = "SELECT * FROM Pessoa p join Cliente C on p.cpf = C.cpf";
         return jdbcTemplate.query(sql, new ClienteMapper());
     }
 

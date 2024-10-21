@@ -1,5 +1,6 @@
 package br.com.guest.restaurante_admin.entidades.funcionarios;
 
+import br.com.guest.restaurante_admin.entidades.pessoa.Pessoa;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -7,7 +8,9 @@ import java.time.LocalTime;
 import java.util.Date;
 
 public class Funcionario {
-    private String cpf; //Foreing key para Pessoa
+    //todo colocar um campo de pessoa
+    private Pessoa pessoa;
+    private String cpf;
     @JsonProperty("data_contratacao")
     private Date dataContratacao;
     private Double salario;
@@ -18,28 +21,29 @@ public class Funcionario {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private LocalTime horarioSaida;
 
-    public Funcionario(String cpf, Date dataContratacao, Double salario, LocalTime horaEntrada, LocalTime horaSaida) {
+    public Funcionario(Pessoa pessoa, String cpf, Date dataContratacao, Double salario, LocalTime horarioEntrada, LocalTime horarioSaida) {
+        this.pessoa = pessoa;
         this.cpf = cpf;
         this.dataContratacao = dataContratacao;
         this.salario = salario;
-        this.horarioEntrada = horaEntrada;
-        this.horarioSaida = horaSaida;
+        this.horarioEntrada = horarioEntrada;
+        this.horarioSaida = horarioSaida;
     }
 
-    public String getCpf() {
-        return cpf;
+    public LocalTime getHorarioSaida() {
+        return horarioSaida;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public void setHorarioSaida(LocalTime horarioSaida) {
+        this.horarioSaida = horarioSaida;
     }
 
-    public Date getDataContratacao() {
-        return dataContratacao;
+    public LocalTime getHorarioEntrada() {
+        return horarioEntrada;
     }
 
-    public void setDataContratacao(Date dataContratacao) {
-        this.dataContratacao = dataContratacao;
+    public void setHorarioEntrada(LocalTime horarioEntrada) {
+        this.horarioEntrada = horarioEntrada;
     }
 
     public Double getSalario() {
@@ -50,19 +54,27 @@ public class Funcionario {
         this.salario = salario;
     }
 
-    public LocalTime getHorarioEntrada() {
-        return horarioEntrada;
+    public Date getDataContratacao() {
+        return dataContratacao;
     }
 
-    public void setHorarioEntrada(LocalTime horaEntrada) {
-        this.horarioEntrada = horaEntrada;
+    public void setDataContratacao(Date dataContratacao) {
+        this.dataContratacao = dataContratacao;
     }
 
-    public LocalTime getHorarioSaida() {
-        return horarioSaida;
+    public String getCpf() {
+        return cpf;
     }
 
-    public void setHorarioSaida(LocalTime horaSaida) {
-        this.horarioSaida = horaSaida;
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 }

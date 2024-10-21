@@ -19,10 +19,12 @@ public class FuncionarioController {
 
     @PostMapping("")
     public ResponseEntity<String> novoFuncionario(@RequestBody Funcionario funcionario) {
-        if(funcionarioService.salvarFuncionario(funcionario)){
+        try {
+            funcionarioService.salvarFuncionario(funcionario);
             return new ResponseEntity<>("Funcionario Salvo com sucesso!", HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("CPF não encontrado!", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("CPF não encontrado!", HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("")

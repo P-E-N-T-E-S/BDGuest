@@ -7,6 +7,7 @@ import br.com.guest.restaurante_admin.entidades.garcom.GarcomRepository;
 import br.com.guest.restaurante_admin.entidades.garcom.GarcomService;
 import br.com.guest.restaurante_admin.execoes.FuncionarioNaoEncontradoException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -16,12 +17,17 @@ public class GarcomServiceImpl implements GarcomService {
     private GarcomRepository garcomRepository;
     private FuncionarioService funcionarioService;
 
+    public GarcomServiceImpl(GarcomRepository garcomRepository, FuncionarioService funcionarioService) {
+        this.garcomRepository = garcomRepository;
+        this.funcionarioService = funcionarioService;
+    }
+
     @Override
-    public void salvarGarcom(String cpf) throws FuncionarioNaoEncontradoException {
-        if(funcionarioService.buscarFuncionarioPorcpf(cpf) == null) {
+    public void salvarGarcom(Garcom garcom) throws FuncionarioNaoEncontradoException {
+        if(funcionarioService.buscarFuncionarioPorcpf(garcom.getCpf()) == null) {
             throw new FuncionarioNaoEncontradoException("Funcionário não encontrado");
         }
-        garcomRepository.salvarGarcom(cpf);
+        garcomRepository.salvarGarcom(garcom);
     }
 
     @Override

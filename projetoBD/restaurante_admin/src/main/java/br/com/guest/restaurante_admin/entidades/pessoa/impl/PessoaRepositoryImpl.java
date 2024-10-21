@@ -20,7 +20,7 @@ public class PessoaRepositoryImpl implements PessoaRepository {
 
     @Override
     public void salvarNovaPessoa(Pessoa pessoa) {
-        String sql = "INSERT INTO Pessoas (cpf, nome, rua, bairro, estado, cidade, cep, email, data_nascimento, telefone, telefone_2) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Pessoa (cpf, nome, rua, bairro, estado, cidade, cep, email, data_nascimento, telefone, telefone_2) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 pessoa.getCpf(),
                 pessoa.getNome(),
@@ -37,7 +37,7 @@ public class PessoaRepositoryImpl implements PessoaRepository {
 
     @Override
     public List<Pessoa> listarPessoas() {
-        String sql = "SELECT * FROM Pessoas";
+        String sql = "SELECT * FROM Pessoa";
         try{
             return jdbcTemplate.query(sql, new MapeadorPessoa());
         }catch(EmptyResultDataAccessException e){
@@ -47,7 +47,7 @@ public class PessoaRepositoryImpl implements PessoaRepository {
 
     @Override
     public Pessoa buscarPessoaPorCpf(String cpf) {
-        String sql = "SELECT * FROM Pessoas WHERE cpf = ?";
+        String sql = "SELECT * FROM Pessoa WHERE cpf = ?";
         try {
             return jdbcTemplate.queryForObject(sql, new MapeadorPessoa(), cpf);
         } catch (EmptyResultDataAccessException e) {
@@ -57,13 +57,13 @@ public class PessoaRepositoryImpl implements PessoaRepository {
 
     @Override
     public void deletarPessoaPorCpf(String cpf) {
-        String sql = "DELETE FROM Pessoas WHERE cpf = ?";
+        String sql = "DELETE FROM Pessoa WHERE cpf = ?";
         jdbcTemplate.update(sql, cpf);
     }
 
     @Override
     public void atualizarPessoaPorCpf(String cpf, Pessoa pessoa) {
-        String sql = "UPDATE Pessoas SET nome = ?, rua = ?, bairro = ?, estado = ?, cidade = ?, cep = ?, email = ?, data_nascimento = ?, telefone = ?, telefone_2 = ? WHERE cpf = ?";
+        String sql = "UPDATE Pessoa SET nome = ?, rua = ?, bairro = ?, estado = ?, cidade = ?, cep = ?, email = ?, data_nascimento = ?, telefone = ?, telefone_2 = ? WHERE cpf = ?";
         jdbcTemplate.update(sql,
                 pessoa.getNome(),
                 pessoa.getRua(),
@@ -90,7 +90,7 @@ public class PessoaRepositoryImpl implements PessoaRepository {
 
     @Override
     public List<Pessoa> buscarPessoaPorTelefone(String telefone) {
-        String sql = "SELECT * FROM Pessoas WHERE telefone = ? OR telefone_2 = ?";
+        String sql = "SELECT * FROM Pessoa WHERE telefone = ? OR telefone_2 = ?";
         try{
             return jdbcTemplate.query(sql, new MapeadorPessoa(), telefone, telefone);
         }catch(EmptyResultDataAccessException e){
@@ -106,7 +106,7 @@ public class PessoaRepositoryImpl implements PessoaRepository {
 
     @Override
     public void deletarPessoaPorTelefone(String valor) {
-        String sql = "DELETE FROM Pessoas WHERE telefone = ? OR telefone_2 = ?";
+        String sql = "DELETE FROM Pessoa WHERE telefone = ? OR telefone_2 = ?";
         jdbcTemplate.update(sql, valor);
     }
 

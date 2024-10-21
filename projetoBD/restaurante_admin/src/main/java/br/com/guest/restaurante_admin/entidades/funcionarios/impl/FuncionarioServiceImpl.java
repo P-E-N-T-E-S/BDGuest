@@ -7,6 +7,7 @@ import br.com.guest.restaurante_admin.entidades.funcionarios.FuncionarioReposito
 import br.com.guest.restaurante_admin.entidades.funcionarios.FuncionarioService;
 import br.com.guest.restaurante_admin.entidades.pessoa.Pessoa;
 import br.com.guest.restaurante_admin.entidades.pessoa.PessoaService;
+import br.com.guest.restaurante_admin.execoes.PessoaNaoEncontradaException;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -26,13 +27,12 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     }
 
     @Override
-    public boolean salvarFuncionario(Funcionario funcionario) {
+    public void salvarFuncionario(Funcionario funcionario) throws PessoaNaoEncontradaException {
         Pessoa pessoa = pessoaService.buscarPessoaPorCpf(funcionario.getCpf());
         if(pessoa == null) {
-            return false;
+            throw new PessoaNaoEncontradaException("Esse cpf não pertence a ninguem registrado");
         }
         funcionarioRepository.salvarFuncionario(funcionario);
-        return true;
     }
 
     @Override

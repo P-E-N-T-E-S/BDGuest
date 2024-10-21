@@ -32,7 +32,7 @@ public class FuncionarioRepositoryImpl implements FuncionarioRepository {
 
     @Override
     public List<Funcionario> listarFuncionarios() {
-        String sql = "SELECT * FROM Funcionario";
+        String sql = "SELECT *FROM Pessoa P join Funcionario F on p.cpf = F.cpf";
         try {
             return jdbcTemplate.query(sql, new MapeadorFuncionario());
         }catch (Exception e) {
@@ -42,13 +42,13 @@ public class FuncionarioRepositoryImpl implements FuncionarioRepository {
 
     @Override
     public Funcionario buscarFuncionarioPorCpf(String cpf) {
-        String sql = "SELECT * FROM Funcionario WHERE cpf = ?";
+        String sql = "SELECT * FROM Pessoa P join Funcionario F on p.cpf = F.cpf WHERE F.cpf = ?";
         return jdbcTemplate.queryForObject(sql, new MapeadorFuncionario(), cpf);
     }
 
     @Override
     public List<Funcionario> buscarFuncionarioPorFiltro(String filtro, String valor) {
-        String sql = "SELECT * FROM Funcionarios WHERE " + filtro + " LIKE ?";
+        String sql = "SELECT * FROM Pessoa P join Funcionario F on p.cpf = F.cpf  WHERE F." + filtro + " LIKE ?";
         try{
             return jdbcTemplate.query(sql, new MapeadorFuncionario(), "%" + valor + "%");
         }catch(EmptyResultDataAccessException e){
@@ -70,19 +70,19 @@ public class FuncionarioRepositoryImpl implements FuncionarioRepository {
 
     @Override
     public void atualizarFuncionarioPorFiltro(String filtro, String valor, String campoAlterado, String valorAlterado) {
-        String sql = "UPDATE Funcionarios SET " + campoAlterado + " = ? WHERE " + filtro + " LIKE ?";
+        String sql = "UPDATE Funcionario SET " + campoAlterado + " = ? WHERE " + filtro + " LIKE ?";
         jdbcTemplate.update(sql, valorAlterado, "%"+valor+"%");
     }
 
     @Override
     public void deletarFuncionarioPorCpf(String cpf) {
-        String sql = "DELETE FROM Funcionarios WHERE cpf = ?";
+        String sql = "DELETE FROM Funcionario WHERE cpf = ?";
         jdbcTemplate.update(sql, cpf);
     }
 
     @Override
     public void deletarFuncionarioPorFiltro(String filtro, String valor) {
-        String sql = "DELETE FROM Funcionarios WHERE " + filtro + " LIKE ?";
+        String sql = "DELETE FROM Funcionario WHERE " + filtro + " LIKE ?";
         jdbcTemplate.update(sql, "%"+valor+"%");
     }
 }

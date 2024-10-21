@@ -1,10 +1,12 @@
 package br.com.guest.restaurante_admin.entidades.clientes;
 
+import br.com.guest.restaurante_admin.entidades.pessoa.Pessoa;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
 public class Cliente {
+    private Pessoa pessoa;
     private String cpf;
     private Integer fidelidade;
     @JsonProperty("metodo_pagamento_1")
@@ -12,11 +14,20 @@ public class Cliente {
     @JsonProperty("metodo_pagamento_2")
     private String metodoPagamento2;
 
-    public Cliente(String cpf, Integer fidelidade, String metodoPagamento1, String metodoPagamento2) {
+    public Cliente(Pessoa pessoa, String cpf, Integer fidelidade, String metodoPagamento1, String metodoPagamento2) {
+        this.pessoa = pessoa;
         this.cpf = cpf;
         this.fidelidade = fidelidade;
         this.metodoPagamento1 = metodoPagamento1;
         this.metodoPagamento2 = metodoPagamento2;
+    }
+
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 
     public String getCpf() {

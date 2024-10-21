@@ -1,9 +1,11 @@
 package br.com.guest.restaurante_admin.entidades.garcom;
 
 import br.com.guest.restaurante_admin.entidades.funcionarios.Funcionario;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Garcom {
     private String cpf;
+    @JsonProperty("cpf_gerente")
     private String gerenteCpf;
 
     private Funcionario funcionario;
