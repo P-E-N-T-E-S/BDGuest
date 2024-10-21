@@ -15,7 +15,8 @@ import java.util.List;
 
 @Service
 public class FuncionarioServiceImpl implements FuncionarioService {
-    //todo fazer funções para filtrar por atributos da classe Pessoa
+    //todo fazer função para deletar, buscar e atualizar com filtros da hierarquia
+    //todo fazer verificação de deleção de pessoa, caso ela não seja nem cliente nem funcionário
 
     private FuncionarioRepository funcionarioRepository;
     private PessoaService pessoaService;

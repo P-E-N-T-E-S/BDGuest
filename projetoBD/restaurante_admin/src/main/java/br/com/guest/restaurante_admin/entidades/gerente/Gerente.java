@@ -1,18 +1,15 @@
-package br.com.guest.restaurante_admin.entidades.garcom;
+package br.com.guest.restaurante_admin.entidades.gerente;
 
 import br.com.guest.restaurante_admin.entidades.funcionarios.Funcionario;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Garcom {
+public class Gerente {
+
     private String cpf;
-    @JsonProperty("cpf_gerente")
-    private String gerenteCpf;
 
     private Funcionario funcionario;
 
-    public Garcom(String cpf, String gerenteCpf, Funcionario funcionario) {
+    public Gerente(String cpf, Funcionario funcionario) {
         this.cpf = cpf;
-        this.gerenteCpf = gerenteCpf;
         this.funcionario = funcionario;
     }
 
@@ -24,14 +21,6 @@ public class Garcom {
         this.cpf = cpf;
     }
 
-    public String getGerenteCpf() {
-        return gerenteCpf;
-    }
-
-    public void setGerenteCpf(String gerenteCpf) {
-        this.gerenteCpf = gerenteCpf;
-    }
-
     public Funcionario getFuncionario() {
         return funcionario;
     }
@@ -39,5 +28,4 @@ public class Garcom {
     public void setFuncionario(Funcionario funcionario) {
         this.funcionario = funcionario;
     }
-
 }

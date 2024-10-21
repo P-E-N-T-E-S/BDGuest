@@ -1,7 +1,6 @@
-package br.com.guest.restaurante_admin.entidades.garcom.mapper;
+package br.com.guest.restaurante_admin.entidades.gerente.mapper;
 
 import br.com.guest.restaurante_admin.entidades.funcionarios.Funcionario;
-import br.com.guest.restaurante_admin.entidades.garcom.Garcom;
 import br.com.guest.restaurante_admin.entidades.gerente.Gerente;
 import br.com.guest.restaurante_admin.entidades.pessoa.Pessoa;
 import org.springframework.jdbc.core.RowMapper;
@@ -11,10 +10,9 @@ import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.Date;
 
-public class MapeadorGarcom implements RowMapper<Garcom> {
-
+public class MapeadorGerente implements RowMapper<Gerente> {
     @Override
-    public Garcom mapRow(ResultSet rs, int rowNum) throws SQLException {
+    public Gerente mapRow(ResultSet rs, int rowNum) throws SQLException {
         String cpfPessoa = rs.getString("P.cpf");
         String nome = rs.getString("nome");
         String rua = rs.getString("rua");
@@ -35,9 +33,7 @@ public class MapeadorGarcom implements RowMapper<Garcom> {
         LocalTime horaSaida = rs.getTime("horario_saida").toLocalTime();
         Funcionario funcionario =  new Funcionario(pessoa, cpfFuncionario, dataContratacao, salario, horaEntrada, horaSaida);
 
-        String cpfGarcom = rs.getString("G.cpf");
-        String cpfGerente = rs.getString("cpf_gerente");
-
-        return new Garcom(cpfGarcom, cpfGerente, funcionario);
+        String cpfGerente = rs.getString("G.cpf");
+        return new Gerente(cpfGerente, funcionario);
     }
 }

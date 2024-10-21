@@ -10,6 +10,7 @@ import java.util.List;
 
 @Repository
 public class ClienteRepositoryImpl implements ClienteRepository {
+    //todo fazer função para deletar, buscar e atualizar com filtros da hierarquia
 
     private JdbcTemplate jdbcTemplate;
 
@@ -62,6 +63,6 @@ public class ClienteRepositoryImpl implements ClienteRepository {
     @Override
     public void deletarClientePorFiltro(String filtro, String valor) {
         String sql = "DELETE FROM Cliente WHERE " + filtro + " LIKE ?";
-        jdbcTemplate.update(sql, "%"+valor+"%");
+        jdbcTemplate.update(sql, "%" + valor + "%");
     }
 }

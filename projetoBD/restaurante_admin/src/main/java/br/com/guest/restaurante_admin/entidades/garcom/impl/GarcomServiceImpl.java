@@ -13,6 +13,7 @@ import java.util.List;
 
 @Service
 public class GarcomServiceImpl implements GarcomService {
+    //todo fazer função para deletar, buscar e atualizar com filtros da hierarquia
 
     private GarcomRepository garcomRepository;
     private FuncionarioService funcionarioService;

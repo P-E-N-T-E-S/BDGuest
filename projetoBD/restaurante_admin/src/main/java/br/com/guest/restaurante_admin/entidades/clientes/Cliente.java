@@ -3,8 +3,6 @@ package br.com.guest.restaurante_admin.entidades.clientes;
 import br.com.guest.restaurante_admin.entidades.pessoa.Pessoa;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Date;
-
 public class Cliente {
     private Pessoa pessoa;
     private String cpf;

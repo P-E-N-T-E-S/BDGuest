@@ -12,12 +12,10 @@ import java.util.List;
 @RequestMapping("/cliente")
 public class ClienteController {
 
-    private final PessoaService pessoaService;
     private ClienteService clienteService;
 
-    public ClienteController(ClienteService clienteService, PessoaService pessoaService) {
+    public ClienteController(ClienteService clienteService) {
         this.clienteService = clienteService;
-        this.pessoaService = pessoaService;
     }
 
     @PostMapping("")
@@ -43,7 +41,7 @@ public class ClienteController {
     @PutMapping("/{filtro}")
     public ResponseEntity<String> atualizarClientePorFiltro(@PathVariable String filtro, @RequestParam String valor, @RequestBody HashMap<String, Object> alteracoes) {
         try{
-            pessoaService.atualizarPessoaPorFiltro(filtro, valor,(String)alteracoes.get("campo"), (String)alteracoes.get("valor"));
+            clienteService.atualizarClientePorFiltro(filtro, valor,(String)alteracoes.get("campo"), (String)alteracoes.get("valor"));
             return new ResponseEntity<>("Cliente atualizado com sucesso!", HttpStatus.OK);
         }catch (Exception e) {
             //todo diferenciar as respostas por exception
@@ -54,7 +52,7 @@ public class ClienteController {
     @DeleteMapping("/{filtro}")
     public ResponseEntity<String> deletarClientePorFiltro(@PathVariable String filtro, @RequestParam String valor) {
         try{
-            pessoaService.deletarPessoaPorFiltro(filtro, valor);
+            clienteService.deletarClientePorFiltro(filtro, valor);
             return new ResponseEntity<>("Cliente deletado com sucesso!", HttpStatus.OK);
         }catch (Exception e) {
             return new ResponseEntity<>("Filtro escolhido não disponível", HttpStatus.BAD_REQUEST);

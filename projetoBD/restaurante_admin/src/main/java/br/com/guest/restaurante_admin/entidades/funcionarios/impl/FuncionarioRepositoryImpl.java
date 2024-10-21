@@ -12,6 +12,7 @@ import java.util.List;
 
 @Repository
 public class FuncionarioRepositoryImpl implements FuncionarioRepository {
+    //todo fazer função para deletar, buscar e atualizar com filtros da hierarquia
 
     private JdbcTemplate jdbcTemplate;
 
@@ -70,6 +71,7 @@ public class FuncionarioRepositoryImpl implements FuncionarioRepository {
 
     @Override
     public void atualizarFuncionarioPorFiltro(String filtro, String valor, String campoAlterado, String valorAlterado) {
+        //todo perguntar a Gabi como fazer essa bomba daq, preciso dar um filtro com o atributo de pessoa
         String sql = "UPDATE Funcionario SET " + campoAlterado + " = ? WHERE " + filtro + " LIKE ?";
         jdbcTemplate.update(sql, valorAlterado, "%"+valor+"%");
     }

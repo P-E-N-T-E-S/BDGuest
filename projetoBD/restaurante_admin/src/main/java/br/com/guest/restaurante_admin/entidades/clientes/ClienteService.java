@@ -1,5 +1,7 @@
 package br.com.guest.restaurante_admin.entidades.clientes;
 
+import br.com.guest.restaurante_admin.execoes.FiltroNaoDisponivelException;
+
 import java.util.List;
 
 public interface ClienteService {
@@ -10,5 +12,5 @@ public interface ClienteService {
     void atualizarClientePorCpf(Cliente cliente, String cpf);
     void atualizarClientePorFiltro(String filtro, String valor, String campoAlterado, String valorAlterado);
     void deletarClientePorCpf(String cpf);
-    void deletarClientePorFiltro(String filtro, String valor);
+    void deletarClientePorFiltro(String filtro, String valor) throws FiltroNaoDisponivelException;
 }

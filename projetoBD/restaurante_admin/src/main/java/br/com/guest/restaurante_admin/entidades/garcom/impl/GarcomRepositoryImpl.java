@@ -2,6 +2,8 @@ package br.com.guest.restaurante_admin.entidades.garcom.impl;
 
 import br.com.guest.restaurante_admin.entidades.garcom.Garcom;
 import br.com.guest.restaurante_admin.entidades.garcom.GarcomRepository;
+import br.com.guest.restaurante_admin.entidades.garcom.mapper.MapeadorGarcom;
+import br.com.guest.restaurante_admin.entidades.gerente.mapper.MapeadorGerente;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -9,6 +11,7 @@ import java.util.List;
 
 @Repository
 public class GarcomRepositoryImpl implements GarcomRepository {
+    //todo fazer função para deletar, buscar e atualizar com filtros da hierarquia
     private final JdbcTemplate jdbcTemplate;
 
     public GarcomRepositoryImpl(JdbcTemplate jdbcTemplate) {
@@ -23,7 +26,8 @@ public class GarcomRepositoryImpl implements GarcomRepository {
 
     @Override
     public List<Garcom> listarGarcoms() {
-        return List.of();
+        String sql = "SELECT * FROM Garcom G JOIN Funcionario F on G.cpf = F.cpf JOIN Pessoa P on F.cpf = P.cpf";
+        return jdbcTemplate.query(sql, new MapeadorGarcom());
     }
 
     @Override
