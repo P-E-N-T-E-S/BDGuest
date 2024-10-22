@@ -31,7 +31,7 @@ public class PessoaControler {
 
     @GetMapping("/{filtro}")
     public ResponseEntity<List<Pessoa>> buscarPessoasFiltro(@PathVariable String filtro, @RequestParam String valor){
-        //Perguntar a Gabi se vamos precisar filtra por mais de um valor :))))
+        //todo perguntar a Gabi se vamos precisar filtra por mais de um valor :))))
         try{
             return new ResponseEntity<>(pessoaService.buscarPessoaPorFiltro(filtro, valor), HttpStatus.OK);
         } catch (FiltroNaoDisponivelException e) {

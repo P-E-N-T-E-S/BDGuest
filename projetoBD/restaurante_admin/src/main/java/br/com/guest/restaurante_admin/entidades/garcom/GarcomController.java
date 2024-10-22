@@ -45,5 +45,4 @@ public class GarcomController {
             return new ResponseEntity<>("Erro ao deletar garcom", HttpStatus.BAD_REQUEST);
         }
     }
-
 }
