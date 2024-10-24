@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class Mesa {
-    private Garcom garcom;
 
     @JsonProperty("numero_id")
     private Integer numeroId;
@@ -14,19 +13,10 @@ public class Mesa {
     @JsonProperty("cpf_garcom")
     private String cpfGarcom;
 
-    public Mesa(Garcom garcom, Integer numeroId, Integer quantidadeCadeiras, String cpfGarcom) {
-        this.garcom = garcom;
+    public Mesa(Integer numeroId, Integer quantidadeCadeiras, String cpfGarcom) {
         this.numeroId = numeroId;
         this.quantidadeCadeiras = quantidadeCadeiras;
         this.cpfGarcom = cpfGarcom;
-    }
-
-    public Garcom getGarcom() {
-        return garcom;
-    }
-
-    public void setGarcom(Garcom garcom) {
-        this.garcom = garcom;
     }
 
     public Integer getNumeroId() {

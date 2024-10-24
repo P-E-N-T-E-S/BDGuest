@@ -39,31 +39,30 @@ CREATE TABLE if not exists Estoquista (
     estoque INTEGER
 );
 
-CREATE TABLE if not exists Mesas (
+CREATE TABLE if not exists Mesa (
     numero_id SMALLINT PRIMARY KEY,
-    quantidade_cadeiras SMALLINT,
-    cpf_garcom VARCHAR(11)
+    quantidade_cadeiras SMALLINT
 );
 
 CREATE TABLE if not exists Menu (
+    Id INTEGER PRIMARY KEY,
     nome VARCHAR(50),
-    imagem BLOB,
+    imagem_link VARCHAR(50),
     descricao VARCHAR(100),
-    preco FLOAT,
-    numero INTEGER PRIMARY KEY
+    preco FLOAT
 );
 
-CREATE TABLE if not exists Comandas (
+CREATE TABLE if not exists Comanda (
+    numero_id INTEGER PRIMARY KEY,
     data DATE,
     horario TIME,
     quantidade SMALLINT,
-    numero_id INTEGER PRIMARY KEY,
     cpf_pessoa VARCHAR(11),
     cpf_garcom VARCHAR(11),
     fk_Menu_numero INTEGER
 );
 
-CREATE TABLE if not exists Produtos (
+CREATE TABLE if not exists Produto (
     nome VARCHAR(50) PRIMARY KEY,
     validade DATE,
     quantidade INTEGER,
@@ -71,12 +70,14 @@ CREATE TABLE if not exists Produtos (
 );
 
 CREATE TABLE if not exists Estoque (
+    id INTEGER PRIMARY KEY,
     rua VARCHAR(50),
-    refrigerado BOOLEAN,
+    numero INTEGER,
     bairro VARCHAR(50),
-    cep VARCHAR(50),
+    estado VARCHAR(50),
     cidade VARCHAR(50),
-    id INTEGER PRIMARY KEY
+    cep VARCHAR(50),
+    refrigerado BOOLEAN
 );
 
 CREATE TABLE if not exists Usa (
@@ -107,19 +108,25 @@ CREATE TABLE if not exists Reserva (
     PRIMARY KEY (cpf_cliente, data)
 );
 
-ALTER TABLE Funcionarios ADD CONSTRAINT FK_Funcionarios_2
+CREATE TABLE IF NOT EXISTS Atende(
+    cpf_garcom VARCHAR(50),
+    id_mesa SMALLINT,
+    PRIMARY KEY (cpf_garcom, id_mesa)
+);
+
+ALTER TABLE Funcionario ADD CONSTRAINT FK_Funcionario_2
     FOREIGN KEY (cpf)
-    REFERENCES Pessoas (cpf)
+    REFERENCES Pessoa (cpf)
     ON DELETE CASCADE;
 
 ALTER TABLE Gerente ADD CONSTRAINT FK_Gerente_2
     FOREIGN KEY (cpf)
-    REFERENCES Funcionarios (cpf)
+    REFERENCES Funcionario (cpf)
     ON DELETE CASCADE;
 
 ALTER TABLE Garcom ADD CONSTRAINT FK_Garcom_2
     FOREIGN KEY (cpf)
-    REFERENCES Funcionarios (cpf)
+    REFERENCES Funcionario (cpf)
     ON DELETE CASCADE;
 
 ALTER TABLE Garcom ADD CONSTRAINT FK_Garcom_3
@@ -129,7 +136,7 @@ ALTER TABLE Garcom ADD CONSTRAINT FK_Garcom_3
 
 ALTER TABLE Estoquista ADD CONSTRAINT FK_Estoquista_2
     FOREIGN KEY (cpf)
-    REFERENCES Funcionarios (cpf)
+    REFERENCES Funcionario (cpf)
     ON DELETE CASCADE;
 
 ALTER TABLE Estoquista ADD CONSTRAINT FK_Estoquista_3
@@ -140,36 +147,31 @@ ALTER TABLE Estoquista ADD CONSTRAINT FK_Estoquista_4
     FOREIGN KEY (estoque)
     REFERENCES Estoque (id);
 
-ALTER TABLE Mesas ADD CONSTRAINT FK_Mesas_2
-    FOREIGN KEY (cpf_garcom)
-    REFERENCES Garcom (cpf)
-    ON DELETE RESTRICT;
-
-ALTER TABLE Comandas ADD CONSTRAINT FK_Comandas_1
+ALTER TABLE Comanda ADD CONSTRAINT FK_Comandas_1
     FOREIGN KEY (cpf_garcom)
     REFERENCES Garcom (cpf);
 
-ALTER TABLE Comandas ADD CONSTRAINT FK_Comandas_3
+ALTER TABLE Comanda ADD CONSTRAINT FK_Comanda_3
     FOREIGN KEY (cpf_pessoa)
     REFERENCES Cliente (cpf);
 
-ALTER TABLE Comandas ADD CONSTRAINT FK_Comandas_4
+ALTER TABLE Comanda ADD CONSTRAINT FK_Comanda_4
     FOREIGN KEY (fk_Menu_numero)
-    REFERENCES Menu (numero);
+    REFERENCES Menu (id);
 
 ALTER TABLE Usa ADD CONSTRAINT FK_Usa_1
     FOREIGN KEY (produto)
-    REFERENCES Produtos (nome)
+    REFERENCES Produto (nome)
     ON DELETE RESTRICT;
 
 ALTER TABLE Usa ADD CONSTRAINT FK_Usa_2
     FOREIGN KEY (prato_menu)
-    REFERENCES Menu (numero)
+    REFERENCES Menu (id)
     ON DELETE RESTRICT;
 
 ALTER TABLE Contem ADD CONSTRAINT FK_Contem_1
     FOREIGN KEY (produto)
-    REFERENCES Produtos (nome)
+    REFERENCES Produto (nome)
     ON DELETE RESTRICT;
 
 ALTER TABLE Contem ADD CONSTRAINT FK_Contem_2
@@ -178,7 +180,7 @@ ALTER TABLE Contem ADD CONSTRAINT FK_Contem_2
 
 ALTER TABLE Cliente ADD CONSTRAINT FK_Cliente_1
     FOREIGN KEY (cpf)
-    REFERENCES Pessoas (cpf);
+    REFERENCES Pessoa (cpf);
 
 ALTER TABLE Reserva ADD CONSTRAINT FK_Reserva_1
     FOREIGN KEY (cpf_cliente)
@@ -186,4 +188,14 @@ ALTER TABLE Reserva ADD CONSTRAINT FK_Reserva_1
 
 ALTER TABLE Reserva ADD CONSTRAINT FK_Reserva_3
     FOREIGN KEY (numero_mesa)
-    REFERENCES Mesas (numero_id);
+    REFERENCES Mesa (numero_id);
+
+ALTER TABLE Atende ADD CONSTRAINT FK_Atende_1
+    FOREIGN KEY (cpf_garcom)
+    REFERENCES Garcom (cpf)
+    ON DELETE RESTRICT;
+
+ALTER TABLE Atende ADD CONSTRAINT FK_Atende_2
+    FOREIGN KEY (id_mesa)
+    REFERENCES Mesa (numero_id)
+    ON DELETE RESTRICT;

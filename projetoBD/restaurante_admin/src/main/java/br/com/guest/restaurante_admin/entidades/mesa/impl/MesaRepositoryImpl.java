@@ -25,19 +25,19 @@ public class MesaRepositoryImpl implements MesaRepository {
 
     @Override
     public Mesa acharMesaPorId(Integer id) {
-        String sql = "SELECT * FROM Mesa M JOIN Garcom G on M.cpf_garcom = G.cpf join Funcionario F on G.cpf = F.cpf join Pessoa P on P.cpf = F.cpf WHERE numero_id = ?";
+        String sql = "SELECT * FROM Mesa WHERE numero_id = ?";
         return jdbcTemplate.queryForObject(sql, new MapeadorMesa(), id);
     }
 
     @Override
     public List<Mesa> listarMesas() {
-        String sql = "SELECT * FROM Mesa M JOIN Garcom G on M.cpf_garcom = G.cpf join Funcionario F on G.cpf = F.cpf join Pessoa P on P.cpf = F.cpf";
+        String sql = "SELECT * FROM Mesa";
         return jdbcTemplate.query(sql, new MapeadorMesa());
     }
 
     @Override
     public List<Mesa> listarMesasPorFiltro(String filtro, String valor) {
-        String sql = "SELECT * FROM Mesa M JOIN Garcom G on M.cpf_garcom = G.cpf join Funcionario F on G.cpf = F.cpf join Pessoa P on P.cpf = F.cpf WHERE "+filtro+" LIKE ?";
+        String sql = "SELECT * FROM Mesa WHERE "+filtro+" LIKE ?";
         return jdbcTemplate.query(sql, new MapeadorMesa(), valor);
     }
 
