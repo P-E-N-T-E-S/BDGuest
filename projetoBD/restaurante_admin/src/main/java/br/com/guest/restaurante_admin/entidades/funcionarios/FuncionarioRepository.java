@@ -10,6 +10,7 @@ public interface FuncionarioRepository {
     void atualizarFuncionarioPorCpf(String cpf, Funcionario funcionario);
     void deletarFuncionarioPorCpf(String cpf);
     void atualizarFuncionarioPorFiltro(String filtro, String valor, String campoAlterado, String valorAlterado);
+    void atualizarFuncionarioPorFiltroDePessoa(String filtro, String valor, String campoAlterado, String valorAlterado);
     void deletarFuncionarioPorFiltro(String filtro, String valor);
-
+    void deletarFuncionarioPorFiltroDePessoa(String filtro, String valor);
 }

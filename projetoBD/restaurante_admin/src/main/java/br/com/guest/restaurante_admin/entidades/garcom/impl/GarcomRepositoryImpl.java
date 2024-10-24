@@ -46,4 +46,46 @@ public class GarcomRepositoryImpl implements GarcomRepository {
         String sql = "DELETE FROM Garcom WHERE Cpf = ?";
         jdbcTemplate.update(sql, cpf);
     }
+
+    @Override
+    public void removerGarcomPorFiltro(String filtro, String valor) {
+        String sql = "DELETE FROM Garcom WHERE " + filtro + " LIKE ?";
+        jdbcTemplate.update(sql, "%"+valor+"%");
+    }
+
+    @Override
+    public void removerGarcomPorFiltroDeFuncionario(String filtro, String valor) {
+        String sql = "DELETE FROM Garcom WHERE cpf in (SELECT cpf FROM Funcionario Where " + filtro + " LIKE ?)";
+        jdbcTemplate.update(sql, "%"+valor+"%");
+    }
+
+    @Override
+    public void removerGarcomPorFiltroDePessoa(String filtro, String valor) {
+        String sql = "DELETE FROM Garcom WHERE cpf in (SELECT cpf FROM Pessoa WHERE "+filtro+" LIKE ?)";
+        jdbcTemplate.update(sql, "%"+valor+"%");
+    }
+
+    @Override
+    public void atualizarGarcomPorCpf(Garcom garcom, String cpf) {
+        String sql = "UPDATE Garcom SET cpf_gerente = ? WHERE cpf = ?";
+        jdbcTemplate.update(sql, garcom.getGerenteCpf(), cpf);
+    }
+
+    @Override
+    public void atualizarGarcomPorFiltro(String filtro, String valor, String campoAlterado, String valorAlterado) {
+        String sql = "UPDATE Garcom SET "+campoAlterado+" = ? WHERE " + filtro + " LIKE ?";
+        jdbcTemplate.update(sql, valorAlterado, "%"+valor+"%");
+    }
+
+    @Override
+    public void atualizarGarcomPorFiltroDeFuncionario(String filtro, String valor, String campoAlterado, String valorAlterado) {
+        String sql = "UPDATE Garcom SET "+campoAlterado+" = ? WHERE cpf in (SELECT cpf FROM Funcionario Where " + filtro + " LIKE ?)";
+        jdbcTemplate.update(sql, valorAlterado, "%"+valor+"%");
+    }
+
+    @Override
+    public void atualizarGarcomPorFiltroDePessoa(String filtro, String valor, String campoAlterado, String valorAlterado) {
+        String sql = "UPDATE Garcom SET "+campoAlterado+" = ? WHERE cpf in (SELECT cpf FROM Pessoa WHERE "+filtro+" LIKE ?)";
+        jdbcTemplate.update(sql, valorAlterado, "%"+valor+"%");
+    }
 }

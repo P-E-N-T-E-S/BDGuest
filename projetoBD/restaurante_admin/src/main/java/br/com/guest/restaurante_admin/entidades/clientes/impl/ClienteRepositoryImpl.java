@@ -55,6 +55,12 @@ public class ClienteRepositoryImpl implements ClienteRepository {
     }
 
     @Override
+    public void atualizarClientePorFiltroDePessoa(String filtro, String valor, String campoAlterado, String valorAlterado) {
+        String sql = "UPDATE Cliente SET "+campoAlterado+" = ? WHERE cpf in (SELECT cpf FROM Pessoa WHERE "+filtro+" LIKE ?)";
+        jdbcTemplate.update(sql, valorAlterado, "%"+valor+"%");
+    }
+
+    @Override
     public void deletarClientePorCpf(String cpf) {
         String sql = "DELETE FROM Cliente WHERE cpf = ?";
         jdbcTemplate.update(sql, cpf);
@@ -64,5 +70,11 @@ public class ClienteRepositoryImpl implements ClienteRepository {
     public void deletarClientePorFiltro(String filtro, String valor) {
         String sql = "DELETE FROM Cliente WHERE " + filtro + " LIKE ?";
         jdbcTemplate.update(sql, "%" + valor + "%");
+    }
+
+    @Override
+    public void deletarClientePorFiltroDePessoa(String filtro, String valor) {
+        String sql = "DELETE FROM Cliente WHERE cpf in (SELECT cpf FROM Pessoa WHERE "+filtro+" LIKE ?)";
+        jdbcTemplate.update(sql, "%"+valor+"%");
     }
 }

@@ -1,5 +1,7 @@
 package br.com.guest.restaurante_admin.entidades.estoquista;
 
+import br.com.guest.restaurante_admin.execoes.CampoDeAlteracaoNaoEncontradoException;
+import br.com.guest.restaurante_admin.execoes.FiltroNaoDisponivelException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,11 +31,11 @@ public class EstoquistaController {
     }
 
     @GetMapping("/{filtro}")
-    public ResponseEntity<List<Estoquista>> buscarEstoquistaPorFiltro(@PathVariable String filtro, @RequestParam String valor){
+    public ResponseEntity<Object> buscarEstoquistaPorFiltro(@PathVariable String filtro, @RequestParam String valor){
         try {
             return new ResponseEntity<>(estoquistaService.buscarEstoquistasPorFiltro(filtro, valor), HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }catch (FiltroNaoDisponivelException e){
+            return new ResponseEntity<>("Filtro: "+e.getMessage()+" não disponível",HttpStatus.NOT_FOUND);
         }
     }
 
@@ -42,8 +44,8 @@ public class EstoquistaController {
         try {
             estoquistaService.excluirEstoquistaPorFiltro(filtro, valor);
             return new ResponseEntity<>("Estoquista(s) excluídos com sucesso", HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }catch (FiltroNaoDisponivelException e){
+            return new ResponseEntity<>("Filtro: "+e.getMessage()+" não disponível", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -52,8 +54,10 @@ public class EstoquistaController {
         try {
             estoquistaService.alterarEstoquistaPorFiltro(filtro, valor, (String)camposAlterado.get("campo"), (String)camposAlterado.get("valor"));
             return new ResponseEntity<>("Estoquista(s) excluídos com sucesso", HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }catch (FiltroNaoDisponivelException e){
+            return new ResponseEntity<>("Filtro: "+e.getMessage()+" não disponível",HttpStatus.BAD_REQUEST);
+        }catch (CampoDeAlteracaoNaoEncontradoException e){
+            return new ResponseEntity<>("Campo: "+e.getMessage()+" não disponível para alteração", HttpStatus.BAD_REQUEST);
         }
     }
 }

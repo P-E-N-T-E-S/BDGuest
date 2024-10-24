@@ -24,10 +24,6 @@ CREATE TABLE if not exists Funcionario (
     horario_saida TIME
 );
 
-CREATE TABLE if not exists Gerente (
-    cpf VARCHAR(11) PRIMARY KEY
-);
-
 CREATE TABLE if not exists Garcom (
     cpf VARCHAR(11) PRIMARY KEY,
     cpf_gerente VARCHAR(11)
@@ -119,11 +115,6 @@ ALTER TABLE Funcionario ADD CONSTRAINT FK_Funcionario_2
     REFERENCES Pessoa (cpf)
     ON DELETE CASCADE;
 
-ALTER TABLE Gerente ADD CONSTRAINT FK_Gerente_2
-    FOREIGN KEY (cpf)
-    REFERENCES Funcionario (cpf)
-    ON DELETE CASCADE;
-
 ALTER TABLE Garcom ADD CONSTRAINT FK_Garcom_2
     FOREIGN KEY (cpf)
     REFERENCES Funcionario (cpf)
@@ -131,7 +122,7 @@ ALTER TABLE Garcom ADD CONSTRAINT FK_Garcom_2
 
 ALTER TABLE Garcom ADD CONSTRAINT FK_Garcom_3
     FOREIGN KEY (cpf_gerente)
-    REFERENCES Gerente (cpf)
+    REFERENCES Garcom (cpf)
     ON DELETE RESTRICT;
 
 ALTER TABLE Estoquista ADD CONSTRAINT FK_Estoquista_2

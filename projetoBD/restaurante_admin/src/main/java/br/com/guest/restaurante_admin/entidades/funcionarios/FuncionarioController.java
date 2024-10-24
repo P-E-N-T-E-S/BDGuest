@@ -1,5 +1,8 @@
 package br.com.guest.restaurante_admin.entidades.funcionarios;
 
+import br.com.guest.restaurante_admin.execoes.CampoDeAlteracaoNaoEncontradoException;
+import br.com.guest.restaurante_admin.execoes.FiltroNaoDisponivelException;
+import br.com.guest.restaurante_admin.execoes.PessoaNaoEncontradaException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +25,8 @@ public class FuncionarioController {
         try {
             funcionarioService.salvarFuncionario(funcionario);
             return new ResponseEntity<>("Funcionario Salvo com sucesso!", HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>("CPF não encontrado!", HttpStatus.BAD_REQUEST);
+        }catch (PessoaNaoEncontradaException e){
+            return new ResponseEntity<>("CPF: "+e.getMessage()+" não encontrado no banco!", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -33,11 +36,11 @@ public class FuncionarioController {
     }
 
     @GetMapping("/{filtro}")
-    public ResponseEntity<List<Funcionario>> buscarFuncionarioPorFiltro(@PathVariable String filtro, @RequestParam String valor) {
+    public ResponseEntity<Object> buscarFuncionarioPorFiltro(@PathVariable String filtro, @RequestParam String valor) {
         try{
             return new ResponseEntity<>(funcionarioService.buscarFuncionarioPorFiltro(filtro, valor), HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Filtro: "+e.getMessage()+" não disponìvel", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -46,9 +49,10 @@ public class FuncionarioController {
         try{
             funcionarioService.atualizarFuncionarioPorFiltro(filtro, valor, (String)alteracoes.get("campo"), (String)alteracoes.get("valor"));
             return new ResponseEntity<>("Funcionário(s) alterados com sucesso", HttpStatus.OK);
-        }catch (Exception e){
-            //todo diferenciar as respostas por exception
-            return new ResponseEntity<>("Erro ao alterar", HttpStatus.BAD_REQUEST);
+        }catch (FiltroNaoDisponivelException e){
+            return new ResponseEntity<>("Filtro: "+e.getMessage()+" não disponível", HttpStatus.BAD_REQUEST);
+        }catch (CampoDeAlteracaoNaoEncontradoException e){
+            return new ResponseEntity<>("Campo para alteração: "+e.getMessage()+" indisponível", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -57,8 +61,8 @@ public class FuncionarioController {
         try {
             funcionarioService.deletarFuncionarioPorFiltro(filtro, valor);
             return new ResponseEntity<>("Funcionário(s) apagados com sucesso!", HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Erro ao apagar Funcionário", HttpStatus.BAD_REQUEST);
+        } catch (FiltroNaoDisponivelException e) {
+            return new ResponseEntity<>("Filtro: "+e.getMessage()+"indisponível", HttpStatus.BAD_REQUEST);
         }
     }
 }

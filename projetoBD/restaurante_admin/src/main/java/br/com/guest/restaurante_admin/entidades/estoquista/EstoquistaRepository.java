@@ -9,6 +9,12 @@ public interface EstoquistaRepository {
     List<Estoquista> buscarEstoquistasPorFiltro(String filtro, String valor);
     void excluirEstoquistaPorCpf(String cpf);
     void excluirEstoquistaPorFiltro(String filtro, String valor);
+    void excluirEstoquistaPorFiltroDePessoa(String filtro, String valor);
+    void excluirEstoquistaPorFiltroDeFuncionario(String filtro, String valor);
+    void excluirEstoquistaPorFiltroDeEstoque(String filtro, String valor);
     void alterarEstoquistaPorCpf(String cpf, Estoquista estoquista);
     void alterarEstoquistaPorFiltro(String filtro, String valor, String campoAlterado, String valorAlterado);
+    void alterarEstoquistaPorFiltroDePessoa(String filtro, String valor, String campoAlterado, String valorAlterado);
+    void alterarEstoquistaPorFiltroDeFuncionario(String filtro, String valor, String campoAlterado, String valorAlterado);
+    void alterarEstoquistaPorFiltroDeEstoque(String filtro, String valor, String campoAlterado, String valorAlterado);
 }

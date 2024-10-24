@@ -1,5 +1,6 @@
 package br.com.guest.restaurante_admin.entidades.pessoa;
 
+import br.com.guest.restaurante_admin.execoes.CampoDeAlteracaoNaoEncontradoException;
 import br.com.guest.restaurante_admin.execoes.FiltroNaoDisponivelException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,24 +19,23 @@ public class PessoaControler {
         this.pessoaService = pessoaService;
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<String> novaPessoa(@RequestBody Pessoa pessoa){
         pessoaService.salvarNovaPessoa(pessoa);
-        return new ResponseEntity<>("Pessoa salvo com sucesso!",HttpStatus.OK);
+        return new ResponseEntity<>("Pessoa salvo com sucesso!",HttpStatus.CREATED);
     }
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<List<Pessoa>> listarPessoas(){
         return new ResponseEntity<>(pessoaService.listarPessoas(), HttpStatus.OK);
     }
 
     @GetMapping("/{filtro}")
-    public ResponseEntity<List<Pessoa>> buscarPessoasFiltro(@PathVariable String filtro, @RequestParam String valor){
-        //todo perguntar a Gabi se vamos precisar filtra por mais de um valor :))))
+    public ResponseEntity<Object> buscarPessoasFiltro(@PathVariable String filtro, @RequestParam String valor){
         try{
             return new ResponseEntity<>(pessoaService.buscarPessoaPorFiltro(filtro, valor), HttpStatus.OK);
         } catch (FiltroNaoDisponivelException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Filtro " + e.getMessage() + " não disponível");
         }
     }
 
@@ -55,8 +55,9 @@ public class PessoaControler {
             pessoaService.atualizarPessoaPorFiltro(filtro, valor, (String)alteracoes.get("campo"), (String)alteracoes.get("valor"));
             return new ResponseEntity<>("Pessoa atualizada com sucesso!", HttpStatus.OK);
         }catch (FiltroNaoDisponivelException e) {
-            //todo diferenciar as respostas por exception
             return new ResponseEntity<>("Filtro não encontrado",HttpStatus.NOT_FOUND);
+        }catch (CampoDeAlteracaoNaoEncontradoException e){
+            return new ResponseEntity<>("Campo para alteração: "+e.getMessage()+" indisponível", HttpStatus.BAD_REQUEST);
         }
     }
 }

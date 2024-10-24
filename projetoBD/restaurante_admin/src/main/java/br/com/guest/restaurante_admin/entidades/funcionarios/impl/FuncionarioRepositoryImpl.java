@@ -77,6 +77,12 @@ public class FuncionarioRepositoryImpl implements FuncionarioRepository {
     }
 
     @Override
+    public void atualizarFuncionarioPorFiltroDePessoa(String filtro, String valor, String campoAlterado, String valorAlterado) {
+        String sql = "UPDATE Funcionario SET " + campoAlterado + " = ? WHERE cpf in (select cpf from Pessoa where "+filtro+" LIKE ?)";
+        jdbcTemplate.update(sql, valorAlterado, "%"+valor+"%");
+    }
+
+    @Override
     public void deletarFuncionarioPorCpf(String cpf) {
         String sql = "DELETE FROM Funcionario WHERE cpf = ?";
         jdbcTemplate.update(sql, cpf);
@@ -85,6 +91,12 @@ public class FuncionarioRepositoryImpl implements FuncionarioRepository {
     @Override
     public void deletarFuncionarioPorFiltro(String filtro, String valor) {
         String sql = "DELETE FROM Funcionario WHERE " + filtro + " LIKE ?";
+        jdbcTemplate.update(sql, "%"+valor+"%");
+    }
+
+    @Override
+    public void deletarFuncionarioPorFiltroDePessoa(String filtro, String valor) {
+        String sql ="DELETE FROM Funcionario WHERE cpf in (select cpf from Pessoa where "+filtro+" LIKE ?)";
         jdbcTemplate.update(sql, "%"+valor+"%");
     }
 }

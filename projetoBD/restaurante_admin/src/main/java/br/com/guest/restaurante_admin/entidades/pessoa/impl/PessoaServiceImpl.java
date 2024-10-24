@@ -14,7 +14,7 @@ public class PessoaServiceImpl implements PessoaService {
 
     private final PessoaRepository pessoaRepository;
 
-    List<String> colunasPessoa = Arrays.asList("cpf", "nome", "rua", "bairro", "estado", "cidade", "cep", "email", "data_nascimento", "telefone");
+    private final List<String> colunasPessoa = Arrays.asList("cpf", "nome", "rua", "bairro", "estado", "cidade", "cep", "email", "data_nascimento", "telefone");
 
     public PessoaServiceImpl(PessoaRepository pessoaRepository) {
         this.pessoaRepository = pessoaRepository;

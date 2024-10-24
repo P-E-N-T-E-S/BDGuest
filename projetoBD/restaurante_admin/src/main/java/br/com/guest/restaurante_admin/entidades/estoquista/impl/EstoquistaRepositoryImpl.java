@@ -55,6 +55,24 @@ public class EstoquistaRepositoryImpl implements EstoquistaRepository {
     }
 
     @Override
+    public void excluirEstoquistaPorFiltroDePessoa(String filtro, String valor) {
+        String sql = "DELETE FROM Estoquista WHERE cpf in (SELECT cpf FROM Pessoa WHERE "+filtro+" LIKE ?)";
+        jdbcTemplate.update(sql, "%"+valor+"%");
+    }
+
+    @Override
+    public void excluirEstoquistaPorFiltroDeFuncionario(String filtro, String valor) {
+        String sql = "DELETE FROM Estoquista WHERE cpf in (SELECT cpf FROM Funcionario WHERE "+filtro+" LIKE ?)";
+        jdbcTemplate.update(sql, "%"+valor+"%");
+    }
+
+    @Override
+    public void excluirEstoquistaPorFiltroDeEstoque(String filtro, String valor) {
+        String sql = "DELETE FROM Estoquista WHERE cpf in (SELECT cpf FROM Estoque WHERE "+filtro+" LIKE ?)";
+        jdbcTemplate.update(sql, "%"+valor+"%");
+    }
+
+    @Override
     public void alterarEstoquistaPorCpf(String cpf, Estoquista estoquista) {
         String sql = "UPDATE Estoquista SET cpf_gerente = ?, estoque = ? WHERE cpf = ?";
         jdbcTemplate.update(sql,estoquista.getCpfGerente(), estoquista.getEstoque(), estoquista.getCpf());
@@ -63,6 +81,24 @@ public class EstoquistaRepositoryImpl implements EstoquistaRepository {
     @Override
     public void alterarEstoquistaPorFiltro(String filtro, String valor, String campoAlterado, String valorAlterado) {
         String sql = "UPDATE Estoquista SET "+ campoAlterado+" =? WHERE "+ filtro +" LIKE ?";
+        jdbcTemplate.update(sql, valorAlterado, valor);
+    }
+
+    @Override
+    public void alterarEstoquistaPorFiltroDePessoa(String filtro, String valor, String campoAlterado, String valorAlterado) {
+        String sql = "UPDATE Estoquista SET "+ campoAlterado+" =? WHERE cpf in (SELECT cpf FROM Pessoa WHERE "+ filtro +" LIKE ?)";
+        jdbcTemplate.update(sql, valorAlterado, valor);
+    }
+
+    @Override
+    public void alterarEstoquistaPorFiltroDeFuncionario(String filtro, String valor, String campoAlterado, String valorAlterado) {
+        String sql = "UPDATE Estoquista SET "+ campoAlterado+" =? WHERE cpf in (SELECT cpf FROM Funcionario WHERE "+ filtro +" LIKE ?)";
+        jdbcTemplate.update(sql, valorAlterado, valor);
+    }
+
+    @Override
+    public void alterarEstoquistaPorFiltroDeEstoque(String filtro, String valor, String campoAlterado, String valorAlterado) {
+        String sql = "UPDATE Estoquista SET "+ campoAlterado+" =? WHERE cpf in (SELECT cpf FROM Estoque WHERE "+ filtro +" LIKE ?)";
         jdbcTemplate.update(sql, valorAlterado, valor);
     }
 }

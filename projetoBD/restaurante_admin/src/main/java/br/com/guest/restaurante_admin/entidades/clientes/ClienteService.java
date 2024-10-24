@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ClienteService {
     void salvarCliente(Cliente cliente);
-    Cliente buscarClientPorCpf(String cpf);
+    Cliente buscarClientePorCpf(String cpf);
     List<Cliente> listarClientes();
     List<Cliente> buscarClientePorFiltro(String filtro, String valor);
     void atualizarClientePorCpf(Cliente cliente, String cpf);

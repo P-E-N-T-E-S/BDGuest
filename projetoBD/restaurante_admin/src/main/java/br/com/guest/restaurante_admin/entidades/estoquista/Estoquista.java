@@ -10,6 +10,7 @@ public class Estoquista {
 
     private String cpf;
     @JsonProperty("cpg_gerente")
+    //todo isso 'e um auto-relacionamento
     private String cpfGerente;
     private Integer estoqueId;
 
