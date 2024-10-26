@@ -33,6 +33,8 @@ public class GarcomServiceImpl implements GarcomService {
 
     @Override
     public void salvarGarcom(Garcom garcom) throws FuncionarioNaoEncontradoException {
+        //TODO [HIGH]: fazer salvar as mesas que o garçom vai atender e colocar isso na parte de alterar tambem
+        //TODO [LOW]: fazer verificacao do cpf do garcom gerente
         if(funcionarioService.buscarFuncionarioPorcpf(garcom.getCpf()) == null) {
             throw new FuncionarioNaoEncontradoException("Funcionário não encontrado");
         }
@@ -46,7 +48,7 @@ public class GarcomServiceImpl implements GarcomService {
 
     @Override
     public List<Garcom> buscarGarcomPorFiltro(String filtro, String valor) throws FiltroNaoDisponivelException {
-        //todo converter cpf para G.cpf
+        //todo: converter cpf para G.cpf
         if(colunasGarcom.contains(filtro)) {
             return garcomRepository.buscarGarcomPorFiltro(filtro, valor);
         }

@@ -2,7 +2,6 @@ package br.com.guest.restaurante_admin.entidades.garcom.mapper;
 
 import br.com.guest.restaurante_admin.entidades.funcionarios.Funcionario;
 import br.com.guest.restaurante_admin.entidades.garcom.Garcom;
-import br.com.guest.restaurante_admin.entidades.gerente.Gerente;
 import br.com.guest.restaurante_admin.entidades.pessoa.Pessoa;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -15,6 +14,7 @@ public class MapeadorGarcom implements RowMapper<Garcom> {
 
     @Override
     public Garcom mapRow(ResultSet rs, int rowNum) throws SQLException {
+        //TODO: talvez fazer o garçom retornar uma lista das mesas que ele atende
         String cpfPessoa = rs.getString("P.cpf");
         String nome = rs.getString("nome");
         String rua = rs.getString("rua");

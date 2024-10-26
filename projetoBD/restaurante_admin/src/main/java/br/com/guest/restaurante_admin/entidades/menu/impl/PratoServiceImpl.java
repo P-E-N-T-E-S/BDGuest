@@ -18,6 +18,7 @@ public class PratoServiceImpl implements PratoService {
 
     @Override
     public void salvarPrato(Prato prato) {
+        //TODO [HIGH] salvar os ingredientes do prato na tabela
         pratoRepository.salvarPrato(prato);
     }
 
