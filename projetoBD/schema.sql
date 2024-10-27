@@ -37,8 +37,7 @@ CREATE TABLE Estoquista (
 
 CREATE TABLE Mesa (
     numero_id SMALLINT PRIMARY KEY,
-    quantidade_cadeiras SMALLINT,
-    cpf_garcom INTEGER
+    quantidade_cadeiras SMALLINT
 );
 
 CREATE TABLE Menu (
@@ -94,7 +93,7 @@ CREATE TABLE Cliente (
 
 CREATE TABLE Reserva (
     data DATE,
-    horario_entrada DATETIME,
+    horario_entrada TIMESTAMP,
     quantidade_pessoas INTEGER,
     cpf_cliente INTEGER,
     numero_mesa SMALLINT,
@@ -140,11 +139,6 @@ ALTER TABLE Estoquista ADD CONSTRAINT FK_Estoquista_3
 ALTER TABLE Estoquista ADD CONSTRAINT FK_Estoquista_4
     FOREIGN KEY (estoque)
     REFERENCES Estoque (id);
-
-ALTER TABLE Mesa ADD CONSTRAINT FK_Mesas_2
-    FOREIGN KEY (cpf_garcom)
-    REFERENCES Garcom (cpf)
-    ON DELETE RESTRICT;
 
 ALTER TABLE Comanda ADD CONSTRAINT FK_Comandas_2
     FOREIGN KEY (cpf_pessoa)
@@ -195,3 +189,9 @@ ALTER TABLE Pedido ADD CONSTRAINT FK_Pedido_1
 ALTER TABLE Pedido ADD CONSTRAINT FK_Pedido_2
     FOREIGN KEY (fk_Menu_numero)
     REFERENCES Menu (numero);
+
+SELECT *
+FROM Reserva R
+join Mesa M on M.numero_id = R.numero_mesa
+join Cliente C on R.cpf_cliente = C.cpf
+join Pessoa P on P.cpf = C.cpf

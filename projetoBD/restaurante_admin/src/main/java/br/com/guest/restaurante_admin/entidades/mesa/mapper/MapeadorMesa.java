@@ -12,8 +12,7 @@ public class MapeadorMesa implements RowMapper<Mesa> {
     public Mesa mapRow(ResultSet rs, int rowNum) throws SQLException {
         Integer id = rs.getInt("numero_id");
         Integer quantidadeCadeiras = rs.getInt("quantidade_cadeira");
-        String cpfGarcomMesa = rs.getString("cpf_garcom");
 
-        return new Mesa(id, quantidadeCadeiras, cpfGarcomMesa);
+        return new Mesa(id, quantidadeCadeiras);
     }
 }

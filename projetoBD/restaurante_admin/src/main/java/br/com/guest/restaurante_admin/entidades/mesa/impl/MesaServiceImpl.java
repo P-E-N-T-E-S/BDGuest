@@ -1,6 +1,5 @@
 package br.com.guest.restaurante_admin.entidades.mesa.impl;
 
-import br.com.guest.restaurante_admin.entidades.garcom.GarcomService;
 import br.com.guest.restaurante_admin.entidades.mesa.Mesa;
 import br.com.guest.restaurante_admin.entidades.mesa.MesaRepository;
 import br.com.guest.restaurante_admin.entidades.mesa.MesaService;
@@ -16,17 +15,14 @@ import java.util.List;
 public class MesaServiceImpl implements MesaService {
 
     private MesaRepository mesaRepository;
-    private GarcomService garcomService;
 
 /**
  * Construtor para MesaServiceImpl.
  *
  * @param mesaRepository o repositório de Mesa a ser utilizado.
- * @param garcomService o serviço de Garcom a ser utilizado.
  */
-public MesaServiceImpl(MesaRepository mesaRepository, GarcomService garcomService) {
+public MesaServiceImpl(MesaRepository mesaRepository) {
         this.mesaRepository = mesaRepository;
-        this.garcomService = garcomService;
     }
 
 /**
@@ -36,12 +32,9 @@ public MesaServiceImpl(MesaRepository mesaRepository, GarcomService garcomServic
  * @throws GarcomNaoEncontradoException se o garçom associado à mesa não for encontrado.
  */
 @Override
-public void salvarMesa(Mesa mesa) throws GarcomNaoEncontradoException {
-        if(garcomService.buscarGarcomPorCpf(mesa.getCpfGarcom()) != null) {
-            throw new GarcomNaoEncontradoException("Garcom não encontrado");
-        }
-        mesaRepository.salvarMesa(mesa);
-    }
+public void salvarMesa(Mesa mesa) {
+    mesaRepository.salvarMesa(mesa);
+}
 
 /**
  * Busca uma mesa pelo seu ID.

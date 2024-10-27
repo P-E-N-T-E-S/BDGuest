@@ -10,13 +10,10 @@ public class Mesa {
     private Integer numeroId;
     @JsonProperty("quantidade_cadeiras")
     private Integer quantidadeCadeiras;
-    @JsonProperty("cpf_garcom")
-    private String cpfGarcom;
 
-    public Mesa(Integer numeroId, Integer quantidadeCadeiras, String cpfGarcom) {
+    public Mesa(Integer numeroId, Integer quantidadeCadeiras) {
         this.numeroId = numeroId;
         this.quantidadeCadeiras = quantidadeCadeiras;
-        this.cpfGarcom = cpfGarcom;
     }
 
     public Integer getNumeroId() {
@@ -33,13 +30,5 @@ public class Mesa {
 
     public void setQuantidadeCadeiras(Integer quantidadeCadeiras) {
         this.quantidadeCadeiras = quantidadeCadeiras;
-    }
-
-    public String getCpfGarcom() {
-        return cpfGarcom;
-    }
-
-    public void setCpfGarcom(String cpfGarcom) {
-        this.cpfGarcom = cpfGarcom;
     }
 }

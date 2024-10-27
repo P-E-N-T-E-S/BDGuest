@@ -19,8 +19,8 @@ public class MesaRepositoryImpl implements MesaRepository {
 
     @Override
     public void salvarMesa(Mesa mesa) {
-        String sql = "INSERT INTO Mesa (numero_id, quantidade_cadeiras, cpf_garco) VALUES (?,?,?)";
-        jdbcTemplate.update(sql, mesa.getNumeroId(), mesa.getQuantidadeCadeiras(), mesa.getCpfGarcom());
+        String sql = "INSERT INTO Mesa (numero_id, quantidade_cadeiras) VALUES (?,?,?)";
+        jdbcTemplate.update(sql, mesa.getNumeroId(), mesa.getQuantidadeCadeiras());
     }
 
     @Override
@@ -49,7 +49,7 @@ public class MesaRepositoryImpl implements MesaRepository {
 
     @Override
     public void alterarMesaPorID(Mesa mesa, Integer id) {
-        String sql = "UPDATE Mesa M SET quantidade_cadeiras = ?, cpf_garcom = ? WHERE numero_id = ?";
-        jdbcTemplate.update(sql, mesa.getQuantidadeCadeiras(), mesa.getCpfGarcom(), id);
+        String sql = "UPDATE Mesa M SET quantidade_cadeiras = ? WHERE numero_id = ?";
+        jdbcTemplate.update(sql, mesa.getQuantidadeCadeiras(), id);
     }
 }
