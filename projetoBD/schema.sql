@@ -106,11 +106,11 @@ CREATE TABLE Atende (
 );
 
 CREATE TABLE Pedido (
-    fk_Comandas_numero_id INTEGER,
-    fk_Menu_numero INTEGER,
+    id_comanda INTEGER,
+    id_menu INTEGER,
     horario DATETIME,
     quantidade INTEGER,
-    PRIMARY KEY (horario, fk_Comandas_numero_id, fk_Menu_numero)
+    PRIMARY KEY (horario, id_comanda, id_menu)
 );
 
 ALTER TABLE Funcionario ADD CONSTRAINT FK_Funcionarios_2
@@ -183,15 +183,12 @@ ALTER TABLE Atende ADD CONSTRAINT FK_Atende_2
     REFERENCES Mesa (numero_id);
 
 ALTER TABLE Pedido ADD CONSTRAINT FK_Pedido_1
-    FOREIGN KEY (fk_Comandas_numero_id)
+    FOREIGN KEY (id_comanda)
     REFERENCES Comanda (numero_id);
 
 ALTER TABLE Pedido ADD CONSTRAINT FK_Pedido_2
-    FOREIGN KEY (fk_Menu_numero)
+    FOREIGN KEY (id_menu)
     REFERENCES Menu (numero);
 
 SELECT *
-FROM Reserva R
-join Mesa M on M.numero_id = R.numero_mesa
-join Cliente C on R.cpf_cliente = C.cpf
-join Pessoa P on P.cpf = C.cpf
+FROM Menu M join Pedido P on M.numero = P.id_comanda
