@@ -3,7 +3,7 @@ CREATE DATABASE IF NOT EXISTS GUEST;
 USE GUEST;
 
 CREATE TABLE Pessoa (
-    cpf INTEGER PRIMARY KEY,
+    cpf varchar(11) PRIMARY KEY,
     nome VARCHAR(50),
     rua VARCHAR(50),
     bairro VARCHAR(50),
@@ -17,7 +17,7 @@ CREATE TABLE Pessoa (
 );
 
 CREATE TABLE Funcionario (
-    cpf INTEGER PRIMARY KEY,
+    cpf varchar(11) PRIMARY KEY,
     data_contratacao DATE,
     salario FLOAT,
     horario_entrada TIME,
@@ -25,13 +25,13 @@ CREATE TABLE Funcionario (
 );
 
 CREATE TABLE Garcom (
-    cpf INTEGER PRIMARY KEY,
-    cpf_gerente INTEGER
+    cpf varchar(11) PRIMARY KEY,
+    cpf_gerente varchar(11)
 );
 
 CREATE TABLE Estoquista (
-    cpf INTEGER PRIMARY KEY,
-    cpf_gerente INTEGER,
+    cpf varchar(11) PRIMARY KEY,
+    cpf_gerente varchar(11),
     estoque INTEGER
 );
 
@@ -50,7 +50,7 @@ CREATE TABLE Menu (
 
 CREATE TABLE Comanda (
     numero_id INTEGER PRIMARY KEY,
-    cpf_pessoa INTEGER,
+    cpf_pessoa varchar(11),
     acesso DATETIME,
     nome_cliente VARCHAR(50)
 );
@@ -86,23 +86,23 @@ CREATE TABLE Contem (
 );
 
 CREATE TABLE Cliente (
+    cpf varchar(11) PRIMARY KEY,
     fidelidade INTEGER,
     metodo_pagamento1 VARCHAR(100),
-    metodo_pagamento2 VARCHAR(100),
-    cpf INTEGER PRIMARY KEY
+    metodo_pagamento2 VARCHAR(100)
 );
 
 CREATE TABLE Reserva (
     data DATE,
     horario_entrada TIMESTAMP,
     quantidade_pessoas INTEGER,
-    cpf_cliente INTEGER,
+    cpf_cliente VARCHAR(11),
     numero_mesa SMALLINT,
     PRIMARY KEY (cpf_cliente, data)
 );
 
 CREATE TABLE Atende (
-    fk_Garcom_cpf INTEGER,
+    fk_Garcom_cpf VARCHAR(11),
     fk_Mesas_numero_id SMALLINT
 );
 
@@ -192,4 +192,4 @@ ALTER TABLE Pedido ADD CONSTRAINT FK_Pedido_2
     REFERENCES Menu (numero);
 
 SELECT *
-FROM Produto P join Usa U on U.produto = P.id join Menu M on M.numero = U.prato_menu
+FROM Garcom G join Funcionario F on G.cpf = F.cpf join Pessoa P on F.cpf = P.cpf join Atende A on A.fk_Garcom_cpf = G.cpf join Mesa M on M.numero_id = A.fk_Mesas_numero_id
