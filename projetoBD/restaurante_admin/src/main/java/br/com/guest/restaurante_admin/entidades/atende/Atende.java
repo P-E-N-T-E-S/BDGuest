@@ -18,6 +18,11 @@ public class Atende {
         this.idMesa = idMesa;
     }
 
+    public Atende(String cpfGarcom, Integer idMesa) {
+        this.cpfGarcom = cpfGarcom;
+        this.idMesa = idMesa;
+    }
+
     public Garcom getGarcom() {
         return garcom;
     }

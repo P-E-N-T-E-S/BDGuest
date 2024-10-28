@@ -1,10 +1,12 @@
 package br.com.guest.restaurante_admin.entidades.pessoa.impl;
 
 import br.com.guest.restaurante_admin.execoes.CampoDeAlteracaoNaoEncontradoException;
+import br.com.guest.restaurante_admin.execoes.CpfInvalidoException;
 import br.com.guest.restaurante_admin.execoes.FiltroNaoDisponivelException;
 import br.com.guest.restaurante_admin.entidades.pessoa.Pessoa;
 import br.com.guest.restaurante_admin.entidades.pessoa.PessoaRepository;
 import br.com.guest.restaurante_admin.entidades.pessoa.PessoaService;
+import br.com.guest.restaurante_admin.utils.CpfValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -21,8 +23,12 @@ public class PessoaServiceImpl implements PessoaService {
     }
 
     @Override
-    public void salvarNovaPessoa(Pessoa pessoa) {
-        pessoaRepository.salvarNovaPessoa(pessoa);
+    public void salvarNovaPessoa(Pessoa pessoa) throws CpfInvalidoException {
+        if(CpfValidator.validarCPF(pessoa.getCpf())){
+            pessoaRepository.salvarNovaPessoa(pessoa);
+            return;
+        };
+        throw new CpfInvalidoException(pessoa.getCpf());
     }
 
     @Override
@@ -36,12 +42,11 @@ public class PessoaServiceImpl implements PessoaService {
     }
 
     @Override
-    public boolean deletarPessoaPorCpf(String cpf) {
+    public void deletarPessoaPorCpf(String cpf) {
         if (pessoaRepository.buscarPessoaPorCpf(cpf) == null) {
-            return false;
+            return;
         }
         pessoaRepository.deletarPessoaPorCpf(cpf);
-        return true;
     }
 
     @Override

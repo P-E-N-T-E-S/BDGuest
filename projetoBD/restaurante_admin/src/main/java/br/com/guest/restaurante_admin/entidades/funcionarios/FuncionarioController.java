@@ -24,7 +24,7 @@ public class FuncionarioController {
     public ResponseEntity<String> novoFuncionario(@RequestBody Funcionario funcionario) {
         try {
             funcionarioService.salvarFuncionario(funcionario);
-            return new ResponseEntity<>("Funcionario Salvo com sucesso!", HttpStatus.OK);
+            return new ResponseEntity<>("Funcionario Salvo com sucesso!", HttpStatus.CREATED);
         }catch (PessoaNaoEncontradaException e){
             return new ResponseEntity<>("CPF: "+e.getMessage()+" não encontrado no banco!", HttpStatus.BAD_REQUEST);
         }
@@ -48,7 +48,7 @@ public class FuncionarioController {
     public ResponseEntity<String> atualizarFuncionarioPorFiltro(@PathVariable String filtro, @RequestParam String valor, @RequestBody HashMap<String, Object> alteracoes) {
         try{
             funcionarioService.atualizarFuncionarioPorFiltro(filtro, valor, (String)alteracoes.get("campo"), (String)alteracoes.get("valor"));
-            return new ResponseEntity<>("Funcionário(s) alterados com sucesso", HttpStatus.OK);
+            return new ResponseEntity<>("Funcionário(s) alterados com sucesso", HttpStatus.NO_CONTENT);
         }catch (FiltroNaoDisponivelException e){
             return new ResponseEntity<>("Filtro: "+e.getMessage()+" não disponível", HttpStatus.BAD_REQUEST);
         }catch (CampoDeAlteracaoNaoEncontradoException e){
@@ -60,7 +60,7 @@ public class FuncionarioController {
     public ResponseEntity<String> apagarFuncionarioPorFiltro(@PathVariable String filtro, @RequestParam String valor) {
         try {
             funcionarioService.deletarFuncionarioPorFiltro(filtro, valor);
-            return new ResponseEntity<>("Funcionário(s) apagados com sucesso!", HttpStatus.OK);
+            return new ResponseEntity<>("Funcionário(s) apagados com sucesso!", HttpStatus.NO_CONTENT);
         } catch (FiltroNaoDisponivelException e) {
             return new ResponseEntity<>("Filtro: "+e.getMessage()+"indisponível", HttpStatus.BAD_REQUEST);
         }

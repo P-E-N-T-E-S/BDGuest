@@ -6,5 +6,5 @@ public interface AtendeRepository {
     void salvarAtende(Atende atende);
     List<Atende> buscarAtendePorGarcom(String cpfGarcom);
     List<Atende> buscarAtendePorMesa(Integer id_mesa);
-    void excluirAtende(Atende atende);
+    void excluirAtendePorGarcom(String cpf);
 }

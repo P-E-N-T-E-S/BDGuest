@@ -32,7 +32,7 @@ public class AtendeServiceImpl implements AtendeService {
     }
 
     @Override
-    public void excluirAtende(Atende atende) {
-        atendeRepository.excluirAtende(atende);
+    public void excluirAtendePorGarcom(String cpf) {
+        atendeRepository.excluirAtendePorGarcom(cpf);
     }
 }

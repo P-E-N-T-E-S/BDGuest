@@ -12,6 +12,7 @@ public interface GarcomService {
     Garcom buscarGarcomPorCpf(String cpf);
     void atualizarGarcomPorCpf(Garcom garcom, String cpf);
     void atualizarGarcomPorFiltro(String filtro, String valor, String campoAlterado, String valorAlterado);
+    void atualizarMesas(List<Integer> mesas, String cpfGarcom);
     void removerGarcomPorCpf(String cpf);
     void removerGarcomPorFiltro(String filtro, String valor);
 }

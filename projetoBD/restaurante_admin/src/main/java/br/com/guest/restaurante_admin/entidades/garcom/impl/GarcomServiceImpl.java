@@ -1,15 +1,13 @@
 package br.com.guest.restaurante_admin.entidades.garcom.impl;
 
-import br.com.guest.restaurante_admin.entidades.funcionarios.Funcionario;
+import br.com.guest.restaurante_admin.entidades.atende.Atende;
+import br.com.guest.restaurante_admin.entidades.atende.AtendeService;
 import br.com.guest.restaurante_admin.entidades.funcionarios.FuncionarioService;
 import br.com.guest.restaurante_admin.entidades.garcom.Garcom;
 import br.com.guest.restaurante_admin.entidades.garcom.GarcomRepository;
 import br.com.guest.restaurante_admin.entidades.garcom.GarcomService;
-import br.com.guest.restaurante_admin.execoes.CampoDeAlteracaoNaoEncontradoException;
-import br.com.guest.restaurante_admin.execoes.FiltroNaoDisponivelException;
-import br.com.guest.restaurante_admin.execoes.FuncionarioNaoEncontradoException;
+import br.com.guest.restaurante_admin.execoes.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,24 +19,32 @@ public class GarcomServiceImpl implements GarcomService {
 
     private GarcomRepository garcomRepository;
     private FuncionarioService funcionarioService;
+    private AtendeService atendeService;
 
     private  final List<String> colunasFuncionario =  Arrays.asList("data_contratacao", "salario", "horario_entrada", "horario_saida");
     private final List<String> colunasPessoa = Arrays.asList("nome", "rua", "bairro", "estado", "cidade", "cep", "email", "data_nascimento", "telefone");
     private final List<String> colunasGarcom = Arrays.asList("cpf", "cpf_gerente");
 
-    public GarcomServiceImpl(GarcomRepository garcomRepository, FuncionarioService funcionarioService) {
+    public GarcomServiceImpl(GarcomRepository garcomRepository, FuncionarioService funcionarioService, AtendeService atendeService) {
         this.garcomRepository = garcomRepository;
         this.funcionarioService = funcionarioService;
+        this.atendeService = atendeService;
     }
 
     @Override
-    public void salvarGarcom(Garcom garcom) throws FuncionarioNaoEncontradoException {
-        //TODO [HIGH]: fazer salvar as mesas que o garçom vai atender e colocar isso na parte de alterar tambem
-        //TODO [LOW]: fazer verificacao do cpf do garcom gerente
+    public void salvarGarcom(Garcom garcom) throws FuncionarioNaoEncontradoException, GerenteNaoEncontradoException {
         if(funcionarioService.buscarFuncionarioPorcpf(garcom.getCpf()) == null) {
-            throw new FuncionarioNaoEncontradoException("Funcionário não encontrado");
+            throw new FuncionarioNaoEncontradoException(garcom.getCpf());
+        }
+        if (funcionarioService.buscarFuncionarioPorcpf(garcom.getGerenteCpf()) != null || garcom.getGerenteCpf() == null) {
+            throw new GerenteNaoEncontradoException(garcom.getGerenteCpf());
         }
         garcomRepository.salvarGarcom(garcom);
+        if(garcom.getGerenteCpf() != null) {
+            for(Integer mesa : garcom.getMesasAtendidas()) {
+                atendeService.salvarAtende(new Atende(garcom.getCpf(), mesa));
+            }
+        }
     }
 
     @Override
@@ -83,6 +89,17 @@ public class GarcomServiceImpl implements GarcomService {
             throw new FiltroNaoDisponivelException(filtro);
         }
         throw new CampoDeAlteracaoNaoEncontradoException(campoAlterado);
+    }
+
+    @Override
+    public void atualizarMesas(List<Integer> mesas, String cpfGarcom) {
+        if(buscarGarcomPorCpf(cpfGarcom) != null) {
+            atendeService.excluirAtendePorGarcom(cpfGarcom);
+            for(Integer mesa : mesas) {
+                atendeService.salvarAtende(new Atende(cpfGarcom, mesa));
+            }
+        }
+        throw new GarcomNaoEncontradoException(cpfGarcom);
     }
 
     @Override

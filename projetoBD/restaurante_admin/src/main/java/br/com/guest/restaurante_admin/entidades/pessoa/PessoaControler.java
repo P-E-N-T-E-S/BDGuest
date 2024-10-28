@@ -1,6 +1,7 @@
 package br.com.guest.restaurante_admin.entidades.pessoa;
 
 import br.com.guest.restaurante_admin.execoes.CampoDeAlteracaoNaoEncontradoException;
+import br.com.guest.restaurante_admin.execoes.CpfInvalidoException;
 import br.com.guest.restaurante_admin.execoes.FiltroNaoDisponivelException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +22,12 @@ public class PessoaControler {
 
     @PostMapping
     public ResponseEntity<String> novaPessoa(@RequestBody Pessoa pessoa){
-        pessoaService.salvarNovaPessoa(pessoa);
-        return new ResponseEntity<>("Pessoa salvo com sucesso!",HttpStatus.CREATED);
+        try {
+            pessoaService.salvarNovaPessoa(pessoa);
+            return new ResponseEntity<>("Pessoa salvo com sucesso!", HttpStatus.CREATED);
+        }catch (CpfInvalidoException e){
+            return new ResponseEntity<>("Cpf: "+e.getMessage() + " inválido!",HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping
@@ -45,7 +50,7 @@ public class PessoaControler {
             pessoaService.deletarPessoaPorFiltro(filtro, valor);
             return new ResponseEntity<>("Pessoas deletadas com sucesso!", HttpStatus.OK);
         } catch (FiltroNaoDisponivelException e) {
-            return new ResponseEntity<>("Filtro não disponível",HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Filtro: "+e.getMessage()+" não disponível",HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -55,7 +60,7 @@ public class PessoaControler {
             pessoaService.atualizarPessoaPorFiltro(filtro, valor, (String)alteracoes.get("campo"), (String)alteracoes.get("valor"));
             return new ResponseEntity<>("Pessoa atualizada com sucesso!", HttpStatus.OK);
         }catch (FiltroNaoDisponivelException e) {
-            return new ResponseEntity<>("Filtro não encontrado",HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Filtro: "+e.getMessage()+" não encontrado",HttpStatus.BAD_REQUEST);
         }catch (CampoDeAlteracaoNaoEncontradoException e){
             return new ResponseEntity<>("Campo para alteração: "+e.getMessage()+" indisponível", HttpStatus.BAD_REQUEST);
         }

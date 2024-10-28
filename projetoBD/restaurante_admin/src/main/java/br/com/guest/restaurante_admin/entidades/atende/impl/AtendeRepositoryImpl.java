@@ -36,8 +36,8 @@ public class AtendeRepositoryImpl implements AtendeRepository {
     }
 
     @Override
-    public void excluirAtende(Atende atende) {
-        String sql = "DELETE FROM ATENDE WHERE fk_Garcom_cpf = ? AND fk_Mesas_numero_id = ?";
-        jdbcTemplate.update(sql, atende.getCpfGarcom(), atende.getIdMesa());
+    public void excluirAtendePorGarcom(String cpf) {
+        String sql = "DELETE FROM Atende A WHERE fk_Garcom_cpf = ?";
+        jdbcTemplate.update(sql, cpf);
     }
 }
