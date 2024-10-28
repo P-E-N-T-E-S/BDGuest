@@ -42,7 +42,7 @@ CREATE TABLE Mesa (
 
 CREATE TABLE Menu (
     nome VARCHAR(50),
-    imagem BLOB,
+    imagem VARCHAR(50),
     descricao VARCHAR(100),
     preco FLOAT,
     numero INTEGER PRIMARY KEY
@@ -56,7 +56,8 @@ CREATE TABLE Comanda (
 );
 
 CREATE TABLE Produto (
-    nome VARCHAR(100) PRIMARY KEY,
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
     validade DATE,
     quantidade INTEGER,
     distribuidora VARCHAR(50)
@@ -73,13 +74,13 @@ CREATE TABLE Estoque (
 );
 
 CREATE TABLE Usa (
-    produto VARCHAR(100),
+    produto int,
     prato_menu INTEGER,
     PRIMARY KEY (produto, prato_menu)
 );
 
 CREATE TABLE Contem (
-    produto VARCHAR(100),
+    produto int,
     estoque INTEGER,
     PRIMARY KEY (produto, estoque)
 );
@@ -146,7 +147,7 @@ ALTER TABLE Comanda ADD CONSTRAINT FK_Comandas_2
 
 ALTER TABLE Usa ADD CONSTRAINT FK_Usa_1
     FOREIGN KEY (produto)
-    REFERENCES Produto (nome)
+    REFERENCES Produto (id)
     ON DELETE RESTRICT;
 
 ALTER TABLE Usa ADD CONSTRAINT FK_Usa_3
@@ -155,7 +156,7 @@ ALTER TABLE Usa ADD CONSTRAINT FK_Usa_3
 
 ALTER TABLE Contem ADD CONSTRAINT FK_Contem_1
     FOREIGN KEY (produto)
-    REFERENCES Produto (nome)
+    REFERENCES Produto (id)
     ON DELETE RESTRICT;
 
 ALTER TABLE Contem ADD CONSTRAINT FK_Contem_2
@@ -191,4 +192,4 @@ ALTER TABLE Pedido ADD CONSTRAINT FK_Pedido_2
     REFERENCES Menu (numero);
 
 SELECT *
-FROM Menu M join Pedido P on M.numero = P.id_comanda
+FROM Produto P join Usa U on U.produto = P.id join Menu M on M.numero = U.prato_menu
