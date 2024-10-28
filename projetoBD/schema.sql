@@ -190,6 +190,3 @@ ALTER TABLE Pedido ADD CONSTRAINT FK_Pedido_1
 ALTER TABLE Pedido ADD CONSTRAINT FK_Pedido_2
     FOREIGN KEY (id_menu)
     REFERENCES Menu (numero);
-
-SELECT *
-FROM Garcom G join Funcionario F on G.cpf = F.cpf join Pessoa P on F.cpf = P.cpf join Atende A on A.fk_Garcom_cpf = G.cpf join Mesa M on M.numero_id = A.fk_Mesas_numero_id

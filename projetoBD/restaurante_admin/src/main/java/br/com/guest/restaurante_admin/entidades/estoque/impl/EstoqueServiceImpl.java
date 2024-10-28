@@ -14,7 +14,7 @@ public class EstoqueServiceImpl implements EstoqueService {
 
     private EstoqueRepository estoqueRepository;
 
-    //todo continuar ajustando as coisas de filtro com essa lista
+    //todo: continuar ajustando as coisas de filtro com essa lista
     private final List<String> colunasEstoque = Arrays.asList("id", "rua", "numero", "bairro", "estado", "cidade", "cep", "refrigerado");
 
     public EstoqueServiceImpl(EstoqueRepository estoqueRepository) {
