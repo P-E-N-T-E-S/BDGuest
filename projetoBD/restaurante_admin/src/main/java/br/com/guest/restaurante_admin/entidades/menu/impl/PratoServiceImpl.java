@@ -3,6 +3,8 @@ package br.com.guest.restaurante_admin.entidades.menu.impl;
 import br.com.guest.restaurante_admin.entidades.menu.Prato;
 import br.com.guest.restaurante_admin.entidades.menu.PratoRepository;
 import br.com.guest.restaurante_admin.entidades.menu.PratoService;
+import br.com.guest.restaurante_admin.entidades.usa.Usa;
+import br.com.guest.restaurante_admin.entidades.usa.UsaService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,15 +13,19 @@ import java.util.List;
 public class PratoServiceImpl implements PratoService {
     
     private PratoRepository pratoRepository;
+    private UsaService usaService;
 
-    public PratoServiceImpl(PratoRepository pratoRepository) {
+    public PratoServiceImpl(PratoRepository pratoRepository, UsaService usaService) {
         this.pratoRepository = pratoRepository;
+        this.usaService = usaService;
     }
 
     @Override
     public void salvarPrato(Prato prato) {
-        //TODO [HIGH] salvar os ingredientes do prato na tabela
         pratoRepository.salvarPrato(prato);
+        for (Integer ingrediente : prato.getIngredientes() ) {
+            usaService.salvarUso(new Usa(prato.getId(), ingrediente));
+        }
     }
 
     @Override

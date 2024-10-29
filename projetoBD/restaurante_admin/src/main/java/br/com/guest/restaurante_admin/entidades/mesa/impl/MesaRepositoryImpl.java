@@ -36,20 +36,20 @@ public class MesaRepositoryImpl implements MesaRepository {
     }
 
     @Override
-    public List<Mesa> listarMesasPorFiltro(String filtro, String valor) {
-        String sql = "SELECT * FROM Mesa WHERE "+filtro+" LIKE ?";
-        return jdbcTemplate.query(sql, new MapeadorMesa(), valor);
+    public List<Mesa> listarMesaPorGarcom(String cpfGarcom) {
+        String sql = "SELECT * FROM Mesa WHERE id in (SELECT fk_Mesas_numero_id FROM Atende WHERE fk_Garcom_cpf = ?)";
+        return jdbcTemplate.query(sql, new MapeadorMesa(), cpfGarcom);
     }
 
     @Override
     public void excluirMesaPorId(Integer id) {
-        String sql = "DELETE FROM Mesa M WHERE numero_id = ?";
+        String sql = "DELETE FROM Mesa WHERE numero_id = ?";
         jdbcTemplate.update(sql, id);
     }
 
     @Override
     public void alterarMesaPorID(Mesa mesa, Integer id) {
-        String sql = "UPDATE Mesa M SET quantidade_cadeiras = ? WHERE numero_id = ?";
+        String sql = "UPDATE Mesa SET quantidade_cadeiras = ? WHERE numero_id = ?";
         jdbcTemplate.update(sql, mesa.getQuantidadeCadeiras(), id);
     }
 }

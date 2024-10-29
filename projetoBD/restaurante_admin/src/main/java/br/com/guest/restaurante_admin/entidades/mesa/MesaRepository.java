@@ -6,7 +6,7 @@ public interface MesaRepository {
     void salvarMesa(Mesa mesa);
     Mesa acharMesaPorId(Integer id);
     List<Mesa> listarMesas();
-    List<Mesa> listarMesasPorFiltro(String filtro, String valor);
+    List<Mesa> listarMesaPorGarcom(String cpfGarcom);
     void excluirMesaPorId(Integer id);
     void alterarMesaPorID(Mesa mesa, Integer id);
 }

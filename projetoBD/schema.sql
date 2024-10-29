@@ -190,3 +190,4 @@ ALTER TABLE Pedido ADD CONSTRAINT FK_Pedido_1
 ALTER TABLE Pedido ADD CONSTRAINT FK_Pedido_2
     FOREIGN KEY (id_menu)
     REFERENCES Menu (numero);
+

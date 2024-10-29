@@ -1,6 +1,7 @@
 
 package br.com.guest.restaurante_admin.entidades.mesa;
 
+import br.com.guest.restaurante_admin.execoes.IdentificadorNaoEncontradoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,13 +28,9 @@ public class MesaController {
         return new ResponseEntity<>(mesaService.listarMesas(), HttpStatus.OK);
     }
 
-    @GetMapping("/{filtro}")
-    public ResponseEntity<List<Mesa>> listarMesasPorFiltro(@PathVariable String filtro, @RequestParam String valor) {
-        try {
-            return new ResponseEntity<>(mesaService.listarMesasPorFiltro(filtro, valor), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+    @GetMapping("/{cpf}")
+    public ResponseEntity<Object> listarMesasPorGarcom(@PathVariable String cpf) {
+        return new ResponseEntity<>(mesaService.listarMesaPorGarcom(cpf), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
@@ -41,8 +38,8 @@ public class MesaController {
         try {
             mesaService.alterarMesaPorID(mesa, id);
             return new ResponseEntity<>("Mesa atualizada com sucesso!", HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("ID ou campo a ser atualizado não disponível", HttpStatus.BAD_REQUEST);
+        } catch (IdentificadorNaoEncontradoException e) {
+            return new ResponseEntity<>("ID: "+e.getMessage()+" não disponível", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -51,8 +48,8 @@ public class MesaController {
         try {
             mesaService.excluirMesaPorId(id);
             return new ResponseEntity<>("Mesa deletada com sucesso!", HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("ID escolhido não disponível", HttpStatus.BAD_REQUEST);
+        } catch (IdentificadorNaoEncontradoException e) {
+            return new ResponseEntity<>("ID: "+e.getMessage()+" não disponível", HttpStatus.BAD_REQUEST);
         }
     }
 }

@@ -17,6 +17,11 @@ public class Usa {
         this.pratoId = pratoId;
     }
 
+    public Usa(Integer produtoId, Integer pratoId) {
+        this.produtoId = produtoId;
+        this.pratoId = pratoId;
+    }
+
     public Produto getProduto() {
         return produto;
     }

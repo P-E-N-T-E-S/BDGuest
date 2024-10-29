@@ -11,12 +11,15 @@ import java.util.List;
 @RequestMapping("/pratos")
 public class PratoController {
 
-    @Autowired
     private PratoService pratoService;
+
+    public PratoController(PratoService pratoService) {
+        this.pratoService = pratoService;
+    }
 
     @PostMapping
     public ResponseEntity<String> salvarPrato(@RequestBody Prato prato) {
-        pratoService.salvarPrato(prato);
+        pratoService.salvarPrato(prato); //enviar json com a lista
         return new ResponseEntity<>("Prato salvo com sucesso", HttpStatus.CREATED);
     }
 

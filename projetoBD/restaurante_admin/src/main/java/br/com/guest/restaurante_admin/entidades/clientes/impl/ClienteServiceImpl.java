@@ -16,19 +16,16 @@ import java.util.List;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
-    //todo: fazer verificação de deleção de pessoa, caso ela não seja nem cliente nem funcionário/não sei fazer isso
 
     private ClienteRepository clienteRepository;
     private PessoaService pessoaService;
-    private FuncionarioService funcionarioService;
 
     private final List<String> colunasCliente = Arrays.asList("cpf", "fidelidade", "metodo_pagamento_1", "metodo_pagamento_2");
     private final List<String> colunasPessoa = Arrays.asList("nome", "rua", "bairro", "estado", "cidade", "cep", "email", "data_nascimento", "telefone");
 
-    public ClienteServiceImpl(ClienteRepository clienteRepository, PessoaService pessoaService, FuncionarioService funcionarioService) {
+    public ClienteServiceImpl(ClienteRepository clienteRepository, PessoaService pessoaService) {
         this.clienteRepository = clienteRepository;
         this.pessoaService = pessoaService;
-        this.funcionarioService = funcionarioService;
     }
 
     @Override
