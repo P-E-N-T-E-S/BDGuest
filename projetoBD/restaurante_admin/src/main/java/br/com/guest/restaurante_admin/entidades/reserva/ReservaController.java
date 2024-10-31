@@ -1,5 +1,9 @@
 package br.com.guest.restaurante_admin.entidades.reserva;
 
+import br.com.guest.restaurante_admin.execoes.ClienteNaoCadastradoException;
+import br.com.guest.restaurante_admin.execoes.DataInvalidaException;
+import br.com.guest.restaurante_admin.execoes.FiltroNaoDisponivelException;
+import br.com.guest.restaurante_admin.execoes.MesaNaoEncontradaException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +24,13 @@ public class ReservaController {
 
     @PostMapping
     public ResponseEntity<String> cadastrarReserva(@RequestBody Reserva reserva) {
-        reservaService.salvarReserva(reserva);
+        try {
+            reservaService.salvarReserva(reserva);
+        }catch (MesaNaoEncontradaException e){
+            return new ResponseEntity<>("Mesa: "+e.getMessage()+" nao encontrada", HttpStatus.BAD_REQUEST);
+        }catch (ClienteNaoCadastradoException e){
+            return new ResponseEntity<>("Cpf: "+e.getMessage()+" nao cadastrado como cliente", HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>("Reserva Cadastrado com Sucesso", HttpStatus.OK);
     }
 
@@ -29,21 +39,22 @@ public class ReservaController {
         return new ResponseEntity<>(reservaService.listarReservas(), HttpStatus.OK);
     }
 
-    @GetMapping("/data") //enviar data por ano-mes-dia
-    public ResponseEntity<List<Reserva>> buscarDataReservaPorData(@RequestParam Date data) {
-        return new ResponseEntity<>(reservaService.buscarReservaPorData(data), HttpStatus.OK);
-    }
-
-    @GetMapping("/{cpf}")
-    public ResponseEntity<List<Reserva>> buscarReservaPorCpf(@PathVariable String cpf) {
-        return new ResponseEntity<>(reservaService.buscarReservaPorCpf(cpf), HttpStatus.OK);
+    @GetMapping("/{filtro}") //enviar data por ano-mes-dia
+    public ResponseEntity<Object> buscarDataReservaPorData(@PathVariable String filtro, @RequestParam String valor) {
+        try {
+            return new ResponseEntity<>(reservaService.buscarReservasPorFiltro(filtro, valor), HttpStatus.OK);
+        }catch (DataInvalidaException e){
+            return new ResponseEntity<>("Data: "+e.getMessage()+" em formato inválido", HttpStatus.BAD_REQUEST);
+        }catch (FiltroNaoDisponivelException e){
+            return new ResponseEntity<>("Filtro: "+e.getMessage()+" inválido", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/{cpf}/data")
     public ResponseEntity<Reserva> buscarReservaPorDataECpf(@PathVariable String cpf, @RequestParam Date data) {
         return new ResponseEntity<>(reservaService.buscarReservaPorCpfEData(cpf, data), HttpStatus.OK);
     }
-    //TODO: Pensar melhor sobre essas coisas de cpf e data
+
     @PutMapping
     public ResponseEntity<String> atualizarReserva(@RequestBody Reserva reserva) {
         reservaService.atualizarReserva(reserva, reserva.getCpfCliente(), reserva.getData());

@@ -14,7 +14,6 @@ import java.util.Date;
 public class MapeadorReserva implements RowMapper<Reserva> {
     @Override
     public Reserva mapRow(ResultSet rs, int rowNum) throws SQLException {
-        //TODO [MID]: Continuar essa classe após ajeitar as mesas aq
         Integer id = rs.getInt("numero_id");
         Integer quantidadeCadeiras = rs.getInt("quantidade_cadeira");
         Mesa mesa = new Mesa(id, quantidadeCadeiras);

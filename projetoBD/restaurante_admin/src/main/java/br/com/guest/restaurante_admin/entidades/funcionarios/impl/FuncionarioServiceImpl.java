@@ -16,8 +16,7 @@ import java.util.List;
 
 @Service
 public class FuncionarioServiceImpl implements FuncionarioService {
-    //todo fazer função para deletar, buscar com filtros da hierarquia
-    //todo fazer verificação de deleção de pessoa, caso ela não seja nem cliente nem funcionário
+    //fazer verificação de deleção de pessoa, caso ela não seja nem cliente nem funcionário/fazer no banco
 
     private FuncionarioRepository funcionarioRepository;
     private PessoaService pessoaService;
@@ -69,7 +68,6 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
     @Override
     public void deletarFuncionarioPorFiltro(String filtro, String valor) {
-        //todo fazer uma funcao para procurar se a pessoa é cliente, se ela não for, deletar ela também
         if(colunasPessoa.contains(filtro)) {
             funcionarioRepository.deletarFuncionarioPorFiltroDePessoa(filtro, valor);
             return;

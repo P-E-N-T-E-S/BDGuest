@@ -94,7 +94,7 @@ public class FuncionarioRepositoryImpl implements FuncionarioRepository {
 
     @Override
     public void deletarFuncionarioPorFiltroDePessoa(String filtro, String valor) {
-        String sql ="DELETE FROM Funcionario WHERE cpf in (select cpf from Pessoa where "+filtro+" LIKE ?)";
+        String sql ="DELETE FROM Funcionario F WHERE cpf in (select cpf from Pessoa where "+filtro+" LIKE ?)";
         jdbcTemplate.update(sql, "%"+valor+"%");
     }
 }

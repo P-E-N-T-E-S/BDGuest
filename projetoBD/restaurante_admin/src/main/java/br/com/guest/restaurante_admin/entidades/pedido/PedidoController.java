@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/{idComanda}")
+@RequestMapping("/comanda/{idComanda}/pedidos")
 public class PedidoController {
 
     private PedidoService pedidoService;
@@ -40,11 +40,11 @@ public class PedidoController {
 
     @DeleteMapping
     public ResponseEntity<String> excluirPedido(@PathVariable Integer idComanda, @RequestBody Pedido pedido) {
-        pedidoService.excluirPedido(pedido, idComanda); //todo: trocar a ordem dessas coisas
+        pedidoService.excluirPedido(pedido, idComanda);
         return new ResponseEntity<>("Pedido removido com sucesso", HttpStatus.OK);
     }
 
-    @GetMapping("/fechar")
+    @PutMapping("/fechar")
     public ResponseEntity<Double> fecharPedido(@PathVariable Integer idComanda) {
         return new ResponseEntity<>(pedidoService.desassociarPedidos(idComanda), HttpStatus.OK);
     }

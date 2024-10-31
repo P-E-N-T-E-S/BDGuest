@@ -16,7 +16,6 @@ public class MapeadorPrato implements RowMapper<Prato> {
         String imagemLink = rs.getString("imagem_link");
         String descricao = rs.getString("descricao");
         double preco = rs.getDouble("preco");
-        String medida = rs.getString("medida");
-        return new Prato(medida, id, nome, imagemLink, descricao, preco);
+        return new Prato(id, nome, imagemLink, descricao, preco);
     }
 }

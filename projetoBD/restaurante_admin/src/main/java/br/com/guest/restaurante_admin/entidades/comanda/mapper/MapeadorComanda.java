@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 public class MapeadorComanda implements RowMapper<Comanda> {
     @Override
     public Comanda mapRow(ResultSet rs, int rowNum) throws SQLException {
-        //TODO: ajeitar aqui e os SQLs
 
         Integer idMesa = rs.getInt("M.numero_id");
         Integer quantidadeCadeiras = rs.getInt("quantidade_cadeira");

@@ -10,7 +10,6 @@ import java.util.List;
 
 @Repository
 public class PedidoRepositoryImpl implements PedidoRepository {
-    //TODO: fazer função de zerar pedidos para realizar pagamento, tambem tem que realizar o zeramento da comanda
 
     private JdbcTemplate jdbcTemplate;
 

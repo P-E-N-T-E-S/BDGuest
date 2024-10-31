@@ -8,7 +8,6 @@ import java.time.LocalTime;
 import java.util.Date;
 
 public class Funcionario {
-    //todo colocar um campo de pessoa
     private Pessoa pessoa;
     private String cpf;
     @JsonProperty("data_contratacao")

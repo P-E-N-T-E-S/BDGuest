@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 public class Prato {
-    //TODO: ajustar a questão da medida de prato
     private Integer id;
     private String nome;
     @JsonProperty("imagem_link")
@@ -15,10 +14,8 @@ public class Prato {
     private double preco;
     @JsonIgnore
     private List<Integer> ingredientes;
-    private String medida;
 
-    public Prato(String medida, Integer id, String nome, String imagemLink, String descricao, double preco) {
-        this.medida = medida;
+    public Prato(Integer id, String nome, String imagemLink, String descricao, double preco) {
         this.id = id;
         this.nome = nome;
         this.imagemLink = imagemLink;
@@ -26,14 +23,13 @@ public class Prato {
         this.preco = preco;
     }
 
-    public Prato(Integer id, String nome, String imagemLink, String descricao, double preco, List<Integer> ingredientes, String medida) {
+    public Prato(Integer id, String nome, String imagemLink, String descricao, double preco, List<Integer> ingredientes) {
         this.id = id;
         this.nome = nome;
         this.imagemLink = imagemLink;
         this.descricao = descricao;
         this.preco = preco;
         this.ingredientes = ingredientes;
-        this.medida = medida;
     }
 
     public Integer getId() {
@@ -74,14 +70,6 @@ public class Prato {
 
     public void setPreco(double preco) {
         this.preco = preco;
-    }
-
-    public String getMedida() {
-        return medida;
-    }
-
-    public void setMedida(String medida) {
-        this.medida = medida;
     }
 
     public List<Integer> getIngredientes() {

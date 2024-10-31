@@ -14,7 +14,6 @@ import java.util.List;
 
 @Service
 public class GarcomServiceImpl implements GarcomService {
-    //TODO [HIGH]: fazer as validações de cpf para deleção e alteração
 
 
     private GarcomRepository garcomRepository;
@@ -54,7 +53,7 @@ public class GarcomServiceImpl implements GarcomService {
 
     @Override
     public List<Garcom> buscarGarcomPorFiltro(String filtro, String valor) throws FiltroNaoDisponivelException {
-        //todo: converter cpf para G.cpf
+        //converter cpf para G.cpf no front
         if(colunasGarcom.contains(filtro)) {
             return garcomRepository.buscarGarcomPorFiltro(filtro, valor);
         }

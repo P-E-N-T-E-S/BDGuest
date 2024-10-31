@@ -10,7 +10,6 @@ import java.util.List;
 
 @Repository
 public class GarcomRepositoryImpl implements GarcomRepository {
-    //todo fazer função para deletar, buscar e atualizar com filtros da hierarquia
     private final JdbcTemplate jdbcTemplate;
 
     public GarcomRepositoryImpl(JdbcTemplate jdbcTemplate) {

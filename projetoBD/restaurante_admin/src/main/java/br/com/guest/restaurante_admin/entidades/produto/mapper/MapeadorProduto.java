@@ -15,7 +15,8 @@ public class MapeadorProduto implements RowMapper<Produto> {
         Date validade = rs.getDate("validade");
         Integer quantidade = rs.getInt("quantidade");
         String distribuidora = rs.getString("distribuidora");
+        String medida = rs.getString("medida");
 
-        return new Produto(id, nome, validade, quantidade, distribuidora);
+        return new Produto(id, nome, validade, quantidade, distribuidora, medida);
     }
 }

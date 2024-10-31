@@ -4,10 +4,8 @@ import br.com.guest.restaurante_admin.entidades.estoque.EstoqueService;
 import br.com.guest.restaurante_admin.entidades.estoquista.Estoquista;
 import br.com.guest.restaurante_admin.entidades.estoquista.EstoquistaRepository;
 import br.com.guest.restaurante_admin.entidades.estoquista.EstoquistaService;
-import br.com.guest.restaurante_admin.execoes.CampoDeAlteracaoNaoEncontradoException;
-import br.com.guest.restaurante_admin.execoes.EstoqueNaoEncontrado;
-import br.com.guest.restaurante_admin.execoes.FiltroNaoDisponivelException;
-import br.com.guest.restaurante_admin.execoes.FuncionarioNaoEncontradoException;
+import br.com.guest.restaurante_admin.entidades.funcionarios.FuncionarioService;
+import br.com.guest.restaurante_admin.execoes.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -15,20 +13,21 @@ import java.util.List;
 
 @Service
 public class EstoquistaServiceImpl implements EstoquistaService {
-    //todo converter as paradas para E. ou Es., ou esperar que o front faça isso
-
-    private EstoqueService estoqueService;
+    //Converter as paradas para E. ou Es., ou esperar que o front faça isso
 
     private EstoquistaRepository estoquistaRepository;
+    private EstoqueService estoqueService;
+    private FuncionarioService funcionarioService;
 
     private List<String> colunasEstoquista = Arrays.asList("cpf", "cpf_gerente", "estoque");
     private  final List<String> colunasFuncionario =  Arrays.asList("data_contratacao", "salario", "horario_entrada", "horario_saida");
     private final List<String> colunasPessoa = Arrays.asList("nome", "rua", "bairro", "estado", "cidade", "cep", "email", "data_nascimento", "telefone");
     private final List<String> colunasEstoque = Arrays.asList("id", "rua", "numero", "bairro", "estado", "cidade", "cep", "refrigerado");
 
-    public EstoquistaServiceImpl(EstoqueService estoqueService, EstoquistaRepository estoquistaRepository) {
-        this.estoqueService = estoqueService;
+    public EstoquistaServiceImpl(EstoquistaRepository estoquistaRepository, EstoqueService estoqueService, FuncionarioService funcionarioService) {
         this.estoquistaRepository = estoquistaRepository;
+        this.estoqueService = estoqueService;
+        this.funcionarioService = funcionarioService;
     }
 
     @Override
@@ -38,8 +37,11 @@ public class EstoquistaServiceImpl implements EstoquistaService {
 
     @Override
     public void salvarEstoquista(Estoquista estoquista) throws FuncionarioNaoEncontradoException, EstoqueNaoEncontrado {
-        if(buscarEstoquistaPorCpf(estoquista.getCpf()) == null) {
+        if(funcionarioService.buscarFuncionarioPorcpf(estoquista.getCpf()) == null) {
             throw new FuncionarioNaoEncontradoException(estoquista.getCpf());
+        }
+        if(buscarEstoquistaPorCpf(estoquista.getCpfGerente()) == null) {
+            throw new GerenteNaoEncontradoException(estoquista.getCpfGerente());
         }
         if(estoqueService.buscarEstoque(estoquista.getEstoqueId()) == null) {
             throw new EstoqueNaoEncontrado(estoquista.getEstoqueId()+"");

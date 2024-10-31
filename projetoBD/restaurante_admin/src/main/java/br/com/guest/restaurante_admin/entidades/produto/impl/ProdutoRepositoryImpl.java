@@ -3,7 +3,6 @@ package br.com.guest.restaurante_admin.entidades.produto.impl;
 import br.com.guest.restaurante_admin.entidades.produto.Produto;
 import br.com.guest.restaurante_admin.entidades.produto.ProdutoRepository;
 import br.com.guest.restaurante_admin.entidades.produto.mapper.MapeadorProduto;
-import br.com.guest.restaurante_admin.entidades.usa.mapper.MapeadorUsa;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -20,7 +19,7 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
 
     @Override
     public void salvarProduto(Produto produto) {
-        String sql = "INSERT INTO Produto (id, nome, validade, quantidade, distribuidora) VALUES(?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Produto (id, nome, validade, quantidade, distribuidora, medida) VALUES(?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, produto.getId(), produto.getNome(), produto.getValidade(), produto.getQuantidade(), produto.getDistribuidora());
     }
 
@@ -56,7 +55,7 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
 
     @Override
     public void atualizarProdutoPorId(Produto produto, Integer id) {
-        String sql = "UPDATE Produto SET nome = ?, validade = ?, quantidade = ?, distribuidora = ? WHERE id = ?";
+        String sql = "UPDATE Produto SET nome = ?, validade = ?, quantidade = ?, distribuidora = ?, medida = ? WHERE id = ?";
         jdbcTemplate.update(sql, produto.getNome(), produto.getValidade(), produto.getQuantidade(), produto.getDistribuidora(), id);
     }
 

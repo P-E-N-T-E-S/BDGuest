@@ -10,22 +10,25 @@ public class Produto {
     private Integer quantidade;
     private String distribuidora;
     private List<Integer> estoques;
+    private String medida;
 
-    public Produto(Integer id, String nome, Date validade, Integer quantidade, String distribuidora) {
+    public Produto(Integer id, String nome, Date validade, Integer quantidade, String distribuidora, String medida) {
         this.id = id;
         this.nome = nome;
         this.validade = validade;
         this.quantidade = quantidade;
         this.distribuidora = distribuidora;
+        this.medida = medida;
     }
 
-    public Produto(Integer id, String nome, Date validade, Integer quantidade, String distribuidora, List<Integer> estoques) {
+    public Produto(Integer id, String nome, Date validade, Integer quantidade, String distribuidora, List<Integer> estoques, String medida) {
         this.id = id;
         this.nome = nome;
         this.validade = validade;
         this.quantidade = quantidade;
         this.distribuidora = distribuidora;
         this.estoques = estoques;
+        this.medida = medida;
     }
 
     public Integer getId() {
@@ -66,6 +69,14 @@ public class Produto {
 
     public void setDistribuidora(String distribuidora) {
         this.distribuidora = distribuidora;
+    }
+
+    public String getMedida() {
+        return medida;
+    }
+
+    public void setMedida(String medida) {
+        this.medida = medida;
     }
 
     public List<Integer> getEstoques() {

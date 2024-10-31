@@ -14,7 +14,6 @@ public class MapeadorGarcom implements RowMapper<Garcom> {
 
     @Override
     public Garcom mapRow(ResultSet rs, int rowNum) throws SQLException {
-        //TODO: talvez fazer o garçom retornar uma lista das mesas que ele atende
         String cpfPessoa = rs.getString("P.cpf");
         String nome = rs.getString("nome");
         String rua = rs.getString("rua");

@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 
 public class Comanda {
-    //TODO: tratar a questão do atributo da mesa
 
     private Mesa mesa;
 

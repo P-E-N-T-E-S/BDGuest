@@ -27,8 +27,9 @@ public class MapeadorContem implements RowMapper<Contem> {
         Date validade = rs.getDate("validade");
         Integer quantidade = rs.getInt("quantidade");
         String distribuidora = rs.getString("distribuidora");
+        String medida = rs.getString("medida");
 
-        Produto produto = new Produto(idProduto, nome, validade, quantidade, distribuidora);
+        Produto produto = new Produto(idProduto, nome, validade, quantidade, distribuidora, medida);
 
         return new Contem(produto, estoque, idProduto, idEstoque);
     }

@@ -19,7 +19,7 @@ public class PratoRepositoryImpl implements PratoRepository {
 
     @Override
     public void salvarPrato(Prato prato) {
-        String sql = "INSERT INTO Prato (nome, imagem_link, descricao, preco) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO Prato (nome, imagem_link, descricao, preco) VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, prato.getNome(), prato.getImagemLink(), prato.getDescricao(), prato.getPreco());
     }
 

@@ -45,7 +45,6 @@ CREATE TABLE Menu (
     imagem VARCHAR(50),
     descricao VARCHAR(100),
     preco FLOAT,
-    medida VARCHAR(10),
     numero INTEGER PRIMARY KEY
 );
 
@@ -62,7 +61,8 @@ CREATE TABLE Produto (
     nome VARCHAR(100),
     validade DATE,
     quantidade INTEGER,
-    distribuidora VARCHAR(50)
+    distribuidora VARCHAR(50),
+    medida VARCHAR(10)
 );
 
 CREATE TABLE Estoque (
@@ -114,7 +114,8 @@ CREATE TABLE Pedido (
     id_comanda INTEGER,
     id_menu INTEGER,
     horario DATETIME,
-    quantidade INTEGER
+    quantidade INTEGER,
+
 );
 
 ALTER TABLE Funcionario ADD CONSTRAINT FK_Funcionarios_2

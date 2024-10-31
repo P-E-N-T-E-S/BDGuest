@@ -16,9 +16,8 @@ public class MapeadorPedido implements RowMapper<Pedido> {
         String imagem = rs.getString("imagem");
         String descricao = rs.getString("descricao");
         double preco = rs.getDouble("preco");
-        int numeroPedido = rs.getInt("numero");
-        String medida = rs.getString("medida");
-        Prato prato = new Prato(medida, numeroPedido, nome, imagem, descricao, preco);
+        int numeroPrato = rs.getInt("numero");
+        Prato prato = new Prato(numeroPrato, nome, imagem, descricao, preco);
         Integer idPedido = rs.getInt("id_pedido");
         Integer idComanda = rs.getInt("id_comanda");
         Integer idPrato = rs.getInt("id_menu");
