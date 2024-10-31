@@ -11,4 +11,5 @@ public interface ProdutoService {
     void removerProdutoPorFiltro(String filtro, String valor);
     void atualizarProdutoPorId(Produto produto, Integer id);
     void atualizarProdutoPorFiltro(String filtro, String valor, String campoAlterado, String valorAlterado);
+    List<Produto> verificarQuantidadePorPrato(Integer pratoId);
 }

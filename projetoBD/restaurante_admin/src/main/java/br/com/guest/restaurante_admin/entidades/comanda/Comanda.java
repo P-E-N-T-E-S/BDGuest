@@ -1,10 +1,15 @@
 package br.com.guest.restaurante_admin.entidades.comanda;
 
+import br.com.guest.restaurante_admin.entidades.mesa.Mesa;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;
 
 public class Comanda {
+    //TODO: tratar a questão do atributo da mesa
+
+    private Mesa mesa;
+
     @JsonProperty("numero_id")
     private Integer numeroId;
     @JsonProperty("cpfPessoa")
@@ -12,12 +17,23 @@ public class Comanda {
     @JsonProperty("nome_cliente")
     private String nomeCliente;
     private LocalDateTime acesso;
+    private Integer mesaId;
 
-    public Comanda(Integer numeroId, String cpfPessoa, String nomeCliente, LocalDateTime acesso) {
+    public Comanda(Mesa mesa, Integer numeroId, String cpfPessoa, String nomeCliente, LocalDateTime acesso, Integer mesaId) {
+        this.mesa = mesa;
         this.numeroId = numeroId;
         this.cpfPessoa = cpfPessoa;
         this.nomeCliente = nomeCliente;
         this.acesso = acesso;
+        this.mesaId = mesaId;
+    }
+
+    public Mesa getMesa() {
+        return mesa;
+    }
+
+    public void setMesa(Mesa mesa) {
+        this.mesa = mesa;
     }
 
     public Integer getNumeroId() {
@@ -50,5 +66,13 @@ public class Comanda {
 
     public void setAcesso(LocalDateTime acesso) {
         this.acesso = acesso;
+    }
+
+    public Integer getMesaId() {
+        return mesaId;
+    }
+
+    public void setMesaId(Integer mesaId) {
+        this.mesaId = mesaId;
     }
 }

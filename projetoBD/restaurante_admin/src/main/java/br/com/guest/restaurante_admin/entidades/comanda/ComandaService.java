@@ -5,7 +5,8 @@ import java.util.List;
 public interface ComandaService {
     void salvarComanda(Comanda comanda);
     Comanda buscarComandaPorId(Integer id);
-    public List<Comanda> listarComandas();
+    List<Comanda> listarComandas();
     void excluirComanda(String id);
     void alterarComanda(Comanda comanda, Integer id);
+    void zerarComanda(Integer id);
 }

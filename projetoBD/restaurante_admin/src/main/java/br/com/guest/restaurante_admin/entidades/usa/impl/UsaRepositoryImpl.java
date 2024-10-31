@@ -1,5 +1,6 @@
 package br.com.guest.restaurante_admin.entidades.usa.impl;
 
+import br.com.guest.restaurante_admin.entidades.produto.Produto;
 import br.com.guest.restaurante_admin.entidades.usa.Usa;
 import br.com.guest.restaurante_admin.entidades.usa.UsaRepository;
 import br.com.guest.restaurante_admin.entidades.usa.mapper.MapeadorUsa;
@@ -39,5 +40,17 @@ public class UsaRepositoryImpl implements UsaRepository {
     public void deletarUso(Integer idPrato, Integer idProduto) {
         String sql = "DELETE FROM usa WHERE prato_menu = ? AND produto = ?";
         jdbcTemplate.update(sql, idPrato, idProduto);
+    }
+
+    @Override
+    public void reduzirQuantidadePorPrato(Integer pratoId) {
+        String sql = "UPDATE Produto p JOIN Usa u ON p.id = u.produto SET p.quantidade = p.quantidade - u.quantidade WHERE prato_menu = ?";
+        jdbcTemplate.update(sql, pratoId);
+    }
+
+    @Override
+    public void aumentarQuantidadePorPrato(Integer pratoId) {
+        String sql = "UPDATE Produto p JOIN Usa u ON p.id = u.produto SET p.quantidade = p.quantidade + u.quantidade WHERE prato_menu = ?";
+        jdbcTemplate.update(sql, pratoId);
     }
 }

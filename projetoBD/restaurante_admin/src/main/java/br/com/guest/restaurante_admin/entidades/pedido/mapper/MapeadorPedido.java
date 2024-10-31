@@ -17,12 +17,14 @@ public class MapeadorPedido implements RowMapper<Pedido> {
         String descricao = rs.getString("descricao");
         double preco = rs.getDouble("preco");
         int numeroPedido = rs.getInt("numero");
-        Prato prato = new Prato(numeroPedido, nome, imagem, descricao, preco);
+        String medida = rs.getString("medida");
+        Prato prato = new Prato(medida, numeroPedido, nome, imagem, descricao, preco);
+        Integer idPedido = rs.getInt("id_pedido");
         Integer idComanda = rs.getInt("id_comanda");
         Integer idPrato = rs.getInt("id_menu");
         LocalDateTime horario = rs.getTimestamp("horario").toLocalDateTime();
         Integer quantidade = rs.getInt("quantidade");
 
-        return new Pedido(prato, idComanda, idPrato, horario, quantidade);
+        return new Pedido(prato, idPedido, idComanda, idPrato, horario, quantidade);
     }
 }

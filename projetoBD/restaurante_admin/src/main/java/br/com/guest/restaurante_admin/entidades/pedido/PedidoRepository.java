@@ -8,4 +8,7 @@ public interface PedidoRepository {
     List<Pedido> listarPorPrato(Integer idComanda, Integer idPrato);
     void excluirPedido(Pedido pedido, Integer idComanda);
     void alterarPedido(Pedido pedido, Integer idComanda);
+    void desassociarPedidos(Integer idComanda);
+    double calcularTotal(Integer idComanda);
+
 }

@@ -18,6 +18,11 @@ public class Contem {
         this.idEstoque = idEstoque;
     }
 
+    public Contem(Integer idProduto, Integer idEstoque) {
+        this.idProduto = idProduto;
+        this.idEstoque = idEstoque;
+    }
+
     public Produto getProduto() {
         return produto;
     }

@@ -1,9 +1,12 @@
 package br.com.guest.restaurante_admin.entidades.produto.impl;
 
+import br.com.guest.restaurante_admin.entidades.contem.Contem;
+import br.com.guest.restaurante_admin.entidades.contem.ContemService;
 import br.com.guest.restaurante_admin.entidades.produto.Produto;
 import br.com.guest.restaurante_admin.entidades.produto.ProdutoRepository;
 import br.com.guest.restaurante_admin.entidades.produto.ProdutoService;
 import br.com.guest.restaurante_admin.execoes.CampoDeAlteracaoNaoEncontradoException;
+import br.com.guest.restaurante_admin.execoes.EstoqueNaoInformadoException;
 import br.com.guest.restaurante_admin.execoes.FiltroNaoDisponivelException;
 import org.springframework.stereotype.Service;
 
@@ -13,16 +16,25 @@ import java.util.List;
 public class ProdutoServiceImpl implements ProdutoService {
 
     private ProdutoRepository produtoRepository;
+    private ContemService contemService;
 
     private List<String> camposProduto = List.of("id", "nome", "validade", "quantidade", "distribuidora");
 
-    public ProdutoServiceImpl(ProdutoRepository produtoRepository) {
+    public ProdutoServiceImpl(ProdutoRepository produtoRepository, ContemService contemService) {
         this.produtoRepository = produtoRepository;
+        this.contemService = contemService;
     }
 
     @Override
-    public void salvarProduto(Produto produto) {
+    public void salvarProduto(Produto produto) throws EstoqueNaoInformadoException {
         produtoRepository.salvarProduto(produto);
+        if (produto.getEstoques() != null) {
+            for (Integer estoque : produto.getEstoques()) {
+                contemService.salvarContem(new Contem(produto.getId(), estoque));
+            }
+        }else{
+            throw new EstoqueNaoInformadoException("Estoque nao informado");
+        }
     }
 
     @Override
@@ -70,5 +82,10 @@ public class ProdutoServiceImpl implements ProdutoService {
             throw new CampoDeAlteracaoNaoEncontradoException(campoAlterado);
         }
         throw new FiltroNaoDisponivelException(filtro);
+    }
+
+    @Override
+    public List<Produto> verificarQuantidadePorPrato(Integer pratoId) {
+        return produtoRepository.verificarQuantidadePorPrato(pratoId);
     }
 }

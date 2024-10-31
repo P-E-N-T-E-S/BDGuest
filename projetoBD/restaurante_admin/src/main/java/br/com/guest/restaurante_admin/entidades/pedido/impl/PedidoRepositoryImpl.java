@@ -10,6 +10,7 @@ import java.util.List;
 
 @Repository
 public class PedidoRepositoryImpl implements PedidoRepository {
+    //TODO: fazer função de zerar pedidos para realizar pagamento, tambem tem que realizar o zeramento da comanda
 
     private JdbcTemplate jdbcTemplate;
 
@@ -37,7 +38,7 @@ public class PedidoRepositoryImpl implements PedidoRepository {
 
     @Override
     public void excluirPedido(Pedido pedido, Integer idComanda) {
-        String sql = "DELETE FROM Menu WHERE id_comanda = ? AND id_menu = ? AND horario = ?";
+        String sql = "DELETE FROM Pedido WHERE id_comanda = ? AND id_menu = ? AND horario = ?";
         jdbcTemplate.update(sql, idComanda, pedido.getIdPrato(), pedido.getHorario());
     }
 
@@ -45,5 +46,17 @@ public class PedidoRepositoryImpl implements PedidoRepository {
     public void alterarPedido(Pedido pedido, Integer idComanda) {
         String sql = "UPDATE FROM Pedido set id_menu = ?, horario = ?, quantidade = ? WHERE id_comanda = ? AND id_menu = ? AND horario = ?";
         jdbcTemplate.update(sql, pedido.getIdPrato(), pedido.getHorario(), pedido.getQuantidade(), idComanda, pedido.getIdPrato(), pedido.getHorario());
+    }
+
+    @Override
+    public void desassociarPedidos(Integer idComanda) {
+        String sql = "UPDATE FROM Pedido set id_comanda = null WHERE id_comanda = ?";
+        jdbcTemplate.update(sql, idComanda);
+    }
+
+    @Override
+    public double calcularTotal(Integer idComanda) {
+        String sql = "SELECT SUM(quantidade) FROM Pedido WHERE id_comanda = ?";
+        return jdbcTemplate.queryForObject(sql, Double.class, idComanda);
     }
 }

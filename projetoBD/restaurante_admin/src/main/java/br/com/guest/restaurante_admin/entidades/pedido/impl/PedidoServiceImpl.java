@@ -3,6 +3,9 @@ package br.com.guest.restaurante_admin.entidades.pedido.impl;
 import br.com.guest.restaurante_admin.entidades.pedido.Pedido;
 import br.com.guest.restaurante_admin.entidades.pedido.PedidoRepository;
 import br.com.guest.restaurante_admin.entidades.pedido.PedidoService;
+import br.com.guest.restaurante_admin.entidades.produto.ProdutoService;
+import br.com.guest.restaurante_admin.entidades.usa.UsaService;
+import br.com.guest.restaurante_admin.execoes.IngredientesInsuficientesException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,14 +15,23 @@ public class PedidoServiceImpl implements PedidoService {
 
     private PedidoRepository pedidoRepository;
 
-    public PedidoServiceImpl(PedidoRepository pedidoRepository) {
+    private ProdutoService produtoService;
+
+    private UsaService usaService;
+
+    public PedidoServiceImpl(PedidoRepository pedidoRepository, ProdutoService produtoService, UsaService usaService) {
         this.pedidoRepository = pedidoRepository;
+        this.produtoService = produtoService;
+        this.usaService = usaService;
     }
 
     @Override
-    public void salvar(Pedido pedido, Integer idComanda) {
-        //TODO: verificar o idComanda
+    public void salvar(Pedido pedido, Integer idComanda) throws IngredientesInsuficientesException {
+        if(produtoService.verificarQuantidadePorPrato(pedido.getIdPrato()) != null) {
+            throw new IngredientesInsuficientesException(pedido.getIdPrato().toString());
+        }
         pedidoRepository.salvar(pedido, idComanda);
+        usaService.reduzirQuantidadePorPrato(pedido.getIdPrato());
     }
 
     @Override
@@ -40,5 +52,12 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public void alterarPedido(Pedido pedido, Integer idComanda) {
         pedidoRepository.alterarPedido(pedido, idComanda);
+    }
+
+    @Override
+    public double desassociarPedidos(Integer idComanda) {
+        double valorTotal = pedidoRepository.calcularTotal(idComanda);
+        pedidoRepository.desassociarPedidos(idComanda);
+        return valorTotal;
     }
 }

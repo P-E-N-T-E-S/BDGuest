@@ -43,4 +43,9 @@ public class PedidoController {
         pedidoService.excluirPedido(pedido, idComanda); //todo: trocar a ordem dessas coisas
         return new ResponseEntity<>("Pedido removido com sucesso", HttpStatus.OK);
     }
+
+    @GetMapping("/fechar")
+    public ResponseEntity<Double> fecharPedido(@PathVariable Integer idComanda) {
+        return new ResponseEntity<>(pedidoService.desassociarPedidos(idComanda), HttpStatus.OK);
+    }
 }

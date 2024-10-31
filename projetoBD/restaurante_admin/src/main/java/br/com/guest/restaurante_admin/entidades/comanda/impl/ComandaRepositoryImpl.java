@@ -25,13 +25,13 @@ public class ComandaRepositoryImpl implements ComandaRepository {
 
     @Override
     public Comanda buscarComandaPorId(Integer id) {
-        String sql = "SELECT * FROM Comanda WHERE numero_id = ?";
+        String sql = "SELECT * FROM Mesa M JOIN Comanda C on C.mesa = M.numero_id WHERE C.numero_id = ?";
         return jdbcTemplate.queryForObject(sql, new MapeadorComanda(), ""+id);
     }
 
     @Override
     public List<Comanda> listarComandas() {
-        String sql = "SELECT * FROM Comanda";
+        String sql = "SELECT * FROM Mesa M JOIN Comanda C on C.mesa = M.numero_id";
         return jdbcTemplate.query(sql, new MapeadorComanda());
     }
 
@@ -43,7 +43,13 @@ public class ComandaRepositoryImpl implements ComandaRepository {
 
     @Override
     public void alterarComanda(Comanda comanda, Integer id) {
-        String sql = "UPDATE Comanda SET cpf_pessoa = ?, acesso = ?, nome_cliente = ? WHERE numero_id = ?";
-        jdbcTemplate.update(sql, ""+comanda.getNumeroId(),comanda.getCpfPessoa(), comanda.getAcesso(), comanda.getNomeCliente(), id);
+        String sql = "UPDATE Comanda SET cpf_pessoa = ?, acesso = ?, nome_cliente = ?, mesa=? WHERE numero_id = ?";
+        jdbcTemplate.update(sql, ""+comanda.getNumeroId(),comanda.getCpfPessoa(), comanda.getAcesso(), comanda.getNomeCliente(), comanda.getMesa(), id);
+    }
+
+    @Override
+    public void zerarComanda(Integer id){
+        String sql = "UPDATE Comanda set cpf_pessoa = null, acesso = null, nome_cliente = null, mesa = null WHERE numero_id = ?";
+        jdbcTemplate.update(sql, id);
     }
 }

@@ -43,4 +43,6 @@ public class ComandaController {
         comandaService.excluirComanda(id);
         return new ResponseEntity<>("Comanda Deletada com sucesso", HttpStatus.OK);
     }
+
+    //TODO: fazer funcao de verificar pagamento e pagar comanda
 }

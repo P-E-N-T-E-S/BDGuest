@@ -8,4 +8,5 @@ public interface PedidoService {
     List<Pedido> listarPorPrato(Integer idComanda, Integer idPrato);
     void excluirPedido(Pedido pedido, Integer idComanda);
     void alterarPedido(Pedido pedido, Integer idComanda);
+    double desassociarPedidos(Integer idComanda);
 }

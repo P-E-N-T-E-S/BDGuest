@@ -45,6 +45,7 @@ CREATE TABLE Menu (
     imagem VARCHAR(50),
     descricao VARCHAR(100),
     preco FLOAT,
+    medida VARCHAR(10),
     numero INTEGER PRIMARY KEY
 );
 
@@ -52,7 +53,8 @@ CREATE TABLE Comanda (
     numero_id INTEGER PRIMARY KEY,
     cpf_pessoa varchar(11),
     acesso DATETIME,
-    nome_cliente VARCHAR(50)
+    nome_cliente VARCHAR(50),
+    mesa SMALLINT
 );
 
 CREATE TABLE Produto (
@@ -76,6 +78,7 @@ CREATE TABLE Estoque (
 CREATE TABLE Usa (
     produto int,
     prato_menu INTEGER,
+    quantidade INTEGER,
     PRIMARY KEY (produto, prato_menu)
 );
 
@@ -107,11 +110,11 @@ CREATE TABLE Atende (
 );
 
 CREATE TABLE Pedido (
+    id_pedido INTEGER PRIMARY KEY,
     id_comanda INTEGER,
     id_menu INTEGER,
     horario DATETIME,
-    quantidade INTEGER,
-    PRIMARY KEY (horario, id_comanda, id_menu)
+    quantidade INTEGER
 );
 
 ALTER TABLE Funcionario ADD CONSTRAINT FK_Funcionarios_2
@@ -191,3 +194,8 @@ ALTER TABLE Pedido ADD CONSTRAINT FK_Pedido_2
     FOREIGN KEY (id_menu)
     REFERENCES Menu (numero);
 
+ALTER TABLE Comanda ADD CONSTRAINT FK_mesa_1
+    FOREIGN KEY (mesa)
+    REFERENCES Mesa (numero_id);
+
+SELECT * FROM Mesa M JOIN Comanda C on C.mesa = M.numero_id

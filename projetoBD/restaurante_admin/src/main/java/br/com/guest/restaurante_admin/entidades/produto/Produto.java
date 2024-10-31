@@ -1,6 +1,7 @@
 package br.com.guest.restaurante_admin.entidades.produto;
 
 import java.util.Date;
+import java.util.List;
 
 public class Produto {
     private Integer id;
@@ -8,6 +9,7 @@ public class Produto {
     private Date validade;
     private Integer quantidade;
     private String distribuidora;
+    private List<Integer> estoques;
 
     public Produto(Integer id, String nome, Date validade, Integer quantidade, String distribuidora) {
         this.id = id;
@@ -15,6 +17,15 @@ public class Produto {
         this.validade = validade;
         this.quantidade = quantidade;
         this.distribuidora = distribuidora;
+    }
+
+    public Produto(Integer id, String nome, Date validade, Integer quantidade, String distribuidora, List<Integer> estoques) {
+        this.id = id;
+        this.nome = nome;
+        this.validade = validade;
+        this.quantidade = quantidade;
+        this.distribuidora = distribuidora;
+        this.estoques = estoques;
     }
 
     public Integer getId() {
@@ -55,5 +66,13 @@ public class Produto {
 
     public void setDistribuidora(String distribuidora) {
         this.distribuidora = distribuidora;
+    }
+
+    public List<Integer> getEstoques() {
+        return estoques;
+    }
+
+    public void setEstoques(List<Integer> estoques) {
+        this.estoques = estoques;
     }
 }

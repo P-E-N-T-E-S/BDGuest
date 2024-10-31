@@ -1,7 +1,6 @@
 package br.com.guest.restaurante_admin.entidades.usa.mapper;
 
 import br.com.guest.restaurante_admin.entidades.menu.Prato;
-import br.com.guest.restaurante_admin.entidades.pedido.Pedido;
 import br.com.guest.restaurante_admin.entidades.produto.Produto;
 import br.com.guest.restaurante_admin.entidades.usa.Usa;
 import org.springframework.jdbc.core.RowMapper;
@@ -25,7 +24,8 @@ public class MapeadorUsa implements RowMapper<Usa> {
         String descricao = rs.getString("descricao");
         double preco = rs.getDouble("preco");
         String imagem = rs.getString("imagem");
-        Prato prato = new Prato(id, nomePrato, descricao, imagem, preco);
+        String medida = rs.getString("medida");
+        Prato prato = new Prato(medida, numero, nomePrato, descricao, imagem, preco);
 
         Integer idProduto = rs.getInt("produto");
         Integer idPrato = rs.getInt("prato_menu");

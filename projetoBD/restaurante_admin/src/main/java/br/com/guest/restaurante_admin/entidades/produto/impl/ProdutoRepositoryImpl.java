@@ -3,6 +3,7 @@ package br.com.guest.restaurante_admin.entidades.produto.impl;
 import br.com.guest.restaurante_admin.entidades.produto.Produto;
 import br.com.guest.restaurante_admin.entidades.produto.ProdutoRepository;
 import br.com.guest.restaurante_admin.entidades.produto.mapper.MapeadorProduto;
+import br.com.guest.restaurante_admin.entidades.usa.mapper.MapeadorUsa;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -63,5 +64,11 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
     public void atualizarProdutoPorFiltro(String valor, String filtro, String campoAlterado, String valorAlterado) {
         String sql = "UPDATE Produto SET "+campoAlterado+" = ? WHERE "+filtro+" LIKE ?";
         jdbcTemplate.update(sql, valorAlterado, "%"+valor+"%");
+    }
+
+    @Override
+    public List<Produto> verificarQuantidadePorPrato(Integer pratoId) {
+        String sql = "SELECT * FROM Usa U JOIN Produto P ON U.produto = P.id WHERE U.quantidade < P.quantidade AND U.prato_menu = ?";
+        return jdbcTemplate.query(sql, new MapeadorProduto(), pratoId);
     }
 }
