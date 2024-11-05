@@ -10,6 +10,6 @@ public interface UsaRepository {
     List<Usa> getUsosPorPrato(Integer idPrato);
     void deletarUso(Integer idPrato, Integer idProduto);
     void deletarUsoPorPrato(Integer idPrato);
-    void reduzirQuantidadePorPrato(Integer pratoId);
-    void aumentarQuantidadePorPrato(Integer pratoId);
+    void reduzirQuantidadePorPrato(Integer pratoId, Integer quantidade);
+    void aumentarQuantidadePorPrato(Integer pratoId, Integer quantidade);
 }

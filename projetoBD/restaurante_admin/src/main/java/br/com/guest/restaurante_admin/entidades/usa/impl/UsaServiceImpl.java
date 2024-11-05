@@ -1,16 +1,10 @@
 package br.com.guest.restaurante_admin.entidades.usa.impl;
 
-import br.com.guest.restaurante_admin.entidades.menu.PratoRepository;
-import br.com.guest.restaurante_admin.entidades.menu.PratoService;
-import br.com.guest.restaurante_admin.entidades.produto.Produto;
-import br.com.guest.restaurante_admin.entidades.produto.ProdutoRepository;
 import br.com.guest.restaurante_admin.entidades.produto.ProdutoService;
 import br.com.guest.restaurante_admin.entidades.usa.Usa;
 import br.com.guest.restaurante_admin.entidades.usa.UsaRepository;
 import br.com.guest.restaurante_admin.entidades.usa.UsaService;
-import br.com.guest.restaurante_admin.execoes.PratoNaoEncontradoException;
 import br.com.guest.restaurante_admin.execoes.ProdutoNaoEncontradoException;
-import br.com.guest.restaurante_admin.execoes.QuantidadeDeIngredienteNaoDisponivel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,16 +49,12 @@ public class UsaServiceImpl implements UsaService {
     }
 
     @Override
-    public void reduzirQuantidadePorPrato(Integer pratoId) {
-        List<Produto> produtosFaltantes = produtoService.verificarQuantidadePorPrato(pratoId);
-        if(!produtosFaltantes.isEmpty()) {
-            throw new QuantidadeDeIngredienteNaoDisponivel(produtosFaltantes.toString());
-        }
-        usaRepository.reduzirQuantidadePorPrato(pratoId);
+    public void reduzirQuantidadePorPrato(Integer pratoId, Integer quantidade) {
+        usaRepository.reduzirQuantidadePorPrato(pratoId, quantidade);
     }
 
     @Override
-    public void aumentarQuantidadePorPrato(Integer pratoId) {
-        usaRepository.aumentarQuantidadePorPrato(pratoId);
+    public void aumentarQuantidadePorPrato(Integer pratoId, Integer quantidade) {
+        usaRepository.aumentarQuantidadePorPrato(pratoId, quantidade);
     }
 }

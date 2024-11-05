@@ -48,14 +48,14 @@ public class UsaRepositoryImpl implements UsaRepository {
     }
 
     @Override
-    public void reduzirQuantidadePorPrato(Integer pratoId) {
-        String sql = "UPDATE Produto p JOIN Usa u ON p.id = u.produto SET p.quantidade = p.quantidade - u.quantidade WHERE prato_menu = ?";
+    public void reduzirQuantidadePorPrato(Integer pratoId, Integer quantidade) {
+        String sql = "UPDATE Produto p JOIN Usa u ON p.id = u.produto SET p.quantidade = p.quantidade - (u.quantidade * "+quantidade+" ) WHERE prato_menu = ?";
         jdbcTemplate.update(sql, pratoId);
     }
 
     @Override
-    public void aumentarQuantidadePorPrato(Integer pratoId) {
-        String sql = "UPDATE Produto p JOIN Usa u ON p.id = u.produto SET p.quantidade = p.quantidade + u.quantidade WHERE prato_menu = ?";
+    public void aumentarQuantidadePorPrato(Integer pratoId, Integer quantidade) {
+        String sql = "UPDATE Produto p JOIN Usa u ON p.id = u.produto SET p.quantidade = p.quantidade + (u.quantidade * "+quantidade+" ) WHERE prato_menu = ?";
         jdbcTemplate.update(sql, pratoId);
     }
 }

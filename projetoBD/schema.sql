@@ -199,5 +199,7 @@ ALTER TABLE Comanda ADD CONSTRAINT FK_mesa_1
     FOREIGN KEY (mesa)
     REFERENCES Mesa (numero_id);
 
-SELECT * FROM Reserva R join Mesa M on M.numero_id = R.numero_mesa join Cliente C on R.cpf_cliente = C.cpf join Pessoa P on P.cpf = C.cpf WHERE R.cpf_cliente = '70963500473' AND R.data = '2024-11-14'
-DELETE FROM Menu
+UPDATE Produto p
+JOIN Usa u ON p.id = u.produto
+SET p.quantidade = p.quantidade - (u.quantidade * 11)
+WHERE prato_menu = 1

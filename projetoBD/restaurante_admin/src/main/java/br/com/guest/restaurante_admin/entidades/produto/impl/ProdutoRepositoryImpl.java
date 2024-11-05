@@ -68,8 +68,8 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
     }
 
     @Override
-    public List<Produto> verificarQuantidadePorPrato(Integer pratoId) {
-        String sql = "SELECT * FROM Usa U JOIN Produto P ON U.produto = P.id WHERE U.quantidade < P.quantidade AND U.prato_menu = ?";
+    public List<Produto> verificarQuantidadePorPrato(Integer pratoId, Integer quantidade) {
+        String sql = "SELECT * FROM Usa U JOIN Produto P ON U.produto = P.id WHERE (U.quantidade * "+quantidade+" ) > P.quantidade AND U.prato_menu = ?";
         return jdbcTemplate.query(sql, new MapeadorProduto(), pratoId);
     }
 }

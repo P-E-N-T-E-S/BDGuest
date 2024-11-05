@@ -12,6 +12,7 @@ import br.com.guest.restaurante_admin.execoes.EstoqueNaoInformadoException;
 import br.com.guest.restaurante_admin.execoes.FiltroNaoDisponivelException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -92,7 +93,7 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
     @Override
-    public List<Produto> verificarQuantidadePorPrato(Integer pratoId) {
-        return produtoRepository.verificarQuantidadePorPrato(pratoId);
+    public List<Produto> verificarQuantidadePorPrato(Integer pratoId, Integer quantidade) {
+        return produtoRepository.verificarQuantidadePorPrato(pratoId, quantidade); //TODO: ajustar aqui por quantidade
     }
 }

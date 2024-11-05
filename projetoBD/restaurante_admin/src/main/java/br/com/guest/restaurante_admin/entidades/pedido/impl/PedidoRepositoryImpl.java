@@ -19,8 +19,8 @@ public class PedidoRepositoryImpl implements PedidoRepository {
 
     @Override
     public void salvar(Pedido pedido, Integer idComanda) {
-        String sql = "INSERT INTO Pedido (id_comanda, id_menu, horario, quantidade) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(sql, idComanda, pedido.getIdPrato(), pedido.getHorario(), pedido.getQuantidade());
+        String sql = "INSERT INTO Pedido (id_pedido, id_comanda, id_menu, horario, quantidade) VALUES (?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, pedido.getIdPedido() ,idComanda, pedido.getIdPrato(), pedido.getHorario(), pedido.getQuantidade());
     }
 
     @Override
@@ -43,13 +43,13 @@ public class PedidoRepositoryImpl implements PedidoRepository {
 
     @Override
     public void alterarPedido(Pedido pedido, Integer idComanda) {
-        String sql = "UPDATE FROM Pedido set id_menu = ?, horario = ?, quantidade = ? WHERE id_comanda = ? AND id_menu = ? AND horario = ?";
+        String sql = "UPDATE Pedido set id_menu = ?, horario = ?, quantidade = ? WHERE id_comanda = ? AND id_menu = ? AND horario = ?";
         jdbcTemplate.update(sql, pedido.getIdPrato(), pedido.getHorario(), pedido.getQuantidade(), idComanda, pedido.getIdPrato(), pedido.getHorario());
     }
 
     @Override
     public void desassociarPedidos(Integer idComanda) {
-        String sql = "UPDATE FROM Pedido set id_comanda = null WHERE id_comanda = ?";
+        String sql = "UPDATE Pedido set id_comanda = null WHERE id_comanda = ?";
         jdbcTemplate.update(sql, idComanda);
     }
 

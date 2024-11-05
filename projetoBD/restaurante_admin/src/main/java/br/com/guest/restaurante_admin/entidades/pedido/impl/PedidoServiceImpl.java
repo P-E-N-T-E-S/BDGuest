@@ -27,11 +27,11 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     public void salvar(Pedido pedido, Integer idComanda) throws IngredientesInsuficientesException {
-        if(produtoService.verificarQuantidadePorPrato(pedido.getIdPrato()) != null) {
+        if(!produtoService.verificarQuantidadePorPrato(pedido.getIdPrato(), pedido.getQuantidade()).isEmpty()) {
             throw new IngredientesInsuficientesException(pedido.getIdPrato().toString());
         }
         pedidoRepository.salvar(pedido, idComanda);
-        usaService.reduzirQuantidadePorPrato(pedido.getIdPrato());
+        usaService.reduzirQuantidadePorPrato(pedido.getIdPrato(), pedido.getQuantidade());
     }
 
     @Override

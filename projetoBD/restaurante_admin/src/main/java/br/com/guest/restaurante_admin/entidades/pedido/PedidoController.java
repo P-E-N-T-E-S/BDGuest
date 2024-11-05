@@ -1,5 +1,6 @@
 package br.com.guest.restaurante_admin.entidades.pedido;
 
+import br.com.guest.restaurante_admin.execoes.IngredientesInsuficientesException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +19,12 @@ public class PedidoController {
 
     @PostMapping
     public ResponseEntity<String> salvarPedido(@PathVariable Integer idComanda, @RequestBody Pedido pedido) {
-        pedidoService.salvar(pedido, idComanda);
-        return new ResponseEntity<>("Pedido salvo com sucesso", HttpStatus.CREATED);
+        try {
+            pedidoService.salvar(pedido, idComanda);
+            return new ResponseEntity<>("Pedido salvo com sucesso", HttpStatus.CREATED);
+        }catch (IngredientesInsuficientesException e) {
+            return new ResponseEntity<>("Ingrediente "+e.getMessage()+" não disponivel para esse prato", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping
