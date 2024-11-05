@@ -55,7 +55,7 @@ public class PedidoRepositoryImpl implements PedidoRepository {
 
     @Override
     public double calcularTotal(Integer idComanda) {
-        String sql = "SELECT SUM(quantidade) FROM Pedido WHERE id_comanda = ?";
+        String sql = "SELECT SUM((P.preco * PE.quantidade)) FROM Menu P Join Pedido PE on P.numero = PE.id_menu Where PE.id_comanda = 1";
         return jdbcTemplate.queryForObject(sql, Double.class, idComanda);
     }
 }
