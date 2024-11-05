@@ -50,6 +50,11 @@ public class UsaServiceImpl implements UsaService {
     }
 
     @Override
+    public void deletarUsoPorPrato(Integer idPrato) {
+        usaRepository.deletarUsoPorPrato(idPrato);
+    }
+
+    @Override
     public void reduzirQuantidadePorPrato(Integer pratoId) {
         List<Produto> produtosFaltantes = produtoService.verificarQuantidadePorPrato(pratoId);
         if(!produtosFaltantes.isEmpty()) {

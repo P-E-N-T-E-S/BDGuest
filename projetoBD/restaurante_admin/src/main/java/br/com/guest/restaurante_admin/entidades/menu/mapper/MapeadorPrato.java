@@ -11,9 +11,9 @@ public class MapeadorPrato implements RowMapper<Prato> {
 
     @Override
     public Prato mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Integer id = rs.getInt("id");
+        Integer id = rs.getInt("numero");
         String nome = rs.getString("nome");
-        String imagemLink = rs.getString("imagem_link");
+        String imagemLink = rs.getString("imagem");
         String descricao = rs.getString("descricao");
         double preco = rs.getDouble("preco");
         return new Prato(id, nome, imagemLink, descricao, preco, null);

@@ -42,6 +42,12 @@ public class UsaRepositoryImpl implements UsaRepository {
     }
 
     @Override
+    public void deletarUsoPorPrato(Integer idPrato) {
+        String sql = "DELETE FROM usa WHERE prato_menu = ?";
+        jdbcTemplate.update(sql, idPrato);
+    }
+
+    @Override
     public void reduzirQuantidadePorPrato(Integer pratoId) {
         String sql = "UPDATE Produto p JOIN Usa u ON p.id = u.produto SET p.quantidade = p.quantidade - u.quantidade WHERE prato_menu = ?";
         jdbcTemplate.update(sql, pratoId);

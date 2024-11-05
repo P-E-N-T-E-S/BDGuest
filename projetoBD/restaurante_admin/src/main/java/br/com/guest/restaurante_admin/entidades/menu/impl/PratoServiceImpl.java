@@ -45,6 +45,7 @@ public class PratoServiceImpl implements PratoService {
 
     @Override
     public void removerPratoPorId(Long id) {
+        usaService.deletarUsoPorPrato(id.intValue());
         pratoRepository.removerPratoPorId(id);
     }
 

@@ -23,12 +23,6 @@ public class PratoController {
         return new ResponseEntity<>("Prato salvo com sucesso", HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Prato> buscarPratoPorId(@PathVariable Long id) {
-        Prato prato = pratoService.buscarPratoPorId(id);
-        return new ResponseEntity<>(prato, HttpStatus.OK);
-    }
-
     @GetMapping
     public ResponseEntity<List<Prato>> listarPratos() {
         return new ResponseEntity<>(pratoService.listarPratos(), HttpStatus.OK);

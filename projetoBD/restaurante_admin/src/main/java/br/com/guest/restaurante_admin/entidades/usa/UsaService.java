@@ -9,6 +9,7 @@ public interface UsaService {
     List<Usa> getUsosPorProduto(Integer idProduto);
     List<Usa> getUsosPorPrato(Integer idPrato);
     void deletarUso(Integer idPrato, Integer idProduto);
+    void deletarUsoPorPrato(Integer idPrato);
     void reduzirQuantidadePorPrato(Integer pratoId);
     void aumentarQuantidadePorPrato(Integer pratoId);
 }

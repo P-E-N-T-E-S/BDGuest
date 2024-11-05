@@ -17,6 +17,8 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    //TODO: fazer metodo para listar ingredientes por prato
+
     @Override
     public void salvarProduto(Produto produto) {
         String sql = "INSERT INTO Produto (id, nome, validade, quantidade, distribuidora, medida) VALUES(?, ?, ?, ?, ?, ?)";

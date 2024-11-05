@@ -17,6 +17,8 @@ public class PratoRepositoryImpl implements PratoRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    //TODO: fazer talvez uma lista dos ingredientes que um prato tem
+
     @Override
     public void salvarPrato(Prato prato) {
         String sql = "INSERT INTO Menu (numero, nome, imagem, descricao, preco) VALUES (?, ?, ?, ?, ?)";
@@ -49,7 +51,7 @@ public class PratoRepositoryImpl implements PratoRepository {
 
     @Override
     public void atualizarPrato(Prato prato, Long id) {
-        String sql = "UPDATE Menu SET nome = ?, imagem_link = ?, descricao = ?, preco = ? WHERE numero = ?";
+        String sql = "UPDATE Menu SET nome = ?, imagem = ?, descricao = ?, preco = ? WHERE numero = ?";
         jdbcTemplate.update(sql, prato.getNome(), prato.getImagemLink(), prato.getDescricao(), prato.getPreco(), id);
     }
 
@@ -58,6 +60,4 @@ public class PratoRepositoryImpl implements PratoRepository {
         String sql = "DELETE FROM Menu WHERE numero IN (SELECT prato_menu FROM Usa WHERE produto = ?)";
         jdbcTemplate.update(sql, ingredienteId);
     }
-
-
 }
