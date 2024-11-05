@@ -44,7 +44,7 @@ public class ComandaRepositoryImpl implements ComandaRepository {
     @Override
     public void alterarComanda(Comanda comanda, Integer id) {
         String sql = "UPDATE Comanda SET cpf_pessoa = ?, acesso = ?, nome_cliente = ?, mesa=? WHERE numero_id = ?";
-        jdbcTemplate.update(sql, ""+comanda.getNumeroId(),comanda.getCpfPessoa(), comanda.getAcesso(), comanda.getNomeCliente(), comanda.getMesa(), id);
+        jdbcTemplate.update(sql,comanda.getCpfPessoa(), comanda.getAcesso(), comanda.getNomeCliente(), comanda.getMesaId(), id);
     }
 
     @Override

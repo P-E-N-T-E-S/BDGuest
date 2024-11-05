@@ -13,7 +13,7 @@ public class MapeadorComanda implements RowMapper<Comanda> {
     public Comanda mapRow(ResultSet rs, int rowNum) throws SQLException {
 
         Integer idMesa = rs.getInt("M.numero_id");
-        Integer quantidadeCadeiras = rs.getInt("quantidade_cadeira");
+        Integer quantidadeCadeiras = rs.getInt("quantidade_cadeiras");
 
         Mesa mesa = new Mesa(idMesa, quantidadeCadeiras);
 

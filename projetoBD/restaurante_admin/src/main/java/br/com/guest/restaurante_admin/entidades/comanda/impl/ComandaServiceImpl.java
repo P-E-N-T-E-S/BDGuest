@@ -44,7 +44,7 @@ public class ComandaServiceImpl implements ComandaService {
     public void alterarComanda(Comanda comanda, Integer id) {
         if(clienteService.buscarClientePorCpf(comanda.getCpfPessoa()) == null){
             comanda.setCpfPessoa(null);
-            comandaRepository.salvarComanda(comanda);
+            comandaRepository.alterarComanda(comanda, 1);
             throw new ClienteNaoCadastradoException(comanda.getCpfPessoa());
         }
         comandaRepository.alterarComanda(comanda, id);
