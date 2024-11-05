@@ -30,7 +30,7 @@ public class GarcomRepositoryImpl implements GarcomRepository {
 
     @Override
     public Garcom buscarGarcomPorCpf(String cpf) {
-        String sql = "SELECT * FROM Garcom G JOIN Funcionario F on G.cpf = F.cpf JOIN Pessoa P on F.cpf = P.cpf WHERE Cpf = ?";
+        String sql = "SELECT * FROM Garcom G JOIN Funcionario F on G.cpf = F.cpf JOIN Pessoa P on F.cpf = P.cpf WHERE G.cpf = ?";
         return jdbcTemplate.queryForObject(sql, new MapeadorGarcom(), cpf);
     }
 

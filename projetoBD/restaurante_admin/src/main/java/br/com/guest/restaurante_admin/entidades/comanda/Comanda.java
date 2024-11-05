@@ -11,11 +11,12 @@ public class Comanda {
 
     @JsonProperty("numero_id")
     private Integer numeroId;
-    @JsonProperty("cpfPessoa")
+    @JsonProperty("cpf_pessoa")
     private String cpfPessoa;
     @JsonProperty("nome_cliente")
     private String nomeCliente;
     private LocalDateTime acesso;
+    @JsonProperty("mesa_id")
     private Integer mesaId;
 
     public Comanda(Mesa mesa, Integer numeroId, String cpfPessoa, String nomeCliente, LocalDateTime acesso, Integer mesaId) {

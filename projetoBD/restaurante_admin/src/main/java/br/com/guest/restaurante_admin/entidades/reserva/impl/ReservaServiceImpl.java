@@ -1,17 +1,14 @@
 package br.com.guest.restaurante_admin.entidades.reserva.impl;
 
 import br.com.guest.restaurante_admin.entidades.clientes.ClienteRepository;
+import br.com.guest.restaurante_admin.entidades.mesa.Mesa;
 import br.com.guest.restaurante_admin.entidades.mesa.MesaRepository;
 import br.com.guest.restaurante_admin.entidades.reserva.Reserva;
 import br.com.guest.restaurante_admin.entidades.reserva.ReservaRepository;
 import br.com.guest.restaurante_admin.entidades.reserva.ReservaService;
-import br.com.guest.restaurante_admin.execoes.ClienteNaoCadastradoException;
-import br.com.guest.restaurante_admin.execoes.DataInvalidaException;
-import br.com.guest.restaurante_admin.execoes.FiltroNaoDisponivelException;
-import br.com.guest.restaurante_admin.execoes.MesaNaoEncontradaException;
+import br.com.guest.restaurante_admin.execoes.*;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -31,10 +28,15 @@ public class ReservaServiceImpl implements ReservaService {
 
     @Override
     public void salvarReserva(Reserva reserva) throws MesaNaoEncontradaException {
-        if(mesaRepository.acharMesaPorId(reserva.getNumeroMesa()) == null) {
+        Mesa mesa = mesaRepository.acharMesaPorId(reserva.getNumeroMesa());
+        if(mesa == null) {
             throw new MesaNaoEncontradaException(""+reserva.getNumeroMesa());
         }
-        if (clienteRepository.buscarClientePorCpf(reserva.getCpfCliente()) != null) {
+        if(mesa.getQuantidadeCadeiras() < reserva.getQuantidadePessoas()){
+            reservaRepository.salvarReserva(reserva);
+            throw new QuantidadeDeCadeirasInsuficientesException(""+reserva.getQuantidadePessoas());
+        }
+        if (clienteRepository.buscarClientePorCpf(reserva.getCpfCliente()) == null) {
             throw new ClienteNaoCadastradoException(reserva.getCpfCliente());
         }
         reservaRepository.salvarReserva(reserva);
@@ -51,19 +53,14 @@ public class ReservaServiceImpl implements ReservaService {
         if (filtro.equals("cpf")) {
             return reservaRepository.buscarReservaPorCpf(valor);
         } else if (filtro.equals("data")) {
-            try {
-                Date data = formatter.parse(valor);
-                return reservaRepository.buscarReservaPorData(data);
-            } catch (ParseException e) {
-                throw new DataInvalidaException(e.getMessage());
-            }
+            return reservaRepository.buscarReservaPorData(valor);
         }else{
             throw new FiltroNaoDisponivelException(filtro);
         }
     }
 
     @Override
-    public Reserva buscarReservaPorCpfEData(String cpf, Date data) {
+    public Reserva buscarReservaPorCpfEData(String cpf, String data) {
         return reservaRepository.buscarReservaPorCpfEData(cpf, data);
     }
 
@@ -74,6 +71,8 @@ public class ReservaServiceImpl implements ReservaService {
 
     @Override
     public void excluirReserva(String cpf, Date data) {
-        reservaRepository.excluirReserva(cpf, data);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); //TODO: ajustar isso nas classes que precisam
+        String dataString = dateFormat.format(data);
+        reservaRepository.excluirReserva(cpf, dataString);
     }
 }

@@ -1,6 +1,5 @@
 package br.com.guest.restaurante_admin.entidades.usa.impl;
 
-import br.com.guest.restaurante_admin.entidades.produto.Produto;
 import br.com.guest.restaurante_admin.entidades.usa.Usa;
 import br.com.guest.restaurante_admin.entidades.usa.UsaRepository;
 import br.com.guest.restaurante_admin.entidades.usa.mapper.MapeadorUsa;
@@ -20,8 +19,8 @@ public class UsaRepositoryImpl implements UsaRepository {
 
     @Override
     public void salvarUso(Usa usa) {
-        String sql = "INSERT INTO usa (produto, prato_menu) VALUES (?, ?)";
-        jdbcTemplate.update(sql, usa.getProduto(), usa.getPrato());
+        String sql = "INSERT INTO usa (produto, prato_menu, quantidade) VALUES (?, ?, ?)";
+        jdbcTemplate.update(sql, usa.getProdutoId(), usa.getPratoId(), usa.getQuantidade());
     }
 
     @Override

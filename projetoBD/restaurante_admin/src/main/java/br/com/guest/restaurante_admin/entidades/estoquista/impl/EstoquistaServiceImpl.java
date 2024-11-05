@@ -22,7 +22,7 @@ public class EstoquistaServiceImpl implements EstoquistaService {
     private List<String> colunasEstoquista = Arrays.asList("cpf", "cpf_gerente", "estoque");
     private  final List<String> colunasFuncionario =  Arrays.asList("data_contratacao", "salario", "horario_entrada", "horario_saida");
     private final List<String> colunasPessoa = Arrays.asList("nome", "rua", "bairro", "estado", "cidade", "cep", "email", "data_nascimento", "telefone");
-    private final List<String> colunasEstoque = Arrays.asList("id", "rua", "numero", "bairro", "estado", "cidade", "cep", "refrigerado");
+    private final List<String> colunasEstoque = Arrays.asList("id", "rua", "numero", "bairro", "estado", "cidade", "cep", "refrigerado"); //TODO: decidir o que fazer com essas ruas aqui
 
     public EstoquistaServiceImpl(EstoquistaRepository estoquistaRepository, EstoqueService estoqueService, FuncionarioService funcionarioService) {
         this.estoquistaRepository = estoquistaRepository;
@@ -40,8 +40,10 @@ public class EstoquistaServiceImpl implements EstoquistaService {
         if(funcionarioService.buscarFuncionarioPorcpf(estoquista.getCpf()) == null) {
             throw new FuncionarioNaoEncontradoException(estoquista.getCpf());
         }
-        if(buscarEstoquistaPorCpf(estoquista.getCpfGerente()) == null) {
-            throw new GerenteNaoEncontradoException(estoquista.getCpfGerente());
+        if(estoquista.getCpfGerente() != null) {
+            if(buscarEstoquistaPorCpf(estoquista.getCpfGerente()) == null) {
+                throw new GerenteNaoEncontradoException(estoquista.getCpfGerente());
+            }
         }
         if(estoqueService.buscarEstoque(estoquista.getEstoqueId()) == null) {
             throw new EstoqueNaoEncontrado(estoquista.getEstoqueId()+"");
@@ -56,8 +58,24 @@ public class EstoquistaServiceImpl implements EstoquistaService {
 
     @Override
     public List<Estoquista> buscarEstoquistasPorFiltro(String filtro, String valor) throws FiltroNaoDisponivelException {
-        if(colunasEstoquista.contains(filtro) || colunasFuncionario.contains(filtro) || colunasPessoa.contains(filtro) || colunasEstoque.contains(filtro) ) {
+        if (colunasFuncionario.contains(filtro)) {
+            filtro = "F."+filtro;
             return estoquistaRepository.buscarEstoquistasPorFiltro(filtro, valor);
+
+        }
+        if(colunasPessoa.contains(filtro)) {
+            filtro = "P."+filtro;
+            return estoquistaRepository.buscarEstoquistasPorFiltro(filtro, valor);
+        }
+        if(colunasEstoquista.contains(filtro)) {
+            filtro = "ES."+filtro;
+            return estoquistaRepository.buscarEstoquistasPorFiltro(filtro, valor);
+
+        }
+        if(colunasEstoque.contains(filtro)) {
+            filtro = "E."+filtro;
+            return estoquistaRepository.buscarEstoquistasPorFiltro(filtro, valor);
+
         }
         throw new FiltroNaoDisponivelException(filtro);
     }
@@ -71,15 +89,19 @@ public class EstoquistaServiceImpl implements EstoquistaService {
     public void excluirEstoquistaPorFiltro(String filtro, String valor) {
         if (colunasFuncionario.contains(filtro)) {
             estoquistaRepository.excluirEstoquistaPorFiltroDeFuncionario(filtro, valor);
+            return;
         }
         if(colunasPessoa.contains(filtro)) {
             estoquistaRepository.excluirEstoquistaPorFiltroDePessoa(filtro, valor);
+            return;
         }
         if(colunasEstoquista.contains(filtro)) {
             estoquistaRepository.excluirEstoquistaPorFiltro(filtro, valor);
+            return;
         }
         if(colunasEstoque.contains(filtro)) {
             estoquistaRepository.excluirEstoquistaPorFiltroDeEstoque(filtro, valor);
+            return;
         }
         throw new FiltroNaoDisponivelException(filtro);
     }
@@ -94,15 +116,19 @@ public class EstoquistaServiceImpl implements EstoquistaService {
         if(colunasEstoquista.contains(campoAlterado)) {
             if(colunasEstoquista.contains(filtro)) {
                 estoquistaRepository.alterarEstoquistaPorFiltro(filtro, valor, campoAlterado, valorAlterado);
+                return;
             }
             if(colunasFuncionario.contains(filtro)) {
                 estoquistaRepository.alterarEstoquistaPorFiltroDeFuncionario(filtro, valor, campoAlterado, valorAlterado);
+                return;
             }
             if(colunasPessoa.contains(filtro)) {
                 estoquistaRepository.alterarEstoquistaPorFiltroDePessoa(filtro, valor, campoAlterado, valorAlterado);
+                return;
             }
             if (colunasEstoque.contains(filtro)) {
                 estoquistaRepository.alterarEstoquistaPorFiltroDeEstoque(filtro, valor, campoAlterado, valorAlterado);
+                return;
             }
             throw new CampoDeAlteracaoNaoEncontradoException(campoAlterado);
         }

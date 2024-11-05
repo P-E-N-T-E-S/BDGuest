@@ -3,6 +3,7 @@ package br.com.guest.restaurante_admin.entidades.clientes.impl;
 import br.com.guest.restaurante_admin.entidades.clientes.Cliente;
 import br.com.guest.restaurante_admin.entidades.clientes.ClienteRepository;
 import br.com.guest.restaurante_admin.entidades.clientes.mapper.ClienteMapper;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -19,14 +20,18 @@ public class ClienteRepositoryImpl implements ClienteRepository {
 
     @Override
     public void salvarCliente(Cliente cliente) {
-        String sql = "INSERT INTO Cliente (cpf, fidelidade, metodo_pagamento_1, metodo_pagamento_2) VALUES(?, ?, ?, ?)";
+        String sql = "INSERT INTO Cliente (cpf, fidelidade, metodo_pagamento1, metodo_pagamento2) VALUES(?, ?, ?, ?)";
         jdbcTemplate.update(sql, cliente.getCpf(), cliente.getFidelidade(), cliente.getMetodoPagamento1(), cliente.getMetodoPagamento2());
     }
 
     @Override
     public Cliente buscarClientePorCpf(String cpf) {
-        String sql = "SELECT * FROM Pessoa p join Cliente C on p.cpf = C.cpf WHERE cpf = ?";
+        try{
+        String sql = "SELECT * FROM Pessoa p join Cliente C on p.cpf = C.cpf WHERE C.cpf = ?";
         return jdbcTemplate.queryForObject(sql, new ClienteMapper(), cpf);
+        }catch(EmptyResultDataAccessException e){
+            return null;
+        }
     }
 
     @Override
@@ -37,7 +42,7 @@ public class ClienteRepositoryImpl implements ClienteRepository {
 
     @Override
     public List<Cliente> buscarClientePorFiltro(String filtro, String valor) {
-        String sql = "SELECT * FROM Cliente WHERE " + filtro + " LIKE ?";
+        String sql = "SELECT * FROM Pessoa p join Cliente C on p.cpf = C.cpf WHERE " + filtro + " LIKE ?";
         return jdbcTemplate.query(sql, new ClienteMapper(), "%"+valor+"%");
     }
 

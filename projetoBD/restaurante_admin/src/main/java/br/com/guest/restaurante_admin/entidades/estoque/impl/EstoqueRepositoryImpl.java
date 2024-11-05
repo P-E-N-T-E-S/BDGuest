@@ -3,6 +3,7 @@ package br.com.guest.restaurante_admin.entidades.estoque.impl;
 import br.com.guest.restaurante_admin.entidades.estoque.Estoque;
 import br.com.guest.restaurante_admin.entidades.estoque.EstoqueRepository;
 import br.com.guest.restaurante_admin.entidades.estoque.mapper.MapeadorEstoque;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -33,7 +34,11 @@ public class EstoqueRepositoryImpl implements EstoqueRepository {
     @Override
     public Estoque buscarEstoque(Integer id) {
         String sql = "SELECT * FROM Estoque WHERE id = ?";
+        try{
         return jdbcTemplate.queryForObject(sql, new MapeadorEstoque(), id);
+        }catch(EmptyResultDataAccessException e){
+            return null;
+        }
     }
 
     @Override

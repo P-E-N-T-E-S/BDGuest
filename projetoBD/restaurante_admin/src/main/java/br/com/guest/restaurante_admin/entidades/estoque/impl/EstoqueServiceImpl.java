@@ -49,6 +49,7 @@ public class EstoqueServiceImpl implements EstoqueService {
     public void excluirEstoquePorFiltro(String filtro, String valor) throws FiltroNaoDisponivelException {
         if(colunasEstoque.contains(filtro)){
             estoqueRepository.excluirEstoquePorFiltro(filtro, valor);
+            return;
         }
         throw new FiltroNaoDisponivelException(filtro);
     }
@@ -60,6 +61,11 @@ public class EstoqueServiceImpl implements EstoqueService {
 
     @Override
     public void alterarEstoquePorFiltro(String filtro, String valor, String campoAlterado, String valorAlterado) {
-        estoqueRepository.alterarEstoquePorFiltro(filtro, valor, campoAlterado, valorAlterado);
+        if(colunasEstoque.contains(filtro)){
+            estoqueRepository.alterarEstoquePorFiltro(filtro, valor, campoAlterado, valorAlterado);
+            return;
+        }
+        throw new FiltroNaoDisponivelException(filtro);
     }
 }
+//TODO: tratar os erros de: SQLIntegrityConstraintViolationException com entrada duplicada

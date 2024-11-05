@@ -26,8 +26,8 @@ public class ClienteMapper implements RowMapper<Cliente> {
 
         String cpf = rs.getString("C.cpf");
         Integer fidelidade = rs.getInt("fidelidade");
-        String metodoPagamento1 = rs.getString("metodo_pagamento_1");
-        String metodoPagamento2 = rs.getString("metodo_pagamento_2");
+        String metodoPagamento1 = rs.getString("metodo_pagamento1");
+        String metodoPagamento2 = rs.getString("metodo_pagamento2");
         return new Cliente(pessoa, cpf, fidelidade, metodoPagamento1, metodoPagamento2);
     }
 }

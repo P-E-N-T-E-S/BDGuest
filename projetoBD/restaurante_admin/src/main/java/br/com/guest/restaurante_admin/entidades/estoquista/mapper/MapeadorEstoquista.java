@@ -42,10 +42,10 @@ public class MapeadorEstoquista implements RowMapper<Estoquista> {
         String cidadeEstoque = rs.getString("E.cidade");
         String cepEstoque = rs.getString("E.cep");
         boolean refrigerado = rs.getBoolean("refrigerado");
-        Estoque estoque = new Estoque(id, rua, numero, bairro, estado, cidade, cep, refrigerado);
+        Estoque estoque = new Estoque(id, ruaEstoque, numero, bairroEstoque, estadoEstoque, cidadeEstoque, cepEstoque, refrigerado);
 
         String cpfEstoquista = rs.getString("ES.cpf");
-        String cpfGerente = rs.getString("cpfGerente");
+        String cpfGerente = rs.getString("cpf_gerente");
         Integer numeroEstoque = rs.getInt("estoque");
         return new Estoquista(funcionario, estoque, cpfEstoquista, cpfGerente, numeroEstoque);
     }

@@ -3,6 +3,7 @@ package br.com.guest.restaurante_admin.entidades.reserva.impl;
 import br.com.guest.restaurante_admin.entidades.reserva.Reserva;
 import br.com.guest.restaurante_admin.entidades.reserva.ReservaRepository;
 import br.com.guest.restaurante_admin.entidades.reserva.mapper.MapeadorReserva;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -37,27 +38,31 @@ public class ReservaRepositoryImpl implements ReservaRepository {
     }
 
     @Override
-    public List<Reserva> buscarReservaPorData(Date data) {
-        String sql = "SELECT * FROM Reserva R join Mesa M on M.numero_id = R.numero_mesa join Cliente C on R.cpf_cliente = C.cpf join Pessoa P on P.cpf = C.cpf WHERE data = ?";
+    public List<Reserva> buscarReservaPorData(String data) {
+        String sql = "SELECT * FROM Reserva R join Mesa M on M.numero_id = R.numero_mesa join Cliente C on R.cpf_cliente = C.cpf join Pessoa P on P.cpf = C.cpf WHERE R.data = ?";
         return jdbcTemplate.query(sql, new MapeadorReserva(), data);
     }
 
     @Override
-    public Reserva buscarReservaPorCpfEData(String cpf, Date data) {
-        String sql = "SELECT * FROM Reserva R join Mesa M on M.numero_id = R.numero_mesa join Cliente C on R.cpf_cliente = C.cpf join Pessoa P on P.cpf = C.cpf WHERE cpf = ? AND data = ?";
-        return jdbcTemplate.queryForObject(sql, new MapeadorReserva(), cpf, data);
+    public Reserva buscarReservaPorCpfEData(String cpf, String data) {
+        String sql = "SELECT * FROM Reserva R join Mesa M on M.numero_id = R.numero_mesa join Cliente C on R.cpf_cliente = C.cpf join Pessoa P on P.cpf = C.cpf WHERE R.cpf_cliente = ? AND R.data = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, new MapeadorReserva(), cpf, data);
+        }catch(EmptyResultDataAccessException e){
+            return null;
+        }
     }
 
     @Override
     public void atualizarReserva(Reserva reserva, String cpf, Date data) {
-        String sql = "UPDATE Reserva SET horario_entrada = ?, quantidade_pessoas = ?, numero_mesa = ? WHERE cpf = ? AND data = ?";
+        String sql = "UPDATE Reserva SET horario_entrada = ?, quantidade_pessoas = ?, numero_mesa = ? WHERE cpf_cliente = ? AND data = ?";
         jdbcTemplate.update(sql, reserva.getHorarioEntrada(), reserva.getQuantidadePessoas(), reserva.getNumeroMesa(), cpf, data);
 
     }
 
     @Override
-    public void excluirReserva(String cpf, Date data) {
-    String sql = "DELETE FROM Reserva WHERE cpf = ? AND data = ?";
+    public void excluirReserva(String cpf, String data) {
+    String sql = "DELETE FROM Reserva WHERE cpf_cliente = ? AND data = ?";
     jdbcTemplate.update(sql, cpf, data);
     }
 }

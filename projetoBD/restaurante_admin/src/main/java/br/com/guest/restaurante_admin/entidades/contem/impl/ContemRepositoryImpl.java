@@ -20,7 +20,7 @@ public class ContemRepositoryImpl implements ContemRepository {
     @Override
     public void salvarContem(Contem contem) {
         String sql = "INSERT INTO Contem (produto, estoque) VALUES (?, ?)";
-        jdbcTemplate.update(sql, contem.getProduto(), contem.getEstoque());
+        jdbcTemplate.update(sql, contem.getIdProduto(), contem.getIdEstoque());
     }
 
     @Override

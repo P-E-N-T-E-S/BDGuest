@@ -49,7 +49,7 @@ public class EstoquistaController {
         }
     }
 
-    @PostMapping("/{filtro}")
+    @PutMapping("/{filtro}")
     public ResponseEntity<String> alterarEstoquista(@PathVariable String filtro, @RequestParam String valor, @RequestBody HashMap<String,Object> camposAlterado){
         try {
             estoquistaService.alterarEstoquistaPorFiltro(filtro, valor, (String)camposAlterado.get("campo"), (String)camposAlterado.get("valor"));

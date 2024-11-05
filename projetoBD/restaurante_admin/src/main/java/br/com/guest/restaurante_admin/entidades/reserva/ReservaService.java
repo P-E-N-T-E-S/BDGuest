@@ -7,7 +7,7 @@ public interface ReservaService {
     void salvarReserva(Reserva reserva);
     List<Reserva> listarReservas();
     List<Reserva> buscarReservasPorFiltro(String filtro, String valor);
-    Reserva buscarReservaPorCpfEData(String cpf, Date data);
+    Reserva buscarReservaPorCpfEData(String cpf, String data);
     void atualizarReserva(Reserva reserva, String cpf, Date data);
     void excluirReserva(String cpf, Date data);
 }

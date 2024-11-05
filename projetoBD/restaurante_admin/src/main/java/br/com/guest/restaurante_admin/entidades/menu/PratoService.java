@@ -9,4 +9,5 @@ public interface PratoService {
     List<Prato> buscarPratoPorFiltro(String filtro, String valor);
     void removerPratoPorId(Long id);
     void atualizarPrato(Prato prato, Long id);
+    void removerPratoPorIngrediente(Long ingredienteId);
 }

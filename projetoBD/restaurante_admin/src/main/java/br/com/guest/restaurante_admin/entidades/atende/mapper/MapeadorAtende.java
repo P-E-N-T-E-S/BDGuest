@@ -38,7 +38,7 @@ public class MapeadorAtende implements RowMapper<Atende> {
         String cpfGarcom = rs.getString("G.cpf");
         String cpfGerente = rs.getString("cpf_gerente");
 
-        Garcom garcom = new Garcom(cpfGarcom, cpfGerente, funcionario);
+        Garcom garcom = new Garcom(cpfGarcom, cpfGerente, null, funcionario);
 
         Integer idMesa = rs.getInt("numero_id");
         Integer quantidadeCadeiras = rs.getInt("quantidade_cadeiras");

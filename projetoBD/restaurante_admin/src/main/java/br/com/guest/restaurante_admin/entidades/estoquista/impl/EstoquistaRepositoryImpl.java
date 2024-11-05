@@ -19,13 +19,13 @@ public class EstoquistaRepositoryImpl implements EstoquistaRepository {
 
     @Override
     public void salvarEstoquista(Estoquista estoquista) {
-        String sql = "INSERT INTO Estoquista cpf, cpf_gerente, estoque VALUES(?, ?, ?)";
-        jdbcTemplate.update(sql, estoquista.getCpf(), estoquista.getCpfGerente(), estoquista.getEstoque());
+        String sql = "INSERT INTO Estoquista (cpf, cpf_gerente, estoque) VALUES(?, ?, ?)";
+        jdbcTemplate.update(sql, estoquista.getCpf(), estoquista.getCpfGerente(), estoquista.getEstoqueId());
     }
 
     @Override
     public Estoquista buscarEstoquistaPorCpf(String cpf) {
-        String sql = "SELECT * FROM Estoquista ES join Pessoa P on P.cpf = ES.cpf join Funcionario F on F.cpf = ES.cpf join Estoque E on ES.estoque = E.id WHERE cpf = ?";
+        String sql = "SELECT * FROM Estoquista ES join Pessoa P on P.cpf = ES.cpf join Funcionario F on F.cpf = ES.cpf join Estoque E on ES.estoque = E.id WHERE ES.cpf = ?";
         return jdbcTemplate.queryForObject(sql, new MapeadorEstoquista(), cpf);
     }
 

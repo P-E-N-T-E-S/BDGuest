@@ -11,7 +11,7 @@ public class MapeadorMesa implements RowMapper<Mesa> {
     @Override
     public Mesa mapRow(ResultSet rs, int rowNum) throws SQLException {
         Integer id = rs.getInt("numero_id");
-        Integer quantidadeCadeiras = rs.getInt("quantidade_cadeira");
+        Integer quantidadeCadeiras = rs.getInt("quantidade_cadeiras");
 
         return new Mesa(id, quantidadeCadeiras);
     }

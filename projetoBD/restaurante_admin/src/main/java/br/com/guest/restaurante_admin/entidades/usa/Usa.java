@@ -9,6 +9,7 @@ public class Usa {
 
     private Integer produtoId;
     private Integer pratoId;
+    private Integer quantidade;
 
     public Usa(Produto produto, Prato prato, Integer produtoId, Integer pratoId) {
         this.produto = produto;
@@ -17,9 +18,10 @@ public class Usa {
         this.pratoId = pratoId;
     }
 
-    public Usa(Integer produtoId, Integer pratoId) {
+    public Usa(Integer produtoId, Integer pratoId, Integer quantidade) {
         this.produtoId = produtoId;
         this.pratoId = pratoId;
+        this.quantidade = quantidade;
     }
 
     public Produto getProduto() {
@@ -52,5 +54,13 @@ public class Usa {
 
     public void setPratoId(Integer pratoId) {
         this.pratoId = pratoId;
+    }
+
+    public Integer getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
     }
 }

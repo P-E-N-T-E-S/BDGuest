@@ -23,8 +23,8 @@ public class PratoServiceImpl implements PratoService {
     @Override
     public void salvarPrato(Prato prato) {
         pratoRepository.salvarPrato(prato);
-        for (Integer ingrediente : prato.getIngredientes() ) {
-            usaService.salvarUso(new Usa(prato.getId(), ingrediente));
+        for (List<Integer> ingrediente : prato.getIngredientes() ) {
+            usaService.salvarUso(new Usa(prato.getId(), ingrediente.get(0), ingrediente.get(1))); //TODO: resolver a questão da quantidade
         }
     }
 
@@ -51,5 +51,10 @@ public class PratoServiceImpl implements PratoService {
     @Override
     public void atualizarPrato(Prato prato, Long id) {
         pratoRepository.atualizarPrato(prato, id);
+    }
+
+    @Override
+    public void removerPratoPorIngrediente(Long ingredienteId) {
+        pratoRepository.removerPratoPorIngrediente(ingredienteId);
     }
 }

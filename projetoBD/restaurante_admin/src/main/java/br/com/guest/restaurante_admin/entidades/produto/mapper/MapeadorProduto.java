@@ -17,6 +17,6 @@ public class MapeadorProduto implements RowMapper<Produto> {
         String distribuidora = rs.getString("distribuidora");
         String medida = rs.getString("medida");
 
-        return new Produto(id, nome, validade, quantidade, distribuidora, medida);
+        return new Produto(id, nome, validade, quantidade, distribuidora, null, medida);
     }
 }

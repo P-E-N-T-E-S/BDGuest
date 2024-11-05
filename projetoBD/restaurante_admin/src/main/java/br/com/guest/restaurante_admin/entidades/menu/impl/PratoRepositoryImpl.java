@@ -19,37 +19,45 @@ public class PratoRepositoryImpl implements PratoRepository {
 
     @Override
     public void salvarPrato(Prato prato) {
-        String sql = "INSERT INTO Prato (nome, imagem_link, descricao, preco) VALUES (?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, prato.getNome(), prato.getImagemLink(), prato.getDescricao(), prato.getPreco());
+        String sql = "INSERT INTO Menu (numero, nome, imagem, descricao, preco) VALUES (?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, prato.getId(), prato.getNome(), prato.getImagemLink(), prato.getDescricao(), prato.getPreco());
     }
 
     @Override
     public Prato buscarPratoPorId(Long id) {
-        String sql = "SELECT * FROM Prato WHERE id = ?";
+        String sql = "SELECT * FROM Menu WHERE numero = ?";
         return jdbcTemplate.queryForObject(sql, new MapeadorPrato(), id);
     }
 
     @Override
     public List<Prato> listarPratos() {
-        String sql = "SELECT * FROM Prato";
+        String sql = "SELECT * FROM Menu";
         return jdbcTemplate.query(sql, new MapeadorPrato());
     }
 
     @Override
     public List<Prato> buscarPratoPorFiltro(String filtro, String valor) {
-        String sql = "SELECT * FROM Prato WHERE "+filtro+" LIKE ?";
+        String sql = "SELECT * FROM Menu WHERE "+filtro+" LIKE ?";
         return jdbcTemplate.query(sql, new MapeadorPrato(), "%"+valor+"%");
     }
 
     @Override
     public void removerPratoPorId(Long id) {
-        String sql = "DELETE FROM Prato WHERE id = ?";
+        String sql = "DELETE FROM Menu WHERE numero = ?";
         jdbcTemplate.update(sql, id);
     }
 
     @Override
     public void atualizarPrato(Prato prato, Long id) {
-        String sql = "UPDATE Prato SET nome = ?, imagem_link = ?, descricao = ?, preco = ? WHERE id = ?";
+        String sql = "UPDATE Menu SET nome = ?, imagem_link = ?, descricao = ?, preco = ? WHERE numero = ?";
         jdbcTemplate.update(sql, prato.getNome(), prato.getImagemLink(), prato.getDescricao(), prato.getPreco(), id);
     }
+
+    @Override
+    public void removerPratoPorIngrediente(Long ingredienteId) {
+        String sql = "DELETE FROM Menu WHERE numero IN (SELECT prato_menu FROM Usa WHERE produto = ?)";
+        jdbcTemplate.update(sql, ingredienteId);
+    }
+
+
 }

@@ -37,6 +37,6 @@ public class MapeadorGarcom implements RowMapper<Garcom> {
         String cpfGarcom = rs.getString("G.cpf");
         String cpfGerente = rs.getString("cpf_gerente");
 
-        return new Garcom(cpfGarcom, cpfGerente, funcionario);
+        return new Garcom(cpfGarcom, cpfGerente, null, funcionario);
     }
 }

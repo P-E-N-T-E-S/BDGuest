@@ -80,7 +80,7 @@ public class PessoaRepositoryImpl implements PessoaRepository {
 
     @Override
     public List<Pessoa> buscarPessoaPorFiltro(String filtro, String valor) {
-        String sql = "SELECT * FROM Pessoas WHERE " + filtro + " LIKE ?";
+        String sql = "SELECT * FROM Pessoa WHERE " + filtro + " LIKE ?";
         try{
             return jdbcTemplate.query(sql, new MapeadorPessoa(), "%" + valor + "%");
         }catch(EmptyResultDataAccessException e){
@@ -100,7 +100,7 @@ public class PessoaRepositoryImpl implements PessoaRepository {
 
     @Override
     public void deletarPessoaPorFiltro(String filtro, String valor) {
-        String sql = "DELETE FROM Pessoas WHERE " + filtro + " LIKE ?";
+        String sql = "DELETE FROM Pessoa WHERE " + filtro + " LIKE ?";
         jdbcTemplate.update(sql, "%"+valor+"%");
     }
 
@@ -112,13 +112,13 @@ public class PessoaRepositoryImpl implements PessoaRepository {
 
     @Override
     public void atualizarPessoaPorFiltro(String filtro, String valor, String campoAlterado, String valorAlterado) {
-        String sql = "UPDATE Pessoas SET "+ campoAlterado + "= ?  WHERE "+filtro+" LIKE ?";
+        String sql = "UPDATE Pessoa SET "+ campoAlterado + "= ?  WHERE "+filtro+" LIKE ?";
         jdbcTemplate.update(sql, valorAlterado, "%"+valor+"%");
         }
 
     @Override
     public void atualizarPessoaPorTelefone(String valor, String campoAlterado, String valorAlterado) {
-        String sql = "UPDATE Pessoas SET "+ campoAlterado + "= ?  WHERE telefone LIKE ? or telefone_2 LIKE ?";
+        String sql = "UPDATE Pessoa SET "+ campoAlterado + "= ?  WHERE telefone LIKE ? or telefone_2 LIKE ?";
         jdbcTemplate.update(sql, valorAlterado, "%"+valor+"%", "%"+valor+"%");
     }
 }

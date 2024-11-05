@@ -20,7 +20,7 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
     @Override
     public void salvarProduto(Produto produto) {
         String sql = "INSERT INTO Produto (id, nome, validade, quantidade, distribuidora, medida) VALUES(?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, produto.getId(), produto.getNome(), produto.getValidade(), produto.getQuantidade(), produto.getDistribuidora());
+        jdbcTemplate.update(sql, produto.getId(), produto.getNome(), produto.getValidade(), produto.getQuantidade(), produto.getDistribuidora(), produto.getMedida());
     }
 
     @Override
@@ -56,7 +56,7 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
     @Override
     public void atualizarProdutoPorId(Produto produto, Integer id) {
         String sql = "UPDATE Produto SET nome = ?, validade = ?, quantidade = ?, distribuidora = ?, medida = ? WHERE id = ?";
-        jdbcTemplate.update(sql, produto.getNome(), produto.getValidade(), produto.getQuantidade(), produto.getDistribuidora(), id);
+        jdbcTemplate.update(sql, produto.getNome(), produto.getValidade(), produto.getQuantidade(), produto.getDistribuidora(), produto.getMedida(), id);
     }
 
     @Override

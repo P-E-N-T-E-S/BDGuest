@@ -48,7 +48,11 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public List<Cliente> buscarClientePorFiltro(String filtro, String valor) throws FiltroNaoDisponivelException {
-        if(colunasCliente.contains(filtro) || colunasPessoa.contains(filtro)) {
+        if(colunasCliente.contains(filtro)) {
+            filtro = "C."+filtro;
+            return clienteRepository.buscarClientePorFiltro(filtro, valor);
+        }else if(colunasPessoa.contains(filtro)) {
+            filtro = "P."+filtro;
             return clienteRepository.buscarClientePorFiltro(filtro, valor);
         }
         throw new FiltroNaoDisponivelException(filtro);

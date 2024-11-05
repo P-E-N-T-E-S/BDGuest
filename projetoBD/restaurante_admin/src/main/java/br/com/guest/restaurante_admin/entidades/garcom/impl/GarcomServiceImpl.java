@@ -2,6 +2,7 @@ package br.com.guest.restaurante_admin.entidades.garcom.impl;
 
 import br.com.guest.restaurante_admin.entidades.atende.Atende;
 import br.com.guest.restaurante_admin.entidades.atende.AtendeService;
+import br.com.guest.restaurante_admin.entidades.funcionarios.Funcionario;
 import br.com.guest.restaurante_admin.entidades.funcionarios.FuncionarioService;
 import br.com.guest.restaurante_admin.entidades.garcom.Garcom;
 import br.com.guest.restaurante_admin.entidades.garcom.GarcomRepository;
@@ -35,8 +36,10 @@ public class GarcomServiceImpl implements GarcomService {
         if(funcionarioService.buscarFuncionarioPorcpf(garcom.getCpf()) == null) {
             throw new FuncionarioNaoEncontradoException(garcom.getCpf());
         }
-        if (funcionarioService.buscarFuncionarioPorcpf(garcom.getGerenteCpf()) != null || garcom.getGerenteCpf() == null) {
-            throw new GerenteNaoEncontradoException(garcom.getGerenteCpf());
+        if(garcom.getGerenteCpf() != null) {
+            if(buscarGarcomPorCpf(garcom.getGerenteCpf()) == null) {
+                throw new GerenteNaoEncontradoException(garcom.getCpf());
+            }
         }
         garcomRepository.salvarGarcom(garcom);
         if(garcom.getGerenteCpf() != null) {
@@ -55,6 +58,15 @@ public class GarcomServiceImpl implements GarcomService {
     public List<Garcom> buscarGarcomPorFiltro(String filtro, String valor) throws FiltroNaoDisponivelException {
         //converter cpf para G.cpf no front
         if(colunasGarcom.contains(filtro)) {
+            filtro = "G."+filtro;
+            return garcomRepository.buscarGarcomPorFiltro(filtro, valor);
+        }
+        if(colunasFuncionario.contains(filtro)) {
+            filtro = "F."+filtro;
+            return garcomRepository.buscarGarcomPorFiltro(filtro, valor);
+        }
+        if(colunasPessoa.contains(filtro)) {
+            filtro = "P."+filtro;
             return garcomRepository.buscarGarcomPorFiltro(filtro, valor);
         }
         throw new FiltroNaoDisponivelException(filtro);
@@ -92,11 +104,13 @@ public class GarcomServiceImpl implements GarcomService {
 
     @Override
     public void atualizarMesas(List<Integer> mesas, String cpfGarcom) {
-        if(buscarGarcomPorCpf(cpfGarcom) != null) {
+        Garcom garcom = buscarGarcomPorCpf(cpfGarcom);
+        if(garcom != null) {
             atendeService.excluirAtendePorGarcom(cpfGarcom);
             for(Integer mesa : mesas) {
                 atendeService.salvarAtende(new Atende(cpfGarcom, mesa));
             }
+            return;
         }
         throw new GarcomNaoEncontradoException(cpfGarcom);
     }

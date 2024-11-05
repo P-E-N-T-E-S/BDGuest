@@ -15,7 +15,7 @@ public class MapeadorReserva implements RowMapper<Reserva> {
     @Override
     public Reserva mapRow(ResultSet rs, int rowNum) throws SQLException {
         Integer id = rs.getInt("numero_id");
-        Integer quantidadeCadeiras = rs.getInt("quantidade_cadeira");
+        Integer quantidadeCadeiras = rs.getInt("quantidade_cadeiras");
         Mesa mesa = new Mesa(id, quantidadeCadeiras);
 
         String cpfPessoa = rs.getString("P.cpf");
@@ -33,14 +33,14 @@ public class MapeadorReserva implements RowMapper<Reserva> {
 
         String cpf = rs.getString("C.cpf");
         Integer fidelidade = rs.getInt("fidelidade");
-        String metodoPagamento1 = rs.getString("metodo_pagamento_1");
-        String metodoPagamento2 = rs.getString("metodo_pagamento_2");
+        String metodoPagamento1 = rs.getString("metodo_pagamento1");
+        String metodoPagamento2 = rs.getString("metodo_pagamento2");
         Cliente cliente = new Cliente(pessoa, cpf, fidelidade, metodoPagamento1, metodoPagamento2);
 
         String cpfCliente = rs.getString("cpf_cliente");
         Date data = rs.getDate("data");
         Integer quantidadePessoas = rs.getInt("quantidade_pessoas");
-        Integer id_mesa = rs.getInt("id_mesa");
+        Integer id_mesa = rs.getInt("numero_mesa");
         LocalTime horarioEntrada = rs.getTime("horario_entrada").toLocalTime();
 
 

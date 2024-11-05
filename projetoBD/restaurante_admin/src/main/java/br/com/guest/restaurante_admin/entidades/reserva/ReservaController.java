@@ -1,9 +1,6 @@
 package br.com.guest.restaurante_admin.entidades.reserva;
 
-import br.com.guest.restaurante_admin.execoes.ClienteNaoCadastradoException;
-import br.com.guest.restaurante_admin.execoes.DataInvalidaException;
-import br.com.guest.restaurante_admin.execoes.FiltroNaoDisponivelException;
-import br.com.guest.restaurante_admin.execoes.MesaNaoEncontradaException;
+import br.com.guest.restaurante_admin.execoes.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +27,8 @@ public class ReservaController {
             return new ResponseEntity<>("Mesa: "+e.getMessage()+" nao encontrada", HttpStatus.BAD_REQUEST);
         }catch (ClienteNaoCadastradoException e){
             return new ResponseEntity<>("Cpf: "+e.getMessage()+" nao cadastrado como cliente", HttpStatus.BAD_REQUEST);
+        }catch (QuantidadeDeCadeirasInsuficientesException e){
+            return new ResponseEntity<>("Reserva Salva com mais cadeiras do que a mesa", HttpStatus.OK);
         }
         return new ResponseEntity<>("Reserva Cadastrado com Sucesso", HttpStatus.OK);
     }
@@ -40,7 +39,7 @@ public class ReservaController {
     }
 
     @GetMapping("/{filtro}") //enviar data por ano-mes-dia
-    public ResponseEntity<Object> buscarDataReservaPorData(@PathVariable String filtro, @RequestParam String valor) {
+    public ResponseEntity<Object> buscarReservaPorDataOuCpf(@PathVariable String filtro, @RequestParam String valor) {
         try {
             return new ResponseEntity<>(reservaService.buscarReservasPorFiltro(filtro, valor), HttpStatus.OK);
         }catch (DataInvalidaException e){
@@ -51,7 +50,7 @@ public class ReservaController {
     }
 
     @GetMapping("/{cpf}/data")
-    public ResponseEntity<Reserva> buscarReservaPorDataECpf(@PathVariable String cpf, @RequestParam Date data) {
+    public ResponseEntity<Reserva> buscarReservaPorDataECpf(@PathVariable String cpf, @RequestParam String data) {
         return new ResponseEntity<>(reservaService.buscarReservaPorCpfEData(cpf, data), HttpStatus.OK);
     }
 

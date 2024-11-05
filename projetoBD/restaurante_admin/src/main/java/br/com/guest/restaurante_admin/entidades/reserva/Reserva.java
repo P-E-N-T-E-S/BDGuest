@@ -17,8 +17,8 @@ public class Reserva {
     @JsonProperty("cpf_cliente")
     private String cpfCliente;
     private Date data;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     @JsonProperty("horario_entrada")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private LocalTime horarioEntrada;
     @JsonProperty("quantidade_pessoas")
     private Integer quantidadePessoas;

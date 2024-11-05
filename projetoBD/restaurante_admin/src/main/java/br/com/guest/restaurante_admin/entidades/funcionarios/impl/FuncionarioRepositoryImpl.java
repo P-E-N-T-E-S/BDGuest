@@ -42,8 +42,12 @@ public class FuncionarioRepositoryImpl implements FuncionarioRepository {
 
     @Override
     public Funcionario buscarFuncionarioPorCpf(String cpf) {
-        String sql = "SELECT * FROM Pessoa P join Funcionario F on p.cpf = F.cpf WHERE F.cpf = ?";
-        return jdbcTemplate.queryForObject(sql, new MapeadorFuncionario(), cpf);
+        try {
+            String sql = "SELECT * FROM Pessoa P join Funcionario F on p.cpf = F.cpf WHERE F.cpf = ?";
+            return jdbcTemplate.queryForObject(sql, new MapeadorFuncionario(), cpf);
+        }catch(EmptyResultDataAccessException e){
+            return null;
+        }
     }
 
     @Override

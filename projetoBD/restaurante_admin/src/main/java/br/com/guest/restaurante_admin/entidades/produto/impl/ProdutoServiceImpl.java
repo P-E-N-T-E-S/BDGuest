@@ -2,10 +2,12 @@ package br.com.guest.restaurante_admin.entidades.produto.impl;
 
 import br.com.guest.restaurante_admin.entidades.contem.Contem;
 import br.com.guest.restaurante_admin.entidades.contem.ContemService;
+import br.com.guest.restaurante_admin.entidades.estoque.EstoqueService;
 import br.com.guest.restaurante_admin.entidades.produto.Produto;
 import br.com.guest.restaurante_admin.entidades.produto.ProdutoRepository;
 import br.com.guest.restaurante_admin.entidades.produto.ProdutoService;
 import br.com.guest.restaurante_admin.execoes.CampoDeAlteracaoNaoEncontradoException;
+import br.com.guest.restaurante_admin.execoes.EstoqueNaoEncontradoException;
 import br.com.guest.restaurante_admin.execoes.EstoqueNaoInformadoException;
 import br.com.guest.restaurante_admin.execoes.FiltroNaoDisponivelException;
 import org.springframework.stereotype.Service;
@@ -17,12 +19,14 @@ public class ProdutoServiceImpl implements ProdutoService {
 
     private ProdutoRepository produtoRepository;
     private ContemService contemService;
+    private EstoqueService estoqueService;
 
     private List<String> camposProduto = List.of("id", "nome", "validade", "quantidade", "distribuidora");
 
-    public ProdutoServiceImpl(ProdutoRepository produtoRepository, ContemService contemService) {
+    public ProdutoServiceImpl(ProdutoRepository produtoRepository, ContemService contemService, EstoqueService estoqueService) {
         this.produtoRepository = produtoRepository;
         this.contemService = contemService;
+        this.estoqueService = estoqueService;
     }
 
     @Override
@@ -30,6 +34,9 @@ public class ProdutoServiceImpl implements ProdutoService {
         produtoRepository.salvarProduto(produto);
         if (produto.getEstoques() != null) {
             for (Integer estoque : produto.getEstoques()) {
+                if(estoqueService.buscarEstoque(estoque) == null){
+                    throw new EstoqueNaoEncontradoException(estoque.toString());
+                }
                 contemService.salvarContem(new Contem(produto.getId(), estoque));
             }
         }else{

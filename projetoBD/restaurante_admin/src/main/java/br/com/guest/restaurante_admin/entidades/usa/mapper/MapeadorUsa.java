@@ -18,14 +18,14 @@ public class MapeadorUsa implements RowMapper<Usa> {
         Integer quantidade = rs.getInt("quantidade");
         String distribuidora = rs.getString("distribuidora");
         String medida = rs.getString("medida");
-        Produto produto = new Produto(id, nome, validade, quantidade, distribuidora, medida);
+        Produto produto = new Produto(id, nome, validade, quantidade, distribuidora, null, medida);
 
         Integer numero = rs.getInt("numero");
         String nomePrato  = rs.getString("M.nome");
         String descricao = rs.getString("descricao");
         double preco = rs.getDouble("preco");
         String imagem = rs.getString("imagem");
-        Prato prato = new Prato(numero, nomePrato, descricao, imagem, preco);
+        Prato prato = new Prato(numero, nomePrato, descricao, imagem, preco, null);
 
         Integer idProduto = rs.getInt("produto");
         Integer idPrato = rs.getInt("prato_menu");

@@ -1,29 +1,26 @@
 package br.com.guest.restaurante_admin.entidades.menu;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
 public class Prato {
+    @JsonProperty("id")
     private Integer id;
+    @JsonProperty("nome")
     private String nome;
     @JsonProperty("imagem_link")
     private String imagemLink;
+    @JsonProperty("descricao")
     private String descricao;
+    @JsonProperty("preco")
     private double preco;
-    @JsonIgnore
-    private List<Integer> ingredientes;
+    @JsonProperty("ingredientes")
+    private List<List<Integer>> ingredientes;
 
-    public Prato(Integer id, String nome, String imagemLink, String descricao, double preco) {
-        this.id = id;
-        this.nome = nome;
-        this.imagemLink = imagemLink;
-        this.descricao = descricao;
-        this.preco = preco;
-    }
-
-    public Prato(Integer id, String nome, String imagemLink, String descricao, double preco, List<Integer> ingredientes) {
+    public Prato(Integer id, String nome, String imagemLink, String descricao, double preco, List<List<Integer>> ingredientes) {
         this.id = id;
         this.nome = nome;
         this.imagemLink = imagemLink;
@@ -72,11 +69,11 @@ public class Prato {
         this.preco = preco;
     }
 
-    public List<Integer> getIngredientes() {
+    public List<List<Integer>> getIngredientes() {
         return ingredientes;
     }
 
-    public void setIngredientes(List<Integer> ingredientes) {
+    public void setIngredientes(List<List<Integer>> ingredientes) {
         this.ingredientes = ingredientes;
     }
 }

@@ -12,8 +12,8 @@ CREATE TABLE Pessoa (
     cep INTEGER,
     email VARCHAR(50),
     data_nascimento DATE,
-    telefone INTEGER,
-    telefone_2 INTEGER
+    telefone VARCHAR(20),
+    telefone_2 VARCHAR(20)
 );
 
 CREATE TABLE Funcionario (
@@ -72,6 +72,7 @@ CREATE TABLE Estoque (
     bairro VARCHAR(50),
     cep VARCHAR(50),
     cidade VARCHAR(50),
+    estado VARCHAR(50),
     numero INTEGER
 );
 
@@ -97,7 +98,7 @@ CREATE TABLE Cliente (
 
 CREATE TABLE Reserva (
     data DATE,
-    horario_entrada TIMESTAMP,
+    horario_entrada TIME,
     quantidade_pessoas INTEGER,
     cpf_cliente VARCHAR(11),
     numero_mesa SMALLINT,
@@ -114,8 +115,7 @@ CREATE TABLE Pedido (
     id_comanda INTEGER,
     id_menu INTEGER,
     horario DATETIME,
-    quantidade INTEGER,
-
+    quantidade INTEGER
 );
 
 ALTER TABLE Funcionario ADD CONSTRAINT FK_Funcionarios_2
@@ -161,7 +161,7 @@ ALTER TABLE Usa ADD CONSTRAINT FK_Usa_3
 ALTER TABLE Contem ADD CONSTRAINT FK_Contem_1
     FOREIGN KEY (produto)
     REFERENCES Produto (id)
-    ON DELETE RESTRICT;
+    ON DELETE CASCADE;
 
 ALTER TABLE Contem ADD CONSTRAINT FK_Contem_2
     FOREIGN KEY (estoque)
@@ -199,4 +199,5 @@ ALTER TABLE Comanda ADD CONSTRAINT FK_mesa_1
     FOREIGN KEY (mesa)
     REFERENCES Mesa (numero_id);
 
-SELECT * FROM Mesa M JOIN Comanda C on C.mesa = M.numero_id
+SELECT * FROM Reserva R join Mesa M on M.numero_id = R.numero_mesa join Cliente C on R.cpf_cliente = C.cpf join Pessoa P on P.cpf = C.cpf WHERE R.cpf_cliente = '70963500473' AND R.data = '2024-11-14'
+DELETE FROM Menu

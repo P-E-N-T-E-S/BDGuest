@@ -25,7 +25,7 @@ public class ClienteController {
     public ResponseEntity<String> salvarCliente(@RequestBody Cliente cliente) {
         try {
             clienteService.salvarCliente(cliente);
-            return new ResponseEntity("Cliente salvo com sucesso!", HttpStatus.CREATED);
+            return new ResponseEntity<>("Cliente salvo com sucesso!", HttpStatus.CREATED);
         }catch (PessoaNaoEncontradaException e) {
             return new ResponseEntity<>("Cpf: "+e.getMessage()+" não encontrado!", HttpStatus.BAD_REQUEST);
         }

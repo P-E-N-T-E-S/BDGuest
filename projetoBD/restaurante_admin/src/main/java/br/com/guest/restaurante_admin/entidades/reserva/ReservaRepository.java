@@ -7,8 +7,8 @@ public interface ReservaRepository {
     void salvarReserva(Reserva reserva);
     List<Reserva> listarReservas();
     List<Reserva> buscarReservaPorCpf(String cpf);
-    List<Reserva> buscarReservaPorData(Date data);
-    Reserva buscarReservaPorCpfEData(String cpf, Date data);
+    List<Reserva> buscarReservaPorData(String data);
+    Reserva buscarReservaPorCpfEData(String cpf, String data);
     void atualizarReserva(Reserva reserva, String cpf, Date data);
-    void excluirReserva(String cpf, Date data);
+    void excluirReserva(String cpf, String data);
 }

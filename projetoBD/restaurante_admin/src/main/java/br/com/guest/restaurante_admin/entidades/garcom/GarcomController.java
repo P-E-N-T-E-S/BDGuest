@@ -37,11 +37,6 @@ public class GarcomController {
         return new ResponseEntity<>(garcomService.listarGarcoms(), HttpStatus.OK);
     }
 
-    @GetMapping("/{cpf}")
-    public ResponseEntity<Garcom> buscarGarcomPorCpf(@PathVariable String cpf) {
-        return new ResponseEntity<>(garcomService.buscarGarcomPorCpf(cpf), HttpStatus.OK);
-    }
-
     @GetMapping("/{filtro}")
     public ResponseEntity<Object> buscarGarcomPorFiltro(@PathVariable String filtro, @RequestParam String valor) {
         try{

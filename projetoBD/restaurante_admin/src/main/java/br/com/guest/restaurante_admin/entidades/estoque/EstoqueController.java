@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("Estoque")
+@RequestMapping("estoque")
 public class EstoqueController {
 
     private EstoqueService estoqueService;
@@ -21,12 +21,12 @@ public class EstoqueController {
     @PostMapping
     public ResponseEntity<String> salvarEstoque(@RequestBody Estoque estoque) {
         estoqueService.salvarEstoque(estoque);
-        return ResponseEntity.ok("Estoque salvo com sucesso!");
+        return new ResponseEntity<>("Estoque salvo com sucesso!", HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<List<Estoque>> listarEstoque() {
-        return ResponseEntity.ok(estoqueService.listarEstoque());
+        return new ResponseEntity<>(estoqueService.listarEstoque(), HttpStatus.OK);
     }
 
     @GetMapping("/{filtro}")
@@ -34,7 +34,7 @@ public class EstoqueController {
         return new ResponseEntity<>(estoqueService.buscarEstoquePorFiltro(filtro, valor), HttpStatus.OK);
     }
 
-    @PostMapping("/{filtro}")
+    @PutMapping("/{filtro}")
     public ResponseEntity<String> atualizarEstoque(@PathVariable String filtro, @RequestParam String valor, @RequestBody HashMap<String, Object> alteracoes) {
         estoqueService.alterarEstoquePorFiltro(filtro, valor, (String) alteracoes.get("campo"), (String) alteracoes.get("valor"));
         return new ResponseEntity<>("Estoque alterado com sucesso", HttpStatus.OK);

@@ -1,5 +1,8 @@
 package br.com.guest.restaurante_admin.entidades.produto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 import java.util.List;
 
@@ -9,17 +12,9 @@ public class Produto {
     private Date validade;
     private Integer quantidade;
     private String distribuidora;
+    @JsonProperty("estoques")
     private List<Integer> estoques;
     private String medida;
-
-    public Produto(Integer id, String nome, Date validade, Integer quantidade, String distribuidora, String medida) {
-        this.id = id;
-        this.nome = nome;
-        this.validade = validade;
-        this.quantidade = quantidade;
-        this.distribuidora = distribuidora;
-        this.medida = medida;
-    }
 
     public Produto(Integer id, String nome, Date validade, Integer quantidade, String distribuidora, List<Integer> estoques, String medida) {
         this.id = id;
@@ -71,19 +66,19 @@ public class Produto {
         this.distribuidora = distribuidora;
     }
 
-    public String getMedida() {
-        return medida;
-    }
-
-    public void setMedida(String medida) {
-        this.medida = medida;
-    }
-
     public List<Integer> getEstoques() {
         return estoques;
     }
 
     public void setEstoques(List<Integer> estoques) {
         this.estoques = estoques;
+    }
+
+    public String getMedida() {
+        return medida;
+    }
+
+    public void setMedida(String medida) {
+        this.medida = medida;
     }
 }

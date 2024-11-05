@@ -3,6 +3,7 @@ package br.com.guest.restaurante_admin.entidades.mesa.impl;
 import br.com.guest.restaurante_admin.entidades.mesa.Mesa;
 import br.com.guest.restaurante_admin.entidades.mesa.MesaRepository;
 import br.com.guest.restaurante_admin.entidades.mesa.mapper.MapeadorMesa;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -19,14 +20,18 @@ public class MesaRepositoryImpl implements MesaRepository {
 
     @Override
     public void salvarMesa(Mesa mesa) {
-        String sql = "INSERT INTO Mesa (numero_id, quantidade_cadeiras) VALUES (?,?,?)";
+        String sql = "INSERT INTO Mesa (numero_id, quantidade_cadeiras) VALUES (?,?)";
         jdbcTemplate.update(sql, mesa.getNumeroId(), mesa.getQuantidadeCadeiras());
     }
 
     @Override
     public Mesa acharMesaPorId(Integer id) {
+        try{
         String sql = "SELECT * FROM Mesa WHERE numero_id = ?";
         return jdbcTemplate.queryForObject(sql, new MapeadorMesa(), id);
+        }catch(EmptyResultDataAccessException e){
+            return null;
+        }
     }
 
     @Override
@@ -37,7 +42,7 @@ public class MesaRepositoryImpl implements MesaRepository {
 
     @Override
     public List<Mesa> listarMesaPorGarcom(String cpfGarcom) {
-        String sql = "SELECT * FROM Mesa WHERE id in (SELECT fk_Mesas_numero_id FROM Atende WHERE fk_Garcom_cpf = ?)";
+        String sql = "SELECT * FROM Mesa WHERE numero_id in (SELECT fk_Mesas_numero_id FROM Atende WHERE fk_Garcom_cpf = ?)";
         return jdbcTemplate.query(sql, new MapeadorMesa(), cpfGarcom);
     }
 

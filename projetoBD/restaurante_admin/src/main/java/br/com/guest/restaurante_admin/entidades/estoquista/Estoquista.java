@@ -11,6 +11,7 @@ public class Estoquista {
     private String cpf;
     @JsonProperty("cpg_gerente")
     private String cpfGerente;
+    @JsonProperty("estoque_id")
     private Integer estoqueId;
 
     public Estoquista(Funcionario funcionario, Estoque estoque, String cpf, String cpfGerente, Integer estoqueId) {

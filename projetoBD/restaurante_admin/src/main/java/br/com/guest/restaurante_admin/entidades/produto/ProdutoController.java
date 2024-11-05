@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/produtos")
+@RequestMapping("/produto")
 public class ProdutoController {
 
     @Autowired
@@ -17,11 +17,6 @@ public class ProdutoController {
     public ResponseEntity<String> salvarProduto(@RequestBody Produto produto) {
         produtoService.salvarProduto(produto);
         return new ResponseEntity<>("Produto salvo com sucesso!", HttpStatus.CREATED);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Produto> buscarProdutoPorId(@PathVariable Integer id) {
-        return new ResponseEntity<>(produtoService.buscarProdutoPorId(id), HttpStatus.OK);
     }
 
     @GetMapping
@@ -41,8 +36,8 @@ public class ProdutoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Produto> atualizarProduto(@RequestBody Produto produto, @PathVariable Integer id) {
+    public ResponseEntity<String> atualizarProduto(@RequestBody Produto produto, @PathVariable Integer id) {
         produtoService.atualizarProdutoPorId(produto, id);
-        return ResponseEntity.ok(produto);
+        return new ResponseEntity<>("Produto alterado com sucesso!", HttpStatus.OK);
     }
 }

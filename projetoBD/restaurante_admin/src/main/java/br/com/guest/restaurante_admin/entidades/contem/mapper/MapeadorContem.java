@@ -29,7 +29,7 @@ public class MapeadorContem implements RowMapper<Contem> {
         String distribuidora = rs.getString("distribuidora");
         String medida = rs.getString("medida");
 
-        Produto produto = new Produto(idProduto, nome, validade, quantidade, distribuidora, medida);
+        Produto produto = new Produto(idProduto, nome, validade, quantidade, distribuidora, null, medida);
 
         return new Contem(produto, estoque, idProduto, idEstoque);
     }

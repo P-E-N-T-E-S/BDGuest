@@ -1,8 +1,6 @@
 package br.com.guest.restaurante_admin.entidades.mesa;
 
-import br.com.guest.restaurante_admin.entidades.garcom.Garcom;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class Mesa {
 
