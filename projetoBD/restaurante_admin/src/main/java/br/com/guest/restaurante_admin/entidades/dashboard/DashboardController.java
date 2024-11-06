@@ -39,22 +39,22 @@ public class DashboardController {
         return new ResponseEntity<>(dashboardService.lucroBrutoHoje(), HttpStatus.OK);
     }
 
-    @GetMapping("quantidade_reservas_dia")
+    @GetMapping("/quantidade_reservas_dia")
     public ResponseEntity<Map<String, Object>> quantidadeReservasDia() {
         return new ResponseEntity<>(dashboardService.quantidadeDeReservasPorDia(), HttpStatus.OK);
     }
 
-    @GetMapping("distribuicao_preco_pratos")
+    @GetMapping("/distribuicao_preco_pratos")
     public ResponseEntity<List<Double>> distribuicaoPrecoPratos() {
         return new ResponseEntity<>(dashboardService.distribuicaoDoPrecoDosPratos(), HttpStatus.OK);
     }
 
-    @GetMapping("produtos_proximos_validade")
+    @GetMapping("/produtos_proximos_validade")
     public ResponseEntity<Map<String, Object>> produtosProximosAValidade() {
         return new ResponseEntity<>(dashboardService.produtosProximosAValidade(), HttpStatus.OK);
     }
 
-    @GetMapping("distribuicao_pedidos_hora")
+    @GetMapping("/distribuicao_pedidos_hora")
     public ResponseEntity<Map<String, Object>> distribuicaoPedidosHora() {
         return new ResponseEntity<>(dashboardService.distribuicaoDosPedidosPorHoraDoDia(), HttpStatus.OK);
     }
