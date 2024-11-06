@@ -15,7 +15,7 @@ public class Comanda {
     private String cpfPessoa;
     @JsonProperty("nome_cliente")
     private String nomeCliente;
-    private LocalDateTime acesso;
+    private LocalDateTime acesso; //TODO: fazer o sql fazer isso
     @JsonProperty("mesa_id")
     private Integer mesaId;
 

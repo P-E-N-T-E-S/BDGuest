@@ -15,7 +15,7 @@ public class Pedido {
     private Integer idComanda;
     @JsonProperty("id_prato")
     private Integer idPrato;
-    private LocalDateTime horario;
+    private LocalDateTime horario; //TODO: fazer o sql fazer isso
     private Integer quantidade;
 
     public Pedido(Prato prato, Integer idPedido, Integer idComanda, Integer idPrato, LocalDateTime horario, Integer quantidade) {
