@@ -5,7 +5,6 @@ import br.com.guest.restaurante_admin.entidades.dashboard.DashboardService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalTime;
 import java.util.*;
 
 @Service
@@ -90,11 +89,11 @@ public class DashboardServiceImpl implements DashboardService {
     @Override
     public Map<String, Object> distribuicaoDosPedidosPorHoraDoDia() {
         List<Map<String, Object>> query = dashboardRepository.distribuicaoDosPedidosPorHoraDoDia();
-        List<LocalTime> hora = new ArrayList<>();
-        List<BigDecimal> pedidos = new ArrayList<>();
+        List<Integer> hora = new ArrayList<>();
+        List<Long> pedidos = new ArrayList<>();
         for (Map<String, Object> map : query) {
-            hora.add((LocalTime)map.get("hora"));
-            pedidos.add((BigDecimal)map.get("pedidos"));
+            hora.add((Integer)map.get("hora"));
+            pedidos.add((Long)map.get("pedidos"));
         }
         Map<String, Object> resposta = new HashMap<>();
         resposta.put("pedidos", pedidos);

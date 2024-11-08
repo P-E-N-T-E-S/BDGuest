@@ -204,4 +204,3 @@ JOIN Usa u ON p.id = u.produto
 SET p.quantidade = p.quantidade - (u.quantidade * 11)
 WHERE prato_menu = 1;
 
-SELECT HOUR(horario) as hora, COUNT(*) as pedidos FROM Pedido GROUP BY HOUR(horario)
