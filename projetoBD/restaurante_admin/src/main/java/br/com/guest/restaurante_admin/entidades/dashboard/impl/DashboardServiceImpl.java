@@ -50,10 +50,10 @@ public class DashboardServiceImpl implements DashboardService {
     public Map<String, Object> quantidadeDeReservasPorDia() {
         List<Map<String, Object>> query = dashboardRepository.quantidadeDeReservasPorDia();
         List<Date> datas = new ArrayList<>();
-        List<BigDecimal> reservas = new ArrayList<>();
+        List<Long> reservas = new ArrayList<>();
         for (Map<String, Object> map : query) {
             datas.add((Date)map.get("dia"));
-            reservas.add((BigDecimal)map.get("reservas"));
+            reservas.add((Long)map.get("reservas"));
         }
         Map<String, Object> resposta = new HashMap<>();
         resposta.put("reservas", reservas);

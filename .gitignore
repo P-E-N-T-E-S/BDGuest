@@ -39,7 +39,7 @@ temp/
 application-local.properties
 projetoBD/restaurante_admin/.env
 
-# Arquivos de controle de versão de dependências (Maven ou Gradle)
+# Arquivos de controle de versão de dependências (Maven ou Gradle e NPM)
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -48,6 +48,8 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
+/projetoBD/restaurante_admin/node_modules/
+
 
 # Arquivos de cache de IDEs
 .idea/
