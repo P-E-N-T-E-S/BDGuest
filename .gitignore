@@ -37,7 +37,7 @@ temp/
 
 # Arquivos de propriedades locais
 application-local.properties
-.env
+projetoBD/restaurante_admin/.env
 
 # Arquivos de controle de versão de dependências (Maven ou Gradle)
 pom.xml.tag

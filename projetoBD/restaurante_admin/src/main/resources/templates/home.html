@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type="text/css" href='./estilo.css?v1.3'>
+    <script type="text/javascript" src="/index.js"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+    <div class="body-container">
+        <div class="sidebar">
+            <div class="sidebar-section">
+            </div>
+            <div class="sidebar-section">
+                <a class="sidebar-object" href="adicionar_pessoa"> Adicionar Pessoa </a>
+            </div>
+            <div class="sidebar-section">
+                <a class="sidebar-object" onclick="recuperarDados()"> Recuperar Pessoa </a>
+            </div>
+            <div class="sidebar-section">
+                <a class="sidebar-object" onclick="deletarDados()"> Deletar Pessoa </a>
+            </div>
+            <div class="sidebar-section">
+            </div>
+        </div>
+        <div class="graph">
+            <label> Quantidade de Pratos por dia</label>
+            <canvas id="myChart"> </canvas>
+
+        </div>
+        <div class="graph"> </div>
+    </div>
+</body>
+
+<script>
+    const ctx = document.getElementById('myChart').getContext('2d');
+    // Busca dados da API
+    fetch('http://localhost:8080/dashboard/pratos_por_dia', {
+        headers: { 'Content-Type': 'application/json' }
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Extrai as datas e vendas do JSON
+            const labels = data.datas;
+            const values = data.vendas; // Exemplo: [9, 3, 9]
+
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Quantidade de Pratos pedidos por Dia',
+                        data: values,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error("Erro ao buscar dados:", error));
+</script>
+</html>
