@@ -237,3 +237,7 @@ CREATE TRIGGER reduzir_ingredientes_insert AFTER INSERT ON Pedido
 
         UPDATE Produto p JOIN Usa u ON p.id = u.produto SET p.quantidade = p.quantidade - (u.quantidade * NEW.quantidade ) WHERE prato_menu = NEW.id_menu;
     end //
+
+DELIMITER ;
+
+SELECT SUM(PL.quantidade) as pratos_vendidos, DATE(PL.horario_pedido) as dia FROM Pedidos_log PL GROUP BY DATE(PL.horario_pedido) ORDER BY DATE(PL.horario_pedido);

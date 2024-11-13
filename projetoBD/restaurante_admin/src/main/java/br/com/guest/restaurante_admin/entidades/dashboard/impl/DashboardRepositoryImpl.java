@@ -18,25 +18,25 @@ public class DashboardRepositoryImpl implements DashboardRepository {
 
     @Override
     public Map<String, Object> pratoMaisVendido() {
-        String sql = "SELECT M.nome as prato, SUM(P.quantidade) as vendas FROM Pedido P JOIN Menu M on P.id_menu=M.numero GROUP BY M.nome ORDER BY SUM(P.quantidade) DESC LIMIT 1";
+        String sql = "SELECT M.nome as prato, SUM(P.quantidade) as vendas FROM Pedidos_log P JOIN Menu M on P.id_prato=M.numero GROUP BY M.nome ORDER BY SUM(P.quantidade) DESC LIMIT 1";
         return jdbcTemplate.queryForMap(sql);
     }
 
     @Override
     public Map<String, Object> quantidadePedidosRealizadosHoje() {
-        String sql = "SELECT Count(*) as vendas FROM Pedido WHERE DATE(horario) = DATE(NOW());";
+        String sql = "SELECT Count(*) as vendas FROM Pedidos_log WHERE DATE(horario_pedido) = DATE(NOW());";
         return jdbcTemplate.queryForMap(sql);
     }
 
     @Override
     public Map<String, Object> lucroBrutoHoje() {
-        String sql = "SELECT SUM(ROUND((M.preco * P.quantidade), 2)) as ganho FROM Pedido P JOIN Menu M on M.numero = P.id_menu";
+        String sql = "SELECT SUM(ROUND((M.preco * PL.quantidade), 2)) as ganho FROM Pedidos_log PL JOIN Menu M on M.numero = PL.id_prato WHERE DATE(PL.horario_pedido) = DATE(NOW())";
         return jdbcTemplate.queryForMap(sql);
     }
 
     @Override
     public List<Map<String, Object>> quantidadeDePratosServidosPorDia() {
-        String sql = "SELECT SUM(P.quantidade) as pratos_vendidos, DATE(P.horario) as dia FROM Pedido P GROUP BY DATE(P.horario) ORDER BY DATE(P.horario);";
+        String sql = "SELECT SUM(PL.quantidade) as pratos_vendidos, DATE(PL.horario_pedido) as dia FROM Pedidos_log PL GROUP BY DATE(PL.horario_pedido) ORDER BY DATE(PL.horario_pedido);";
         return jdbcTemplate.queryForList(sql);
     }
 
