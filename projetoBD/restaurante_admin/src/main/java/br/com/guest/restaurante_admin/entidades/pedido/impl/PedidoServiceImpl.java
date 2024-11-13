@@ -1,5 +1,6 @@
 package br.com.guest.restaurante_admin.entidades.pedido.impl;
 
+import br.com.guest.restaurante_admin.entidades.comanda.ComandaService;
 import br.com.guest.restaurante_admin.entidades.pedido.Pedido;
 import br.com.guest.restaurante_admin.entidades.pedido.PedidoRepository;
 import br.com.guest.restaurante_admin.entidades.pedido.PedidoService;
@@ -19,10 +20,13 @@ public class PedidoServiceImpl implements PedidoService {
 
     private UsaService usaService;
 
-    public PedidoServiceImpl(PedidoRepository pedidoRepository, ProdutoService produtoService, UsaService usaService) {
+    private ComandaService comandaService;
+
+    public PedidoServiceImpl(PedidoRepository pedidoRepository, ProdutoService produtoService, UsaService usaService, ComandaService comandaService) {
         this.pedidoRepository = pedidoRepository;
         this.produtoService = produtoService;
         this.usaService = usaService;
+        this.comandaService = comandaService;
     }
 
     @Override
@@ -57,7 +61,8 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public double desassociarPedidos(Integer idComanda) {
         double valorTotal = pedidoRepository.calcularTotal(idComanda);
-        pedidoRepository.desassociarPedidos(idComanda);
+        pedidoRepository.excluirPedidoPorComanda(idComanda);
+        comandaService.excluirComanda(idComanda);
         return valorTotal;
     }
 }

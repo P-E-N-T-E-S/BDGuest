@@ -1,5 +1,6 @@
 package br.com.guest.restaurante_admin.entidades.comanda;
 
+import br.com.guest.restaurante_admin.execoes.ClienteNaoCadastradoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +19,12 @@ public class ComandaController {
 
     @PostMapping
     public ResponseEntity<String> cadastrarComanda(@RequestBody Comanda comanda) {
-        this.comandaService.salvarComanda(comanda);
-        return new ResponseEntity<>("Comanda Cadastrada com sucesso", HttpStatus.OK);
+        try {
+            this.comandaService.salvarComanda(comanda);
+            return new ResponseEntity<>("Comanda criada com sucesso", HttpStatus.CREATED);
+        }catch (ClienteNaoCadastradoException e) {
+            return new ResponseEntity<>("Comanda criada mas cliente não está cadastrado", HttpStatus.OK);
+        }
     }
 
     @GetMapping
@@ -34,12 +39,12 @@ public class ComandaController {
 
     @PutMapping("/{id}")
     public ResponseEntity<String> atualizarComanda(@RequestBody Comanda comanda, @PathVariable Integer id) {
-        comandaService.alterarComanda(comanda, id);
-        return new ResponseEntity<>("Comanda Atualizada com sucesso", HttpStatus.OK);
+            comandaService.alterarComanda(comanda, id);
+            return new ResponseEntity<>("Comanda Atualizada com sucesso", HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletarComandaPorId(@PathVariable String id) {
+    public ResponseEntity<String> deletarComandaPorId(@PathVariable Integer id) {
         comandaService.excluirComanda(id);
         return new ResponseEntity<>("Comanda Deletada com sucesso", HttpStatus.OK);
     }

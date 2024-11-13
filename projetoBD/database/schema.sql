@@ -21,18 +21,23 @@ CREATE TABLE Funcionario (
     data_contratacao DATE,
     salario FLOAT,
     horario_entrada TIME,
-    horario_saida TIME
+    horario_saida TIME,
+    CONSTRAINT fk_Pessoa_Funcionario FOREIGN KEY (cpf) REFERENCES Pessoa(cpf)
 );
 
 CREATE TABLE Garcom (
     cpf varchar(11) PRIMARY KEY,
-    cpf_gerente varchar(11)
+    cpf_gerente varchar(11),
+    CONSTRAINT fk_Funcionario_Garcom FOREIGN KEY (cpf) REFERENCES Funcionario(cpf),
+    CONSTRAINT fk_Gerente_Garcom FOREIGN KEY (cpf_gerente) REFERENCES Garcom(cpf)
 );
 
 CREATE TABLE Estoquista (
     cpf varchar(11) PRIMARY KEY,
     cpf_gerente varchar(11),
-    estoque INTEGER
+    estoque INTEGER,
+    CONSTRAINT fk_Funcionario_Estoquista FOREIGN KEY (cpf) REFERENCES Funcionario(cpf),
+    CONSTRAINT fk_Gerente_Estoquista FOREIGN KEY (cpf_gerente) REFERENCES Estoquista(cpf)
 );
 
 CREATE TABLE Mesa (
@@ -53,11 +58,13 @@ CREATE TABLE Comanda (
     cpf_pessoa varchar(11),
     acesso DATETIME,
     nome_cliente VARCHAR(50),
-    mesa SMALLINT
+    mesa SMALLINT,
+    CONSTRAINT fk_Cliente_Comanda FOREIGN KEY (cpf_pessoa) REFERENCES Cliente(cpf),
+    CONSTRAINT fk_Mesa_Comanda FOREIGN KEY (mesa) REFERENCES Mesa(numero_id)
 );
 
 CREATE TABLE Produto (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(100),
     validade DATE,
     quantidade INTEGER,
@@ -80,20 +87,25 @@ CREATE TABLE Usa (
     produto int,
     prato_menu INTEGER,
     quantidade INTEGER,
-    PRIMARY KEY (produto, prato_menu)
+    PRIMARY KEY (produto, prato_menu),
+    CONSTRAINT fk_Menu_Usa FOREIGN KEY (prato_menu) REFERENCES Menu(numero),
+    CONSTRAINT fk_Produto_Usa FOREIGN KEY (produto) REFERENCES Produto(id)
 );
 
 CREATE TABLE Contem (
     produto int,
     estoque INTEGER,
-    PRIMARY KEY (produto, estoque)
+    PRIMARY KEY (produto, estoque),
+    CONSTRAINT fk_Produto_Contem FOREIGN KEY (produto) REFERENCES Produto(id),
+    CONSTRAINT fk_Estoque_Contem FOREIGN KEY (estoque) REFERENCES Estoque(id)
 );
 
 CREATE TABLE Cliente (
     cpf varchar(11) PRIMARY KEY,
     fidelidade INTEGER,
     metodo_pagamento1 VARCHAR(100),
-    metodo_pagamento2 VARCHAR(100)
+    metodo_pagamento2 VARCHAR(100),
+    CONSTRAINT fk_Pessoa_Cliente FOREIGN KEY (cpf) REFERENCES Pessoa(cpf)
 );
 
 CREATE TABLE Reserva (
@@ -102,12 +114,16 @@ CREATE TABLE Reserva (
     quantidade_pessoas INTEGER,
     cpf_cliente VARCHAR(11),
     numero_mesa SMALLINT,
-    PRIMARY KEY (cpf_cliente, data)
+    PRIMARY KEY (cpf_cliente, data),
+    CONSTRAINT fk_Cliente_Reserva FOREIGN KEY (cpf_cliente) REFERENCES Cliente(cpf),
+    CONSTRAINT fk_Mesa_Reserva FOREIGN KEY (numero_mesa) REFERENCES Mesa(numero_id)
 );
 
 CREATE TABLE Atende (
     fk_Garcom_cpf VARCHAR(11),
-    fk_Mesas_numero_id SMALLINT
+    fk_Mesas_numero_id SMALLINT,
+    CONSTRAINT fk_Garcom_Atende FOREIGN KEY (fk_Garcom_cpf) REFERENCES Garcom(cpf),
+    CONSTRAINT fk_Mesa_Atende FOREIGN KEY (fk_Mesas_numero_id) REFERENCES Mesa(numero_id)
 );
 
 CREATE TABLE Pedido (
@@ -115,92 +131,55 @@ CREATE TABLE Pedido (
     id_comanda INTEGER,
     id_menu INTEGER,
     horario DATETIME,
-    quantidade INTEGER
+    quantidade INTEGER,
+    CONSTRAINT fk_Comanda_Pedido FOREIGN KEY (id_comanda) REFERENCES Comanda(numero_id),
+    CONSTRAINT fk_Menu_Pedido FOREIGN KEY (id_menu) REFERENCES Menu(numero)
 );
 
-ALTER TABLE Funcionario ADD CONSTRAINT FK_Funcionarios_2
-    FOREIGN KEY (cpf)
-    REFERENCES Pessoa (cpf)
-    ON DELETE CASCADE;
+CREATE TABLE Pedidos_log(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    horario_pedido DATETIME,
+    id_prato INTEGER,
+    nome_prato VARCHAR(50),
+    cliente_bairro VARCHAR(50),
+    cliente_idade INT,
+    CONSTRAINT fk_Menu_PedidosLogs FOREIGN KEY (id_prato) REFERENCES Menu(numero)
+);
 
-ALTER TABLE Garcom ADD CONSTRAINT FK_Garcom_2
-    FOREIGN KEY (cpf)
-    REFERENCES Funcionario (cpf)
-    ON DELETE CASCADE;
+DELIMITER //
+CREATE TRIGGER horario_pedido BEFORE INSERT ON Pedido
+    FOR EACH ROW
+    BEGIN
+        SET NEW.horario = NOW();
+end //
 
-ALTER TABLE Garcom ADD CONSTRAINT FK_Garcom_3
-    FOREIGN KEY (cpf_gerente)
-    REFERENCES Garcom (cpf);
+DELIMITER ;
 
-ALTER TABLE Estoquista ADD CONSTRAINT FK_Estoquista_2
-    FOREIGN KEY (cpf)
-    REFERENCES Funcionario (cpf)
-    ON DELETE CASCADE;
+DELIMITER //
+CREATE TRIGGER horario_comanda BEFORE UPDATE ON Comanda
+    FOR EACH ROW
+    BEGIN
+        SET NEW.acesso = NOW();
+    end //
 
-ALTER TABLE Estoquista ADD CONSTRAINT FK_Estoquista_3
-    FOREIGN KEY (cpf_gerente)
-    REFERENCES Estoquista (cpf);
+DELIMITER ;
 
-ALTER TABLE Estoquista ADD CONSTRAINT FK_Estoquista_4
-    FOREIGN KEY (estoque)
-    REFERENCES Estoque (id);
+DELIMITER //
+CREATE TRIGGER log_pedidos AFTER DELETE ON Pedido
+    FOR EACH ROW
+    BEGIN
+        DECLARE nome_prato VARCHAR(50);
+        DECLARE bairro varchar(50);
+        DECLARE idade INT;
 
-ALTER TABLE Comanda ADD CONSTRAINT FK_Comandas_2
-    FOREIGN KEY (cpf_pessoa)
-    REFERENCES Cliente (cpf);
+        SELECT M.nome, PE.bairro, TIMESTAMPDIFF(YEAR, PE.data_nascimento, CURDATE())
+        INTO nome_prato, bairro, idade
+        FROM Pedido P JOIN Comanda C on P.id_comanda = C.numero_id
+        JOIN Menu M ON P.id_menu = M.numero
+        JOIN Pessoa PE on C.cpf_pessoa = PE.cpf;
 
-ALTER TABLE Usa ADD CONSTRAINT FK_Usa_1
-    FOREIGN KEY (produto)
-    REFERENCES Produto (id)
-    ON DELETE RESTRICT;
+        INSERT INTO Pedidos_log(horario_pedido, id_prato, nome_prato, cliente_bairro, cliente_idade)
+        VALUES (OLD.horario, OLD.id_menu, nome_prato, bairro, idade);
+END //
 
-ALTER TABLE Usa ADD CONSTRAINT FK_Usa_3
-    FOREIGN KEY (prato_menu)
-    REFERENCES Menu (numero);
-
-ALTER TABLE Contem ADD CONSTRAINT FK_Contem_1
-    FOREIGN KEY (produto)
-    REFERENCES Produto (id)
-    ON DELETE CASCADE;
-
-ALTER TABLE Contem ADD CONSTRAINT FK_Contem_2
-    FOREIGN KEY (estoque)
-    REFERENCES Estoque (id);
-
-ALTER TABLE Cliente ADD CONSTRAINT FK_Cliente_1
-    FOREIGN KEY (cpf)
-    REFERENCES Pessoa (cpf);
-
-ALTER TABLE Reserva ADD CONSTRAINT FK_Reserva_1
-    FOREIGN KEY (cpf_cliente)
-    REFERENCES Cliente (cpf);
-
-ALTER TABLE Reserva ADD CONSTRAINT FK_Reserva_3
-    FOREIGN KEY (numero_mesa)
-    REFERENCES Mesa (numero_id);
-
-ALTER TABLE Atende ADD CONSTRAINT FK_Atende_1
-    FOREIGN KEY (fk_Garcom_cpf)
-    REFERENCES Garcom (cpf);
-
-ALTER TABLE Atende ADD CONSTRAINT FK_Atende_2
-    FOREIGN KEY (fk_Mesas_numero_id)
-    REFERENCES Mesa (numero_id);
-
-ALTER TABLE Pedido ADD CONSTRAINT FK_Pedido_1
-    FOREIGN KEY (id_comanda)
-    REFERENCES Comanda (numero_id);
-
-ALTER TABLE Pedido ADD CONSTRAINT FK_Pedido_2
-    FOREIGN KEY (id_menu)
-    REFERENCES Menu (numero);
-
-ALTER TABLE Comanda ADD CONSTRAINT FK_mesa_1
-    FOREIGN KEY (mesa)
-    REFERENCES Mesa (numero_id);
-
-UPDATE Produto p
-JOIN Usa u ON p.id = u.produto
-SET p.quantidade = p.quantidade - (u.quantidade * 11)
-WHERE prato_menu = 1;
-
+DELIMITER ;

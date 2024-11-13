@@ -22,9 +22,12 @@ public class ComandaServiceImpl implements ComandaService {
     }
 
     @Override
-    public void salvarComanda(Comanda comanda) {
-        comandaRepository.salvarComanda(comanda); //essa função so cria as comandas, para associar uma pessoa a ela temos que usar a de alterar
+    public void salvarComanda(Comanda comanda) throws ClienteNaoCadastradoException {
+        comandaRepository.salvarComanda(comanda);
+        if(clienteService.buscarClientePorCpf(comanda.getCpfPessoa()) == null) {
+            throw new ClienteNaoCadastradoException("Cliente nao cadastrado");
         }
+    }
     @Override
     public Comanda buscarComandaPorId(Integer id) {
         return comandaRepository.buscarComandaPorId(id);
@@ -36,22 +39,12 @@ public class ComandaServiceImpl implements ComandaService {
     }
 
     @Override
-    public void excluirComanda(String id) {
+    public void excluirComanda(Integer id) {
         comandaRepository.excluirComanda(id);
     }
 
     @Override
     public void alterarComanda(Comanda comanda, Integer id) {
-        if(clienteService.buscarClientePorCpf(comanda.getCpfPessoa()) == null){
-            comanda.setCpfPessoa(null);
-            comandaRepository.alterarComanda(comanda, 1);
-            throw new ClienteNaoCadastradoException(comanda.getCpfPessoa());
-        }
         comandaRepository.alterarComanda(comanda, id);
-    }
-
-    @Override
-    public void zerarComanda(Integer id) {
-        comandaRepository.zerarComanda(id);
     }
 }

@@ -19,7 +19,7 @@ public class ComandaRepositoryImpl implements ComandaRepository {
 
     @Override
     public void salvarComanda(Comanda comanda) {
-        String sql = "INSERT INTO Comanda (numero_id) values (?)";
+        String sql = "INSERT INTO Comanda (numero_id, cpf_pessoa, nome_cliente, mesa) values (?, ?, ?, ?)";
         jdbcTemplate.update(sql, ""+comanda.getNumeroId());
     }
 
@@ -36,20 +36,14 @@ public class ComandaRepositoryImpl implements ComandaRepository {
     }
 
     @Override
-    public void excluirComanda(String id) {
+    public void excluirComanda(Integer id) {
         String sql = "DELETE FROM Comanda WHERE numero_id = ?";
         jdbcTemplate.update(sql, id);
     }
 
     @Override
     public void alterarComanda(Comanda comanda, Integer id) {
-        String sql = "UPDATE Comanda SET cpf_pessoa = ?, acesso = ?, nome_cliente = ?, mesa=? WHERE numero_id = ?";
-        jdbcTemplate.update(sql,comanda.getCpfPessoa(), comanda.getAcesso(), comanda.getNomeCliente(), comanda.getMesaId(), id);
-    }
-
-    @Override
-    public void zerarComanda(Integer id){
-        String sql = "UPDATE Comanda set cpf_pessoa = null, acesso = null, nome_cliente = null, mesa = null WHERE numero_id = ?";
-        jdbcTemplate.update(sql, id);
+        String sql = "UPDATE Comanda SET cpf_pessoa = ?, nome_cliente = ?, mesa = ? WHERE numero_id = ?";
+        jdbcTemplate.update(sql,comanda.getCpfPessoa(), comanda.getNomeCliente(), comanda.getMesaId(), id);
     }
 }

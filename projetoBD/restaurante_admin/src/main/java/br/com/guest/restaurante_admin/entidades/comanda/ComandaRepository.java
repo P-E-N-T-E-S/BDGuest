@@ -6,7 +6,6 @@ public interface ComandaRepository {
     void salvarComanda(Comanda comanda);
     Comanda buscarComandaPorId(Integer id);
     List<Comanda> listarComandas();
-    void excluirComanda(String id);
+    void excluirComanda(Integer id);
     void alterarComanda(Comanda comanda, Integer id);
-    void zerarComanda(Integer id);
 }

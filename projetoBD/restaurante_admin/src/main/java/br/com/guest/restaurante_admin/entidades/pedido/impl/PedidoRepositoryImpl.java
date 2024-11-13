@@ -42,15 +42,15 @@ public class PedidoRepositoryImpl implements PedidoRepository {
     }
 
     @Override
-    public void alterarPedido(Pedido pedido, Integer idComanda) {
-        String sql = "UPDATE Pedido set id_menu = ?, horario = ?, quantidade = ? WHERE id_comanda = ? AND id_menu = ? AND horario = ?";
-        jdbcTemplate.update(sql, pedido.getIdPrato(), pedido.getHorario(), pedido.getQuantidade(), idComanda, pedido.getIdPrato(), pedido.getHorario());
+    public void excluirPedidoPorComanda(Integer idComanda) {
+        String sql = "DELETE FROM Pedido WHERE id_comanda = ?;";
+        jdbcTemplate.update(sql, idComanda);
     }
 
     @Override
-    public void desassociarPedidos(Integer idComanda) {
-        String sql = "UPDATE Pedido set id_comanda = null WHERE id_comanda = ?";
-        jdbcTemplate.update(sql, idComanda);
+    public void alterarPedido(Pedido pedido, Integer idComanda) {
+        String sql = "UPDATE Pedido set id_menu = ?, horario = ?, quantidade = ? WHERE id_comanda = ? AND id_menu = ? AND horario = ?";
+        jdbcTemplate.update(sql, pedido.getIdPrato(), pedido.getHorario(), pedido.getQuantidade(), idComanda, pedido.getIdPrato(), pedido.getHorario());
     }
 
     @Override
