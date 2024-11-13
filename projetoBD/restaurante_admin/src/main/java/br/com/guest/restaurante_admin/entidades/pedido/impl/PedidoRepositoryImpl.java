@@ -24,6 +24,12 @@ public class PedidoRepositoryImpl implements PedidoRepository {
     }
 
     @Override
+    public Pedido buscarPedido(Pedido pedido) {
+        String sql = "SELECT * FROM Pedido WHERE id_comanda = ? AND id_menu = ? AND horario = ?";
+        return jdbcTemplate.queryForObject(sql, new MapeadorPedido(), pedido.getIdPedido(), pedido.getIdComanda(), pedido.getHorario());
+    }
+
+    @Override
     public List<Pedido> listarPorComanda(Integer idComanda) {
         String sql = "SELECT * FROM Menu M join Pedido P on M.numero = P.id_comanda WHERE id_comanda = ?";
         return jdbcTemplate.query(sql, new MapeadorPedido(), idComanda);
@@ -57,5 +63,11 @@ public class PedidoRepositoryImpl implements PedidoRepository {
     public double calcularTotal(Integer idComanda) {
         String sql = "SELECT SUM((P.preco * PE.quantidade)) FROM Menu P Join Pedido PE on P.numero = PE.id_menu Where PE.id_comanda = 1";
         return jdbcTemplate.queryForObject(sql, Double.class, idComanda);
+    }
+
+    @Override
+    public void apagarLog(Integer idPedido) {
+        String sql = "DELETE FROM Pedidos_log WHERE id = ?";
+        jdbcTemplate.update(sql, idPedido);
     }
 }

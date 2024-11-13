@@ -4,8 +4,6 @@ import br.com.guest.restaurante_admin.entidades.comanda.ComandaService;
 import br.com.guest.restaurante_admin.entidades.pedido.Pedido;
 import br.com.guest.restaurante_admin.entidades.pedido.PedidoRepository;
 import br.com.guest.restaurante_admin.entidades.pedido.PedidoService;
-import br.com.guest.restaurante_admin.entidades.produto.ProdutoService;
-import br.com.guest.restaurante_admin.entidades.usa.UsaService;
 import br.com.guest.restaurante_admin.execoes.IngredientesInsuficientesException;
 import org.springframework.stereotype.Service;
 
@@ -16,26 +14,20 @@ public class PedidoServiceImpl implements PedidoService {
 
     private PedidoRepository pedidoRepository;
 
-    private ProdutoService produtoService;
-
-    private UsaService usaService;
-
     private ComandaService comandaService;
 
-    public PedidoServiceImpl(PedidoRepository pedidoRepository, ProdutoService produtoService, UsaService usaService, ComandaService comandaService) {
+    public PedidoServiceImpl(PedidoRepository pedidoRepository, ComandaService comandaService) {
         this.pedidoRepository = pedidoRepository;
-        this.produtoService = produtoService;
-        this.usaService = usaService;
         this.comandaService = comandaService;
     }
 
     @Override
     public void salvar(Pedido pedido, Integer idComanda) throws IngredientesInsuficientesException {
-        if(!produtoService.verificarQuantidadePorPrato(pedido.getIdPrato(), pedido.getQuantidade()).isEmpty()) {
-            throw new IngredientesInsuficientesException(pedido.getIdPrato().toString());
+        try {
+            pedidoRepository.salvar(pedido, idComanda);
+        }catch (Exception e) {
+            throw new IngredientesInsuficientesException(e.getMessage());
         }
-        pedidoRepository.salvar(pedido, idComanda);
-        usaService.reduzirQuantidadePorPrato(pedido.getIdPrato(), pedido.getQuantidade());
     }
 
     @Override
@@ -50,7 +42,9 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     public void excluirPedido(Pedido pedido, Integer idComanda) {
+        Pedido pedido_excluir = pedidoRepository.buscarPedido(pedido);
         pedidoRepository.excluirPedido(pedido, idComanda);
+        pedidoRepository.apagarLog(pedido_excluir.getIdPedido());
     }
 
     @Override

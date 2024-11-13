@@ -25,6 +25,14 @@ CREATE TABLE Funcionario (
     CONSTRAINT fk_Pessoa_Funcionario FOREIGN KEY (cpf) REFERENCES Pessoa(cpf)
 );
 
+CREATE TABLE Cliente (
+    cpf varchar(11) PRIMARY KEY,
+    fidelidade INTEGER,
+    metodo_pagamento1 VARCHAR(100),
+    metodo_pagamento2 VARCHAR(100),
+    CONSTRAINT fk_Pessoa_Cliente FOREIGN KEY (cpf) REFERENCES Pessoa(cpf)
+);
+
 CREATE TABLE Garcom (
     cpf varchar(11) PRIMARY KEY,
     cpf_gerente varchar(11),
@@ -100,14 +108,6 @@ CREATE TABLE Contem (
     CONSTRAINT fk_Estoque_Contem FOREIGN KEY (estoque) REFERENCES Estoque(id)
 );
 
-CREATE TABLE Cliente (
-    cpf varchar(11) PRIMARY KEY,
-    fidelidade INTEGER,
-    metodo_pagamento1 VARCHAR(100),
-    metodo_pagamento2 VARCHAR(100),
-    CONSTRAINT fk_Pessoa_Cliente FOREIGN KEY (cpf) REFERENCES Pessoa(cpf)
-);
-
 CREATE TABLE Reserva (
     data DATE,
     horario_entrada TIME,
@@ -137,14 +137,17 @@ CREATE TABLE Pedido (
 );
 
 CREATE TABLE Pedidos_log(
-    id INT PRIMARY KEY AUTO_INCREMENT,
+    id INT PRIMARY KEY,
     horario_pedido DATETIME,
     id_prato INTEGER,
+    quantidade INT,
     nome_prato VARCHAR(50),
     cliente_bairro VARCHAR(50),
     cliente_idade INT,
     CONSTRAINT fk_Menu_PedidosLogs FOREIGN KEY (id_prato) REFERENCES Menu(numero)
 );
+
+-- Triggers
 
 DELIMITER //
 CREATE TRIGGER horario_pedido BEFORE INSERT ON Pedido
@@ -178,8 +181,59 @@ CREATE TRIGGER log_pedidos AFTER DELETE ON Pedido
         JOIN Menu M ON P.id_menu = M.numero
         JOIN Pessoa PE on C.cpf_pessoa = PE.cpf;
 
-        INSERT INTO Pedidos_log(horario_pedido, id_prato, nome_prato, cliente_bairro, cliente_idade)
-        VALUES (OLD.horario, OLD.id_menu, nome_prato, bairro, idade);
+        INSERT INTO Pedidos_log(id, horario_pedido, id_prato, quantidade, nome_prato, cliente_bairro, cliente_idade)
+        VALUES (OLD.id_pedido,OLD.horario, OLD.id_menu, OLD.quantidade,nome_prato, bairro, idade);
 END //
 
 DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER retorne_ingredientes AFTER DELETE ON Pedidos_log
+    FOR EACH ROW
+    BEGIN
+        UPDATE Produto p JOIN Usa u ON p.id = u.produto SET p.quantidade = p.quantidade + (u.quantidade * OLD.quantidade ) WHERE prato_menu = OLD.id_prato;
+    end //
+
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER reduzir_ingredientes_update AFTER UPDATE ON Pedido
+    FOR EACH ROW
+    BEGIN
+
+                IF (SELECT P.quantidade
+            FROM Produto P
+            JOIN Usa U2 on P.id = U2.produto
+            WHERE U2.prato_menu = NEW.id_menu) < (SELECT (U.quantidade * NEW.quantidade)
+                                                  FROM Usa U
+                                                  where U.prato_menu = NEW.id_menu)
+            THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'QUANTIDADE DE INGREDIENTES INSUFIENTES';
+        end if;
+
+        UPDATE Produto p JOIN Usa u ON p.id = u.produto SET p.quantidade = p.quantidade + (u.quantidade * OLD.quantidade ) WHERE prato_menu = OLD.id_menu;
+
+        UPDATE Produto p JOIN Usa u ON p.id = u.produto SET p.quantidade = p.quantidade - (u.quantidade * NEW.quantidade ) WHERE prato_menu = NEW.id_menu;
+    end //
+
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER reduzir_ingredientes_insert AFTER INSERT ON Pedido
+    FOR EACH ROW
+    BEGIN
+
+        IF (SELECT P.quantidade
+            FROM Produto P
+            JOIN Usa U2 on P.id = U2.produto
+            WHERE U2.prato_menu = NEW.id_menu) < (SELECT (U.quantidade * NEW.quantidade)
+                                                  FROM Usa U
+                                                  where U.prato_menu = NEW.id_menu)
+            THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'QUANTIDADE DE INGREDIENTES INSUFIENTES';
+        end if;
+
+        UPDATE Produto p JOIN Usa u ON p.id = u.produto SET p.quantidade = p.quantidade - (u.quantidade * NEW.quantidade ) WHERE prato_menu = NEW.id_menu;
+    end //
