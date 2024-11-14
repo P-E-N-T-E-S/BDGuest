@@ -7,7 +7,7 @@
 }
 
 .sidebar {
-    width: 10%;
+    width: 15%;
     height: 100vh;
     text-align: center;
     display: flex;
@@ -23,12 +23,21 @@
     text-decoration: none;
     color: white;
     font-family: "Roboto Condensed", sans-serif;
+    font-size: 30px;
 }
 
 .sidebar-object:hover{
+    transition: color 3000ms;
     color: cyan;
-    transition: 300ms;
     cursor: pointer;
+    border-top-width: 15px;
+    border-right-width: 15px;
+    border-bottom-width: 15px;
+    border-left-width: 15px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 50px;
+    background-color: black;
 }
 
 .logo{
@@ -50,7 +59,8 @@
     display: flex;
     flex-direction: column;
     margin: 3vb;
-    width: 400px;
+    width: 800px;
+    align-items: center;
 
 }
 
@@ -61,9 +71,36 @@
     margin-top: 20px;
 }
 
+.form-column{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-right: 20px;
+}
 
 .form-item{
     height: 30px;
     width: 300px;
     border-radius: 10px;
+}
+
+.data-exibit{
+    border-top-width: 15px;
+    border-left-width: 10px;
+    border-right-width: 10px;
+    border-bottom-width: 0px;
+    border-color: black;
+    border-style: solid;
+    margin-top: 100px;
+    width: 50%;
+    align-items: center;
+    text-align: center;
+}
+
+#label{
+    align-self: start;
+}
+
+.text{
+font-family: "Roboto Condensed", sans-serif;
 }

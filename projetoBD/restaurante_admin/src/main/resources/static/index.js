@@ -19,15 +19,55 @@ function enviarDados() {
             'Content-Type': 'application/json'  // Isso garante que o servidor sabe que está recebendo JSON.
         },
         body: JSON.stringify(dados) // Transforma o objeto em JSON
-    });
+    }).then(response => console.log(response));
 }
 
-function recuperarDados() {
-    fetch('http://localhost:8080/pessoa')
-        .then(response => response.json())  // Espera a resposta e a converte para JSON
-        .then(data => console.log(data));}
+function getCPF(){
+    const cpf = document.getElementById('cpf_get').value;
+
+    recuperarDadosPorCPF(cpf)
+}
+
+function recuperarDadosPorCPF(cpf) {
+    fetch(`http://localhost:8080/pessoa/cpf?valor=${cpf}`)
+        .then(response => {
+            console.log("Status da resposta:", response.status); // Verifica o status da resposta
+            if (!response.ok) {
+                throw new Error("Usuário não encontrado");
+            }
+            return response.json();
+        })
+        .then(usuario => {
+            console.log("Dados do usuário retornados:", usuario); // Log para verificar o conteúdo dos dados recebidos
+
+            // Limpa a lista antes de exibir os dados
+            document.querySelector('ul').innerHTML = '';
+
+            // Verifica se o `usuario` tem a propriedade `nome` ou é um objeto dentro de um array
+            if (Array.isArray(usuario)) {
+                // Caso a API retorne um array
+                usuario.forEach(u => {
+                    const markup = `<li>${u.nome ? u.nome : "Nome não disponível"}</li>`;
+                    document.querySelector('ul').insertAdjacentHTML('beforeend', markup);
+                });
+            } else if (usuario && usuario.nome) {
+                // Caso a API retorne um objeto diretamente com a propriedade `nome`
+                const markup = `<li>${usuario.nome}</li>`;
+                document.querySelector('ul').insertAdjacentHTML('beforeend', markup);
+            } else {
+                console.log("Usuário não encontrado ou estrutura de dados inesperada");
+            }
+        })
+        .catch(error => console.error("Erro na busca:", error));
+}
+
+function getCPFd(){
+    const cpf = document.getElementById('cpf_get_d').value;
+
+    deletarDadosCPF(cpf)
+}
 
 
-function deletarDados(){
-    fetch('http://localhost:8080/pessoa/cpf?valor=08674743439', {method: 'DELETE' , headers: {'Content-Type': 'application/json'}})
+function deletarDadosCPF(cpf){
+    fetch(`http://localhost:8080/pessoa/cpf?valor=${cpf}`, {method: 'DELETE' , headers: {'Content-Type': 'application/json'}})
 }

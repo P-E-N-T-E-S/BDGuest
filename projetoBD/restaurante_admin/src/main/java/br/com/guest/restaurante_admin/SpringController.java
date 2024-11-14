@@ -16,4 +16,14 @@ public class SpringController {
     public String adicionarPessoa(Model model) {
         return "adicionar_pessoa";
     }
+
+    @GetMapping("recuperar_pessoa")
+    public String recuperarPessoa(Model model) {
+        return "recuperar_pessoa";
+    }
+
+    @GetMapping("deletar_pessoa")
+    public String deletarPessoa(Model model) {
+        return "deletar_pessoa";
+    }
 }
