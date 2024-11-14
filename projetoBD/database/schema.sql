@@ -240,4 +240,3 @@ CREATE TRIGGER reduzir_ingredientes_insert AFTER INSERT ON Pedido
 
 DELIMITER ;
 
-INSERT INTO Comanda (numero_id, cpf_pessoa, acesso, nome_cliente, mesa) values (4, '70963500473', null, 'Evaldo', 3)
