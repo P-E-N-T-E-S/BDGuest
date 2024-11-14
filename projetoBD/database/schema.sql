@@ -159,7 +159,7 @@ end //
 DELIMITER ;
 
 DELIMITER //
-CREATE TRIGGER horario_comanda BEFORE UPDATE ON Comanda
+CREATE TRIGGER horario_comanda BEFORE INSERT ON Comanda
     FOR EACH ROW
     BEGIN
         SET NEW.acesso = NOW();
@@ -240,4 +240,4 @@ CREATE TRIGGER reduzir_ingredientes_insert AFTER INSERT ON Pedido
 
 DELIMITER ;
 
-SELECT SUM(PL.quantidade) as pratos_vendidos, DATE(PL.horario_pedido) as dia FROM Pedidos_log PL GROUP BY DATE(PL.horario_pedido) ORDER BY DATE(PL.horario_pedido);
+INSERT INTO Comanda (numero_id, cpf_pessoa, acesso, nome_cliente, mesa) values (4, '70963500473', null, 'Evaldo', 3)

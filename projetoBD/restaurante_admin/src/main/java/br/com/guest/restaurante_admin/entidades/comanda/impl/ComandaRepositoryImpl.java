@@ -20,7 +20,7 @@ public class ComandaRepositoryImpl implements ComandaRepository {
     @Override
     public void salvarComanda(Comanda comanda) {
         String sql = "INSERT INTO Comanda (numero_id, cpf_pessoa, nome_cliente, mesa) values (?, ?, ?, ?)";
-        jdbcTemplate.update(sql, ""+comanda.getNumeroId());
+        jdbcTemplate.update(sql, ""+comanda.getNumeroId(), comanda.getCpfPessoa(), comanda.getNomeCliente(), comanda.getMesaId());
     }
 
     @Override

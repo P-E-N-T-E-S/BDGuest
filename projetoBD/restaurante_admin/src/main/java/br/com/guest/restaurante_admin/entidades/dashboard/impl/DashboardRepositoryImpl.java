@@ -63,6 +63,4 @@ public class DashboardRepositoryImpl implements DashboardRepository {
         String sql = "SELECT HOUR(horario) as hora, COUNT(*) as pedidos FROM Pedido GROUP BY HOUR(horario)";
         return jdbcTemplate.queryForList(sql);
     }
-
-
 }
