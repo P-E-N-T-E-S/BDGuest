@@ -240,3 +240,4 @@ CREATE TRIGGER reduzir_ingredientes_insert AFTER INSERT ON Pedido
 
 DELIMITER ;
 
+SELECT SUM((P.preco * PE.quantidade)) FROM Menu P Join Pedido PE on P.numero = PE.id_menu Where PE.id_comanda = 1

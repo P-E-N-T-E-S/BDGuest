@@ -4,6 +4,7 @@ import br.com.guest.restaurante_admin.entidades.comanda.ComandaService;
 import br.com.guest.restaurante_admin.entidades.pedido.Pedido;
 import br.com.guest.restaurante_admin.entidades.pedido.PedidoRepository;
 import br.com.guest.restaurante_admin.entidades.pedido.PedidoService;
+import br.com.guest.restaurante_admin.execoes.ComandaNaoExistenteOuVazia;
 import br.com.guest.restaurante_admin.execoes.IngredientesInsuficientesException;
 import org.springframework.stereotype.Service;
 
@@ -53,10 +54,14 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    public double desassociarPedidos(Integer idComanda) {
-        double valorTotal = pedidoRepository.calcularTotal(idComanda);
-        pedidoRepository.excluirPedidoPorComanda(idComanda);
-        comandaService.excluirComanda(idComanda);
-        return valorTotal;
+    public double desassociarPedidos(Integer idComanda) throws ComandaNaoExistenteOuVazia {
+        try {
+            double valorTotal = pedidoRepository.calcularTotal(idComanda);
+            pedidoRepository.excluirPedidoPorComanda(idComanda);
+            comandaService.excluirComanda(idComanda);
+            return valorTotal;
+        }catch (NullPointerException e) {
+            throw new ComandaNaoExistenteOuVazia("Comanda: "+idComanda+" não existe ou esta sem pedidos");
+        }
     }
 }

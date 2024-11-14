@@ -49,8 +49,8 @@ public class PedidoController {
         return new ResponseEntity<>("Pedido removido com sucesso", HttpStatus.OK);
     }
 
-    @PutMapping("/fechar/{idComanda}")
-    public ResponseEntity<Double> fecharPedido(@RequestParam Integer idComanda) {
+    @PutMapping("/fechar")
+    public ResponseEntity<Double> fecharPedido(@PathVariable Integer idComanda) {
         return new ResponseEntity<>(pedidoService.desassociarPedidos(idComanda), HttpStatus.OK);
     }
 }
