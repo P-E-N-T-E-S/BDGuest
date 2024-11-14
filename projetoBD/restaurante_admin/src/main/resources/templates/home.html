@@ -5,29 +5,30 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Page Title</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type="text/css" href='./estilo.css?v1.3'>
+    <link rel='stylesheet' type="text/css" href='./estilo.css?v2.0'>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <script type="text/javascript" src="/index.js"> </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
 
 <body>
-    <div class="body-container">
-        <div class="sidebar">
-            <div class="sidebar-section">
-            </div>
-            <div class="sidebar-section">
-                <a class="sidebar-object" href="adicionar_pessoa"> Adicionar Pessoa </a>
-            </div>
-            <div class="sidebar-section">
-                <a class="sidebar-object" onclick="recuperarDados()"> Recuperar Pessoa </a>
-            </div>
-            <div class="sidebar-section">
-                <a class="sidebar-object" onclick="deletarDados()"> Deletar Pessoa </a>
-            </div>
-            <div class="sidebar-section">
-            </div>
+<div class="body-container">
+    <div class="sidebar">
+        <div class="sidebar-section">
         </div>
+        <div class="sidebar-section">
+            <a class="sidebar-object" href="adicionar_pessoa"> <span class="material-symbols-outlined">person </span> Adicionar </a>
+        </div>
+        <div class="sidebar-section">
+            <a class="sidebar-object" href="recuperar_pessoa"> <span class="material-symbols-outlined"> travel_explore </span> Recuperar </a>
+        </div>
+        <div class="sidebar-section">
+            <a class="sidebar-object" href="deletar_pessoa"> <span class="material-symbols-outlined"> delete </span> Deletar </a>
+        </div>
+        <div class="sidebar-section">
+        </div>
+    </div>
         <div class="graph">
             <label> Quantidade de Pratos por dia</label>
             <canvas id="myChart"> </canvas>

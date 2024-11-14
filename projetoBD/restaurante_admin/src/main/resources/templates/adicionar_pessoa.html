@@ -6,6 +6,7 @@
     <title>Teste em Adicionar</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' href='/estilo.css?v1.1'>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <script type="text/javascript" src="/index.js"> </script>
 </head>
 
@@ -14,53 +15,80 @@
         <div class="sidebar-section">
         </div>
         <div class="sidebar-section">
-            <a class="sidebar-object" href="adicionar_pessoa"> Adicionar Pessoa </a>
+            <a class="sidebar-object" href="adicionar_pessoa"> <span class="material-symbols-outlined">person </span> Adicionar </a>
         </div>
         <div class="sidebar-section">
-            <a class="sidebar-object" onclick="recuperarDados()"> Recuperar Pessoa </a>
+            <a class="sidebar-object" href="recuperar_pessoa"> <span class="material-symbols-outlined"> travel_explore </span> Recuperar </a>
         </div>
         <div class="sidebar-section">
-            <a class="sidebar-object" onclick="deletarDados()"> Deletar Pessoa </a>
+            <a class="sidebar-object" href="deletar_pessoa"> <span class="material-symbols-outlined"> delete </span> Deletar </a>
         </div>
         <div class="sidebar-section">
         </div>
     </div>
+
     <div class="form">
         <div class="form-body">
+            <div class="form-column">
         <label for="cpf">CPF:</label>
         <input type="text" id="cpf" name="cpf" value="70963500473" class="form-item" required>
+            </div>
+            <div class="form-column">
 
-        <label for="nome">Nome:</label>
+            <label for="nome">Nome:</label>
         <input type="text" id="nome" name="nome" value="Evaldo" class="form-item" required>
         </div>
+        </div>
 
         <div class="form-body">
-        <label for="rua">Rua:</label>
+            <div class="form-column">
+            <label for="rua">Rua:</label>
         <input type="text" id="rua" name="rua" value="Bebinho Salgado" class="form-item" required>
-        <label for="bairro">Bairro:</label>
+            </div>
+
+                <div class="form-column">
+                <label for="bairro">Bairro:</label>
         <input type="text" id="bairro" name="bairro" value="Monteiro" class="form-item" required>
+                </div>
+
         </div>
 
         <div class="form-body">
-        <label for="estado">Estado:</label>
+            <div class="form-column">
+            <label for="estado">Estado:</label>
         <input type="text" id="estado" name="estado" value="PE" class="form-item" required>
-        <label for="cidade">Cidade:</label>
+            </div>
+
+                <div class="form-column">
+                <label for="cidade">Cidade:</label>
         <input type="text" id="cidade" name="cidade" value="Recife" class="form-item" required>
+                </div>
         </div>
 
         <div class="form-body">
-        <label for="cep">CEP:</label>
+            <div class="form-column">
+            <label for="cep">CEP:</label>
         <input type="text" id="cep" name="cep" value="52071321" class="form-item" required>
-        <label for="email">E-mail:</label>
+            </div>
+
+                <div class="form-column">
+                <label for="email">E-mail:</label>
         <input type="email" id="email" name="email" value="evaldocunhaf@gmail.com" class="form-item" required>
+                </div>
         </div>
 
 
         <div class="form-body">
-        <label for="data_nascimento">Data de Nascimento:</label>
+            <div class="form-column">
+            <label for="data_nascimento">Data de Nascimento:</label>
         <input type="date" id="data_nascimento" name="data_nascimento" value="2003-08-29" class="form-item" required>
-        <label for="telefone">Telefone:</label>
+            </div>
+
+                <div class="form-column">
+                <label for="telefone">Telefone:</label>
         <input type="tel" id="telefone" name="telefone" value="81999431515" class="form-item" required>
+                </div>
+
         </div>
 
         <div class="form-body">
@@ -68,7 +96,7 @@
         <input type="tel" id="telefone2" name="telefone2" value="81992690105" class="form-item"><br><br>
         </div>
 
-        <button onclick="enviarDados()">Enviar</button>
+        <button style="width: 50px; align-items: center" onclick="enviarDados()">Enviar</button>
 
     </div>
     </div>
