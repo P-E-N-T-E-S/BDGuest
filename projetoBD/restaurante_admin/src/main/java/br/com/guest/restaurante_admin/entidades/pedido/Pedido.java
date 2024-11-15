@@ -15,16 +15,18 @@ public class Pedido {
     private Integer idComanda;
     @JsonProperty("id_prato")
     private Integer idPrato;
-    private LocalDateTime horario;
+    private LocalDateTime horario; //TODO: AJUSTAR AS QUESTÕES DE STATUS
     private Integer quantidade;
+    private String status;
 
-    public Pedido(Prato prato, Integer idPedido, Integer idComanda, Integer idPrato, LocalDateTime horario, Integer quantidade) {
+    public Pedido(Prato prato, Integer idPedido, Integer idComanda, Integer idPrato, LocalDateTime horario, Integer quantidade, String status) {
         this.prato = prato;
         this.idPedido = idPedido;
         this.idComanda = idComanda;
         this.idPrato = idPrato;
         this.horario = horario;
         this.quantidade = quantidade;
+        this.status = status;
     }
 
     public Prato getPrato() {
@@ -73,5 +75,13 @@ public class Pedido {
 
     public void setIdPedido(Integer idPedido) {
         this.idPedido = idPedido;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

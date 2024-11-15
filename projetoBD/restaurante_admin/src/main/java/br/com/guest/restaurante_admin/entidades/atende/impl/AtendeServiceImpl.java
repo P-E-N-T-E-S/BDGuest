@@ -5,6 +5,7 @@ import br.com.guest.restaurante_admin.entidades.atende.AtendeRepository;
 import br.com.guest.restaurante_admin.entidades.atende.AtendeService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -34,5 +35,10 @@ public class AtendeServiceImpl implements AtendeService {
     @Override
     public void excluirAtendePorGarcom(String cpf) {
         atendeRepository.excluirAtendePorGarcom(cpf);
+    }
+
+    @Override
+    public String buscarPorMesaEHora(Integer id_mesa) {
+        atendeRepository.buscarPorMesaEHora(id_mesa);
     }
 }

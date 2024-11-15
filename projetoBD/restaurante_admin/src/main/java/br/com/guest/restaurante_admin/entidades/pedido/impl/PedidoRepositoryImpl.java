@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class PedidoRepositoryImpl implements PedidoRepository {
+public class PedidoRepositoryImpl implements PedidoRepository { //TODO: ajeitar os ids de pedidos, funcoes de alterar os status e listar pedidos por garcom
 
     private JdbcTemplate jdbcTemplate;
 
@@ -24,9 +24,9 @@ public class PedidoRepositoryImpl implements PedidoRepository {
     }
 
     @Override
-    public Pedido buscarPedido(Pedido pedido) {
-        String sql = "SELECT * FROM Pedido WHERE id_comanda = ? AND id_menu = ? AND horario = ?";
-        return jdbcTemplate.queryForObject(sql, new MapeadorPedido(), pedido.getIdPedido(), pedido.getIdComanda(), pedido.getHorario());
+    public List<Pedido> buscarPedidoPorGarcom(String garcom) {
+        String sql = "SELECT * FROM Pedido P JOIN Comanda C ON C.numero_id = P.id_comanda WHERE C.cpf_garcom = ?";
+        return jdbcTemplate.query(sql, new MapeadorPedido(), garcom);
     }
 
     @Override
@@ -42,9 +42,9 @@ public class PedidoRepositoryImpl implements PedidoRepository {
     }
 
     @Override
-    public void excluirPedido(Pedido pedido, Integer idComanda) {
-        String sql = "DELETE FROM Pedido WHERE id_comanda = ? AND id_menu = ? AND horario = ?";
-        jdbcTemplate.update(sql, idComanda, pedido.getIdPrato(), pedido.getHorario());
+    public void excluirPedido(Integer idPedido) {
+        String sql = "DELETE FROM Pedido WHERE id_pedido = ?";
+        jdbcTemplate.update(sql, idPedido);
     }
 
     @Override
@@ -69,5 +69,11 @@ public class PedidoRepositoryImpl implements PedidoRepository {
     public void apagarLog(Integer idPedido) {
         String sql = "DELETE FROM Pedidos_log WHERE id = ?";
         jdbcTemplate.update(sql, idPedido);
+    }
+
+    @Override
+    public void alterarStatus(Integer idPedido, String status) {
+        String sql = "UPDATE Pedido SET status = ? WHERE id_pedido = ?";
+        jdbcTemplate.update(sql, status, idPedido);
     }
 }

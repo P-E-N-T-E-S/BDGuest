@@ -48,4 +48,16 @@ public class ComandaController {
         comandaService.excluirComanda(id);
         return new ResponseEntity<>("Comanda Deletada com sucesso", HttpStatus.OK);
     }
+
+    @PutMapping("/{id}/chamar")
+    public ResponseEntity<String> chamarGarcom(@PathVariable Integer id) {
+        comandaService.chamarGarcom(id);
+        return new ResponseEntity<>("Garcom chamado", HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/cancelar-chamado")
+    public ResponseEntity<String> cancelarChamado(@PathVariable Integer id) {
+        comandaService.cancelarChamado(id);
+        return new ResponseEntity<>("Garcom chamado", HttpStatus.OK);
+    }
 }

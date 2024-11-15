@@ -62,13 +62,16 @@ CREATE TABLE Menu (
 );
 
 CREATE TABLE Comanda (
-    numero_id INTEGER PRIMARY KEY,
+    numero_id INTEGER PRIMARY KEY AUTO_INCREMENT,
     cpf_pessoa varchar(11),
     acesso DATETIME,
     nome_cliente VARCHAR(50),
     mesa SMALLINT,
+    cpf_garcom VARCHAR(11),
+    chamando_garcom BOOLEAN,
     CONSTRAINT fk_Cliente_Comanda FOREIGN KEY (cpf_pessoa) REFERENCES Cliente(cpf),
-    CONSTRAINT fk_Mesa_Comanda FOREIGN KEY (mesa) REFERENCES Mesa(numero_id)
+    CONSTRAINT fk_Mesa_Comanda FOREIGN KEY (mesa) REFERENCES Mesa(numero_id),
+    CONSTRAINT fk_Garcom_Comanda FOREIGN KEY (cpf_garcom) REFERENCES Garcom(cpf)
 );
 
 CREATE TABLE Produto (
@@ -132,8 +135,10 @@ CREATE TABLE Pedido (
     id_menu INTEGER,
     horario DATETIME,
     quantidade INTEGER,
+    status VARCHAR(10),
     CONSTRAINT fk_Comanda_Pedido FOREIGN KEY (id_comanda) REFERENCES Comanda(numero_id),
-    CONSTRAINT fk_Menu_Pedido FOREIGN KEY (id_menu) REFERENCES Menu(numero)
+    CONSTRAINT fk_Menu_Pedido FOREIGN KEY (id_menu) REFERENCES Menu(numero),
+    CONSTRAINT check_status CHECK ( status IN ('PRONTO', 'FAZENDO', 'ENTREGUE') )
 );
 
 CREATE TABLE Pedidos_log(
@@ -154,15 +159,17 @@ CREATE TRIGGER horario_pedido BEFORE INSERT ON Pedido
     FOR EACH ROW
     BEGIN
         SET NEW.horario = NOW();
+        SET NEW.status = 'FAZENDO';
 end //
 
 DELIMITER ;
 
 DELIMITER //
-CREATE TRIGGER horario_comanda BEFORE INSERT ON Comanda
+CREATE TRIGGER inicializar_comanda BEFORE INSERT ON Comanda
     FOR EACH ROW
     BEGIN
         SET NEW.acesso = NOW();
+        SET NEW.chamando_garcom = FALSE;
     end //
 
 DELIMITER ;
@@ -224,12 +231,17 @@ CREATE TRIGGER reduzir_ingredientes_insert AFTER INSERT ON Pedido
     FOR EACH ROW
     BEGIN
 
-        IF (SELECT P.quantidade
-            FROM Produto P
-            JOIN Usa U2 on P.id = U2.produto
-            WHERE U2.prato_menu = NEW.id_menu) < (SELECT (U.quantidade * NEW.quantidade)
-                                                  FROM Usa U
-                                                  where U.prato_menu = NEW.id_menu)
+        DECLARE produto VARCHAR(30);
+
+        SELECT P2.nome
+        INTO produto
+        FROM Produto P2
+        JOIN Usa U2 ON P2.id = U2.produto
+        JOIN Menu M on U2.prato_menu = M.numero
+        WHERE P2.quantidade < (U2.quantidade * NEW.quantidade)
+        LIMIT 1;
+
+        IF produto IS NOT NULL
             THEN
             SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'QUANTIDADE DE INGREDIENTES INSUFIENTES';
@@ -240,4 +252,35 @@ CREATE TRIGGER reduzir_ingredientes_insert AFTER INSERT ON Pedido
 
 DELIMITER ;
 
-SELECT SUM((P.preco * PE.quantidade)) FROM Menu P Join Pedido PE on P.numero = PE.id_menu Where PE.id_comanda = 1
+DELIMITER //
+CREATE TRIGGER inicializar_cliente_fidelidade BEFORE INSERT ON Cliente
+    FOR EACH ROW
+    BEGIN
+        SET NEW.fidelidade = 0;
+    end //
+
+DELIMITER ;
+
+DELIMITER //
+CREATE FUNCTION garcom_atendente (id_mesa INT)
+    RETURNS VARCHAR(11)
+    READS SQL DATA
+    BEGIN
+
+    DECLARE cpf_garcom VARCHAR(11);
+
+    SELECT A.fk_Garcom_cpf
+    INTO cpf_garcom
+    FROM Atende A
+    JOIN Garcom G on A.fk_Garcom_cpf = G.cpf
+    JOIN Funcionario F on G.cpf = F.cpf
+    WHERE fk_Mesas_numero_id = id_mesa
+    AND CURRENT_TIME BETWEEN horario_entrada AND horario_saida
+    LIMIT 1;
+
+    RETURN cpf_garcom;
+
+    END //
+DELIMITER ;
+
+SELECT * FROM Pedido P JOIN Comanda C ON C.numero_id = P.id_comanda WHERE C.cpf_garcom = ?

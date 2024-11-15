@@ -4,12 +4,13 @@ import java.util.List;
 
 public interface PedidoRepository {
     void salvar(Pedido pedido, Integer idComanda);
-    Pedido buscarPedido(Pedido pedido);
+    List<Pedido> buscarPedidoPorGarcom(String garcom);
     List<Pedido> listarPorComanda(Integer idComanda);
     List<Pedido> listarPorPrato(Integer idComanda, Integer idPrato);
-    void excluirPedido(Pedido pedido, Integer idComanda);
+    void excluirPedido(Integer idPedido);
     void excluirPedidoPorComanda(Integer idComanda);
     void alterarPedido(Pedido pedido, Integer idComanda);
     double calcularTotal(Integer idComanda);
     void apagarLog(Integer idPedido);
+    void alterarStatus(Integer idPedido, String status);
 }

@@ -23,7 +23,8 @@ public class MapeadorPedido implements RowMapper<Pedido> {
         Integer idPrato = rs.getInt("id_menu");
         LocalDateTime horario = rs.getTimestamp("horario").toLocalDateTime();
         Integer quantidade = rs.getInt("quantidade");
+        String status = rs.getString("status");
 
-        return new Pedido(prato, idPedido, idComanda, idPrato, horario, quantidade);
+        return new Pedido(prato, idPedido, idComanda, idPrato, horario, quantidade, status);
     }
 }

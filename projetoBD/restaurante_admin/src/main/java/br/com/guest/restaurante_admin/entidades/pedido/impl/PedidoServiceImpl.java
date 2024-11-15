@@ -42,10 +42,14 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    public void excluirPedido(Pedido pedido, Integer idComanda) {
-        Pedido pedido_excluir = pedidoRepository.buscarPedido(pedido);
-        pedidoRepository.excluirPedido(pedido, idComanda);
-        pedidoRepository.apagarLog(pedido_excluir.getIdPedido());
+    public List<Pedido> listarPorGarcom(String garcom) {
+        return pedidoRepository.buscarPedidoPorGarcom(garcom);
+    }
+
+    @Override
+    public void excluirPedido(Integer idPedido) {
+        pedidoRepository.excluirPedido(idPedido);
+        pedidoRepository.apagarLog(idPedido);
     }
 
     @Override
@@ -63,5 +67,10 @@ public class PedidoServiceImpl implements PedidoService {
         }catch (NullPointerException e) {
             throw new ComandaNaoExistenteOuVazia("Comanda: "+idComanda+" não existe ou esta sem pedidos");
         }
+    }
+
+    @Override
+    public void alterarStatus(Integer idPedido, String status) {
+        pedidoRepository.alterarStatus(idPedido, status);
     }
 }

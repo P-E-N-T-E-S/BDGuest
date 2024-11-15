@@ -6,7 +6,9 @@ public interface PedidoService {
     void salvar(Pedido pedido, Integer idComanda);
     List<Pedido> listarPorComanda(Integer idComanda);
     List<Pedido> listarPorPrato(Integer idComanda, Integer idPrato);
-    void excluirPedido(Pedido pedido, Integer idComanda);
+    List<Pedido> listarPorGarcom(String garcom);
+    void excluirPedido(Integer idPedido);
     void alterarPedido(Pedido pedido, Integer idComanda);
     double desassociarPedidos(Integer idComanda);
+    void alterarStatus(Integer idPedido, String status);
 }

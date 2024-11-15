@@ -6,6 +6,7 @@ import br.com.guest.restaurante_admin.entidades.atende.mapper.MapeadorAtende;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @Repository
@@ -39,5 +40,11 @@ public class AtendeRepositoryImpl implements AtendeRepository {
     public void excluirAtendePorGarcom(String cpf) {
         String sql = "DELETE FROM Atende A WHERE fk_Garcom_cpf = ?";
         jdbcTemplate.update(sql, cpf);
+    }
+
+    @Override
+    public String buscarPorMesaEHora(Integer id_mesa) {
+        String sql = "SELECT garcom_atendente(?)";
+        return jdbcTemplate.queryForObject(sql, String.class, id_mesa );
     }
 }

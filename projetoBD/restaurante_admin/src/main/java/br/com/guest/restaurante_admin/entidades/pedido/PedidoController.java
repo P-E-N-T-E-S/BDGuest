@@ -37,20 +37,31 @@ public class PedidoController {
         return new ResponseEntity<>(pedidoService.listarPorPrato(idComanda, idPrato), HttpStatus.OK);
     }
 
+    @GetMapping("/garcom")
+    public ResponseEntity<List<Pedido>> listarPedidoGarcom(@RequestParam String cpfGarcom) {
+        return new ResponseEntity<>(pedidoService.listarPorGarcom(cpfGarcom), HttpStatus.OK);
+    }
+
     @PutMapping
     public ResponseEntity<String> alterarPedido(@PathVariable Integer idComanda, @RequestBody Pedido pedido) {
         pedidoService.alterarPedido(pedido, idComanda);
         return new ResponseEntity<>("Pedido alterado com sucesso", HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity<String> excluirPedido(@PathVariable Integer idComanda, @RequestBody Pedido pedido) {
-        pedidoService.excluirPedido(pedido, idComanda);
+    @DeleteMapping("/{idPedido}")
+    public ResponseEntity<String> excluirPedido(@PathVariable Integer idPedido) {
+        pedidoService.excluirPedido(idPedido);
         return new ResponseEntity<>("Pedido removido com sucesso", HttpStatus.OK);
     }
 
     @PutMapping("/fechar")
     public ResponseEntity<Double> fecharPedido(@PathVariable Integer idComanda) {
         return new ResponseEntity<>(pedidoService.desassociarPedidos(idComanda), HttpStatus.OK);
+    }
+
+    @PutMapping("/{idPedido}/status")
+    public ResponseEntity<String> alterarStatus(@PathVariable Integer idPedido, @RequestParam String status) {
+        pedidoService.alterarStatus(idPedido, status);
+        return new ResponseEntity<>("Status do pedido alterado com sucesso", HttpStatus.OK);
     }
 }
