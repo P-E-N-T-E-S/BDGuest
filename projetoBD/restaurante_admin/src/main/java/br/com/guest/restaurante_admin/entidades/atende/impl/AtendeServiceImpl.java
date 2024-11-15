@@ -40,5 +40,6 @@ public class AtendeServiceImpl implements AtendeService {
     @Override
     public String buscarPorMesaEHora(Integer id_mesa) {
         atendeRepository.buscarPorMesaEHora(id_mesa);
+        return atendeRepository.buscarPorMesaEHora(id_mesa);
     }
 }

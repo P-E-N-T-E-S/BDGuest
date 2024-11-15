@@ -3,75 +3,106 @@
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Page Title</title>
+    <title>Home</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type="text/css" href='./estilo.css?v2.0'>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-    <script type="text/javascript" src="/index.js"> </script>
+    <link rel='stylesheet' type="text/css" href='static/style.css'>
+    <script type="text/javascript" src="static/index.js" defer> </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
-
 <body>
-<div class="body-container">
-    <div class="sidebar">
-        <div class="sidebar-section">
+<nav id="sidebar">
+    <ul>
+        <li class="">
+            <a href="adicionar.html">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M440-280h80v-160h160v-80H520v-160h-80v160H280v80h160v160Zm40 200q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
+                <span> Home </span></a>
+        </li>
+        <li>
+            <a href="recuperarCPF.html">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="m336-280 144-144 144 144 56-56-144-144 144-144-56-56-144 144-144-144-56 56 144 144-144 144 56 56ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
+                <span> Dashboard </span></a>
+        </li>
+        <li>
+            <button class="dropdown-button" onclick="toggleSubMenu(this)">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="m336-280 144-144 144 144 56-56-144-144 144-144-56-56-144 144-144-144-56 56 144 144-144 144 56 56ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
+                <span>Criar</span>
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M280-240q-100 0-170-70T40-480q0-100 70-170t170-70h400q100 0 170 70t70 170q0 100-70 170t-170 70H280Zm0-80h400q66 0 113-47t47-113q0-66-47-113t-113-47H280q-66 0-113 47t-47 113q0 66 47 113t113 47Zm0-40q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35Zm200-120Z"/></svg>
+            </button>
+            <ul class="sub-menu">
+                <div>
+                    <li><a href="#"> Folder </a></li>
+                    <li><a href="#"> Menu </a></li>
+                    <li><a href="#"> Documentos </a></li>
+                    <li><a href="#"> Projetos </a></li>
+                </div>
+        </li>
+    </ul>
+    <button class="dropdown-button" onclick="toggleSubMenu(this)">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M280-240q-100 0-170-70T40-480q0-100 70-170t170-70h400q100 0 170 70t70 170q0 100-70 170t-170 70H280Zm0-80h400q66 0 113-47t47-113q0-66-47-113t-113-47H280q-66 0-113 47t-47 113q0 66 47 113t113 47Zm0-40q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35Zm200-120Z"/></svg>
+        <span>Morrer</span>
+    </button>
+    <ul class="sub-menu">
+        <div>
+            <li><a href="#"> Teste </a></li>
+            <li><a href="#"> Adicionar </a></li>
+            <li><a href="#"> Remover </a></li>
+            <li><a href="#"> Editar </a></li>
         </div>
-        <div class="sidebar-section">
-            <a class="sidebar-object" href="adicionar_pessoa"> <span class="material-symbols-outlined">person </span> Adicionar </a>
+        </li>
+    </ul>
+    <li>
+        <a href="deletar.html">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="m336-280 144-144 144 144 56-56-144-144 144-144-56-56-144 144-144-144-56 56 144 144-144 144 56 56ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
+            <span> Coiso </span></a>
+    </li>
+    <li>
+        <a href="home.html">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="m336-280 144-144 144 144 56-56-144-144 144-144-56-56-144 144-144-144-56 56 144 144-144 144 56 56ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
+            <span> Coiso 2</span></a>
+    </li>
+    </ul>
+</nav>
+<main>
+    <div> </div>
+    <div class="container-column">
+        <div class="container">
+            <h2> Prato mais vendido </h2>
+            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
         </div>
-        <div class="sidebar-section">
-            <a class="sidebar-object" href="recuperar_pessoa"> <span class="material-symbols-outlined"> travel_explore </span> Recuperar </a>
+        <div class="container">
+            <h2> Pedidos realizados hoje </h2>
+            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
         </div>
-        <div class="sidebar-section">
-            <a class="sidebar-object" href="deletar_pessoa"> <span class="material-symbols-outlined"> delete </span> Deletar </a>
-        </div>
-        <div class="sidebar-section">
+        <div class="container">
+            <h2> Lucro Bruto </h2>
+            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
         </div>
     </div>
-        <div class="graph">
-            <label> Quantidade de Pratos por dia</label>
-            <canvas id="myChart"> </canvas>
-
+    <div class="container-column">
+        <div class="container">
+            <h2> Hello World </h2>
+            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
         </div>
-        <div class="graph"> </div>
+        <div class="container">
+            <h2> Hello World </h2>
+            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
+        </div>
     </div>
+    <div class="container-column">
+        <div class="container">
+            <h2> Prato mais vendido </h2>
+            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
+        </div>
+        <div class="container">
+            <h2> Pedidos realizados hoje </h2>
+            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
+        </div>
+        <div class="container">
+            <h2> Lucro Bruto </h2>
+            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
+        </div>
+    </div>
+</main>
 </body>
-
-<script>
-    const ctx = document.getElementById('myChart').getContext('2d');
-    // Busca dados da API
-    fetch('http://localhost:8080/dashboard/pratos_por_dia', {
-        headers: { 'Content-Type': 'application/json' }
-    })
-        .then(response => response.json())
-        .then(data => {
-            // Extrai as datas e vendas do JSON
-            const labels = data.datas;
-            const values = data.vendas; // Exemplo: [9, 3, 9]
-
-
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Quantidade de Pratos pedidos por Dia',
-                        data: values,
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        })
-        .catch(error => console.error("Erro ao buscar dados:", error));
-</script>
 </html>
