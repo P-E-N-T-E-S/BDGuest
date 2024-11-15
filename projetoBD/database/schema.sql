@@ -141,7 +141,7 @@ CREATE TABLE Pedido (
     CONSTRAINT check_status CHECK ( status IN ('PRONTO', 'FAZENDO', 'ENTREGUE') )
 );
 
-CREATE TABLE Pedidos_log(
+CREATE TABLE Pedidos_log( -- TODO: Colocar o cpf do garcom aq
     id INT PRIMARY KEY,
     horario_pedido DATETIME,
     id_prato INTEGER,
@@ -149,7 +149,9 @@ CREATE TABLE Pedidos_log(
     nome_prato VARCHAR(50),
     cliente_bairro VARCHAR(50),
     cliente_idade INT,
-    CONSTRAINT fk_Menu_PedidosLogs FOREIGN KEY (id_prato) REFERENCES Menu(numero)
+    cpf_garcom VARCHAR(11),
+    CONSTRAINT fk_Menu_PedidosLogs FOREIGN KEY (id_prato) REFERENCES Menu(numero),
+    CONSTRAINT fk_Garcom_PedidosLogs FOREIGN KEY (cpf_garcom) REFERENCES Garcom(cpf)
 );
 
 -- Triggers
@@ -181,15 +183,17 @@ CREATE TRIGGER log_pedidos AFTER DELETE ON Pedido
         DECLARE nome_prato VARCHAR(50);
         DECLARE bairro varchar(50);
         DECLARE idade INT;
+        DECLARE garcom_cpf VARCHAR(11);
 
-        SELECT M.nome, PE.bairro, TIMESTAMPDIFF(YEAR, PE.data_nascimento, CURDATE())
-        INTO nome_prato, bairro, idade
+        SELECT M.nome, PE.bairro, TIMESTAMPDIFF(YEAR, PE.data_nascimento, CURDATE()), cpf_garcom
+        INTO nome_prato, bairro, idade, garcom_cpf
         FROM Pedido P JOIN Comanda C on P.id_comanda = C.numero_id
         JOIN Menu M ON P.id_menu = M.numero
-        JOIN Pessoa PE on C.cpf_pessoa = PE.cpf;
+        JOIN Pessoa PE on C.cpf_pessoa = PE.cpf
+        JOIN Garcom G on G.cpf = C.cpf_garcom;
 
-        INSERT INTO Pedidos_log(id, horario_pedido, id_prato, quantidade, nome_prato, cliente_bairro, cliente_idade)
-        VALUES (OLD.id_pedido,OLD.horario, OLD.id_menu, OLD.quantidade,nome_prato, bairro, idade);
+        INSERT INTO Pedidos_log(id, horario_pedido, id_prato, quantidade, nome_prato, cliente_bairro, cliente_idade, cpf_garcom)
+        VALUES (OLD.id_pedido,OLD.horario, OLD.id_menu, OLD.quantidade,nome_prato, bairro, idade , garcom_cpf);
 END //
 
 DELIMITER ;
@@ -283,4 +287,10 @@ CREATE FUNCTION garcom_atendente (id_mesa INT)
     END //
 DELIMITER ;
 
-SELECT * FROM Pedido P JOIN Comanda C ON C.numero_id = P.id_comanda WHERE C.cpf_garcom = ?
+SELECT P.nome, COUNT(*) as p_realizados
+FROM Pedidos_log PL
+JOIN Garcom G on PL.cpf_garcom = G.cpf
+JOIN Funcionario F ON G.cpf = F.cpf
+JOIN Pessoa P on F.cpf = P.cpf
+GROUP BY P.nome
+HAVING COUNT(*) > (SELECT AVG(PE.pedidos) FROM (SELECT COUNT(*) as pedidos FROM Pedidos_log PL GROUP BY PL.cpf_garcom) as PE)

@@ -6,10 +6,10 @@ import java.util.Map;
 public interface DashboardRepository {
     Map<String, Object> pratoMaisVendido();
     Map<String, Object> quantidadePedidosRealizadosHoje();
-    Map<String, Object> lucroBrutoHoje();
+    Double mediaDePedidosRealizadosPorGarcom();
     List<Map<String, Object>> quantidadeDePratosServidosPorDia();
     List<Map<String, Object>> quantidadeDeReservasPorDia();
-    List<Map<String, Object>> distribuicaoDoPrecoDosPratos();
+    List<Map<String, Object>> garconsPedidosAcimaDaMedia();
     List<Map<String, Object>> produtosProximosAValidade();
     List<Map<String, Object>> distribuicaoDosPedidosPorHoraDoDia();
 }

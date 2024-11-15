@@ -29,9 +29,9 @@ public class DashboardRepositoryImpl implements DashboardRepository {
     }
 
     @Override
-    public Map<String, Object> lucroBrutoHoje() {
-        String sql = "SELECT SUM(ROUND((M.preco * PL.quantidade), 2)) as ganho FROM Pedidos_log PL JOIN Menu M on M.numero = PL.id_prato WHERE DATE(PL.horario_pedido) = DATE(NOW())";
-        return jdbcTemplate.queryForMap(sql);
+    public Double mediaDePedidosRealizadosPorGarcom() {
+        String sql = "SELECT AVG(PE.pedidos) FROM (SELECT COUNT(*) as pedidos FROM Pedidos_log PL GROUP BY PL.cpf_garcom) as PE";
+        return jdbcTemplate.queryForObject(sql, Double.class);
     }
 
     @Override
@@ -47,10 +47,11 @@ public class DashboardRepositoryImpl implements DashboardRepository {
     }
 
     @Override
-    public List<Map<String, Object>> distribuicaoDoPrecoDosPratos() {
-        String sql = "SELECT M.preco FROM Menu M ORDER BY M.preco";
+    public List<Map<String, Object>> garconsPedidosAcimaDaMedia() {
+        String sql = "SELECT P.nome, COUNT(*) as p_realizados FROM Pedidos_log PL JOIN Garcom G on PL.cpf_garcom = G.cpf JOIN Funcionario F ON G.cpf = F.cpf JOIN Pessoa P on F.cpf = P.cpf GROUP BY P.nome HAVING COUNT(*) > (SELECT AVG(PE.pedidos) FROM (SELECT COUNT(*) as pedidos FROM Pedidos_log PL GROUP BY PL.cpf_garcom) as PE)";
         return jdbcTemplate.queryForList(sql);
     }
+
 
     @Override
     public List<Map<String, Object>> produtosProximosAValidade() {

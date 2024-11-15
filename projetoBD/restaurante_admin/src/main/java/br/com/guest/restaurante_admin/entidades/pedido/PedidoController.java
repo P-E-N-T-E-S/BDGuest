@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/comanda/{idComanda}/pedidos")
+@RequestMapping("/comanda/{idComanda}/pedidos") //TODO:ajustar as urls daqui
 public class PedidoController {
 
     private PedidoService pedidoService;

@@ -27,8 +27,8 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     @Override
-    public Double lucroBrutoHoje() {
-        return (Double)dashboardRepository.lucroBrutoHoje().get("ganho");
+    public Double mediaDePedidosRealizadosPorGarcom() {
+        return dashboardRepository.mediaDePedidosRealizadosPorGarcom();
     }
 
     @Override
@@ -62,14 +62,20 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     @Override
-    public List<Double> distribuicaoDoPrecoDosPratos() {
-        List<Map<String, Object>> query = dashboardRepository.distribuicaoDoPrecoDosPratos();
-        List<Double> precos = new ArrayList<>();
+    public Map<String, Object> garconsPedidosAcimaDaMedia() {
+        List<Map<String, Object>> query = dashboardRepository.garconsPedidosAcimaDaMedia();
+        List<String> nome = new ArrayList<>();
+        List<Integer> pedidos = new ArrayList<>();
         for (Map<String, Object> map : query) {
-            precos.add((Double)map.get("preco"));
+            nome.add((String)map.get("nome"));
+            pedidos.add((Integer)map.get("pedidos"));
         }
-        return precos;
+        Map<String, Object> resposta = new HashMap<>();
+        resposta.put("nome", nome);
+        resposta.put("pedidos", pedidos);
+        return resposta;
     }
+
 
     @Override
     public Map<String, Object> produtosProximosAValidade() {

@@ -11,7 +11,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/dashboard")
-public class DashboardController {
+public class DashboardController { 
 
     private DashboardService dashboardService;
 
@@ -34,9 +34,9 @@ public class DashboardController {
         return new ResponseEntity<>(dashboardService.quantidadeDePratosServidosPorDia(), HttpStatus.OK);
     }
 
-    @GetMapping("/lucro_bruto")
-    public ResponseEntity<Double> lucroBruto() {
-        return new ResponseEntity<>(dashboardService.lucroBrutoHoje(), HttpStatus.OK);
+    @GetMapping("/media_garcom")
+    public ResponseEntity<Double> mediaPedidosGarcom() {
+        return new ResponseEntity<>(dashboardService.mediaDePedidosRealizadosPorGarcom(), HttpStatus.OK);
     }
 
     @GetMapping("/quantidade_reservas_dia")
@@ -44,9 +44,9 @@ public class DashboardController {
         return new ResponseEntity<>(dashboardService.quantidadeDeReservasPorDia(), HttpStatus.OK);
     }
 
-    @GetMapping("/distribuicao_preco_pratos")
-    public ResponseEntity<List<Double>> distribuicaoPrecoPratos() {
-        return new ResponseEntity<>(dashboardService.distribuicaoDoPrecoDosPratos(), HttpStatus.OK);
+    @GetMapping("/garcons_acima_media")
+    public ResponseEntity<Map<String, Object>> distribuicaoPrecoPratos() {
+        return new ResponseEntity<>(dashboardService.garconsPedidosAcimaDaMedia(), HttpStatus.OK);
     }
 
     @GetMapping("/produtos_proximos_validade")
