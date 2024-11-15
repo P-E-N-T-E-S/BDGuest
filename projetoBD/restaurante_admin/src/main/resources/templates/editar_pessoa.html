@@ -5,8 +5,8 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Home</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type="text/css" href='static/style.css'>
-    <script type="text/javascript" src="static/index.js" defer> </script>
+    <link rel='stylesheet' type="text/css" href='./estilo.css'>
+    <script type="text/javascript" src="/index.js" defer> </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
@@ -65,9 +65,21 @@
 </nav>
 <main>
     <div class="form" style="align-items: center;">
-        <h1> Deletar por CPF </h1>
-        <input id="cpf_get" style="width: 500px; height: 20px; margin-top: 20px; margin-bottom: 5px">
-        <button class="botao-gen" type="submit" onclick="getCPF()"> Recuperar </button>
+        <h1> Editar Dados </h1>
+        <input id="valor_alterado" style="width: 500px; height: 20px; margin-top: 20px; margin-bottom: 5px">
+        <select id="classe_valor">
+            <option>nome</option>
+            <option>rua</option>
+            <option>bairro</option>
+            <option>estado</option>
+            <option>cidade</option>
+            <option>cep</option>
+            <option>email</option>
+            <option>data_nascimento</option>
+            <option>telefone</option>
+            <option>telefone2</option>
+        </select>
+        <button class="botao-gen" type="submit" onclick="editarDados()"> Recuperar </button>
     </div>
 </main>
 </body>

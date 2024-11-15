@@ -5,8 +5,8 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Home</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type="text/css" href='static/style.css'>
-    <script type="text/javascript" src="static/index.js" defer> </script>
+    <link rel='stylesheet' type="text/css" href='./estilo.css'>
+    <script type="text/javascript" src="/index.js" defer> </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
@@ -66,19 +66,18 @@
 <main>
     <div class="container-form">
         <h1> Pesquisar Pessoa por CPF </h1>
-        <input style="padding-bottom: 5px; width: 400px;">
-        <button type="submit" class="botao-gen" onclick=""> Botão </button>
+        <input style="padding-bottom: 5px; width: 400px;" id="cpf_get">
+        <button type="submit" class="botao-gen" onclick="getCPF()"> Botão </button>
     </div>
     <div class="data-exibit">
-
         <table class="text" id="tabelaUsuarios" border="1" style="width: 100%">
             <thead>
             <tr>
                 <th>Nome</th>
                 <th>CPF</th>
                 <th>Contato</th>
-                <th></th>
-                <th></th>
+                <th>Editar</th>
+                <th>Deletar</th>
             </thead>
             <tbody>
             </tbody>

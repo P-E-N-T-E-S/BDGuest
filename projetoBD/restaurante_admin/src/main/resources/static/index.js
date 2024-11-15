@@ -146,8 +146,8 @@ function editarDados() {
         return;
     }
 
-    const campo = document.getElementById('valor_campo').value;
-    const valor = document.getElementById('campo_editado').value;
+    const campo = document.getElementById('classe_valor').value;
+    const valor = document.getElementById('valor_alterado').value;
 
     const data = { campo, valor };
 

@@ -22,8 +22,8 @@ public class SpringController {
         return "recuperar_pessoa";
     }
 
-    @GetMapping("deletar_pessoa")
-    public String deletarPessoa(Model model) {
-        return "deletar_pessoa";
+    @GetMapping("editar_pessoa")
+    public String editarPessoa(Model model) {
+        return "editar_pessoa";
     }
 }
