@@ -180,6 +180,7 @@ DELIMITER //
 CREATE TRIGGER log_pedidos AFTER DELETE ON Pedido
     FOR EACH ROW
     BEGIN
+
         DECLARE nome_prato VARCHAR(50);
         DECLARE bairro varchar(50);
         DECLARE idade INT;
@@ -194,6 +195,7 @@ CREATE TRIGGER log_pedidos AFTER DELETE ON Pedido
 
         INSERT INTO Pedidos_log(id, horario_pedido, id_prato, quantidade, nome_prato, cliente_bairro, cliente_idade, cpf_garcom)
         VALUES (OLD.id_pedido,OLD.horario, OLD.id_menu, OLD.quantidade,nome_prato, bairro, idade , garcom_cpf);
+
 END //
 
 DELIMITER ;

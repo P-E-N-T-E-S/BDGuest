@@ -1,5 +1,8 @@
 package br.com.guest.restaurante_admin.entidades.pedido.impl;
 
+import br.com.guest.restaurante_admin.entidades.clientes.Cliente;
+import br.com.guest.restaurante_admin.entidades.clientes.ClienteService;
+import br.com.guest.restaurante_admin.entidades.comanda.Comanda;
 import br.com.guest.restaurante_admin.entidades.comanda.ComandaService;
 import br.com.guest.restaurante_admin.entidades.pedido.Pedido;
 import br.com.guest.restaurante_admin.entidades.pedido.PedidoRepository;
@@ -17,9 +20,12 @@ public class PedidoServiceImpl implements PedidoService {
 
     private ComandaService comandaService;
 
-    public PedidoServiceImpl(PedidoRepository pedidoRepository, ComandaService comandaService) {
+    private ClienteService clienteService;
+
+    public PedidoServiceImpl(PedidoRepository pedidoRepository, ComandaService comandaService, ClienteService clienteService) {
         this.pedidoRepository = pedidoRepository;
         this.comandaService = comandaService;
+        this.clienteService = clienteService;
     }
 
     @Override
@@ -60,9 +66,14 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public double desassociarPedidos(Integer idComanda) throws ComandaNaoExistenteOuVazia {
         try {
+            String cpfCliente = comandaService.buscarComandaPorId(idComanda).getCpfPessoa();
             double valorTotal = pedidoRepository.calcularTotal(idComanda);
             pedidoRepository.excluirPedidoPorComanda(idComanda);
             comandaService.excluirComanda(idComanda);
+            Cliente cliente = clienteService.buscarClientePorCpf(cpfCliente);
+            int pontos = (int) valorTotal / 2;
+            cliente.setFidelidade(cliente.getFidelidade() + pontos);
+            clienteService.atualizarClientePorCpf(cliente, cpfCliente);
             return valorTotal;
         }catch (NullPointerException e) {
             throw new ComandaNaoExistenteOuVazia("Comanda: "+idComanda+" não existe ou esta sem pedidos");
