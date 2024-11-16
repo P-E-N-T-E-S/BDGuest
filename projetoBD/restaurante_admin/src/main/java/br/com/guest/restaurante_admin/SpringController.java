@@ -26,4 +26,21 @@ public class SpringController {
     public String editarPessoa(Model model) {
         return "editar_pessoa";
     }
+
+    @GetMapping("adicionar_cliente")
+    public String adicionarCliente(Model model) {
+        return "adicionar_cliente";
+
+    }
+
+    @GetMapping("recuperar_cliente")
+    public String recuperarCliente(Model model) {
+        return "recuperar_cliente";
+    }
+
+    @GetMapping("editar_cliente")
+    public String editarCliente(Model model) {
+        return "editar_cliente";
+    }
+
 }

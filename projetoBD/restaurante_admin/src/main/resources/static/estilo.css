@@ -231,3 +231,24 @@ th, td {
 #label{
     align-self: start;
 }
+
+.table-button{
+    background-color: #67667A;
+    border: none;
+    fill: white;
+}
+
+.table-button:hover{
+    cursor: pointer;
+}
+
+.button:hover{
+    cursor: pointer;
+}
+
+.button-container{
+    border: solid #FFFFFF;
+    border-radius: 3px;
+    background-color: #67667A;
+    padding: 5px;
+}
