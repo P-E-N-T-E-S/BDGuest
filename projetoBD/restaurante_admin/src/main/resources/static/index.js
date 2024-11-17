@@ -478,3 +478,90 @@ function editarDados_funcionario(cpf) {
             alert('Erro ao atualizar dados: ' + error.message);
         });
 }
+
+
+function get_mesa() {
+    const id_mesa = document.getElementById('id-mesa').value;
+    recuperarMesaPorId(id_mesa)
+}
+
+function registrar_mesa() {
+    const dados_pessoa = {
+        numero_id: document.getElementById('identificador_mesa').value,
+        quantidade_cadeiras: document.getElementById('quantidade_cadeiras').value,
+    };
+
+    fetch('http://localhost:8080/mesa', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dados_pessoa)
+    })
+        .then(response => {
+            if (!response.ok) {
+                alert('ID já cadastrado no sistema');
+            }
+        })
+        .then(data => {
+            alert('Dados enviados com sucesso!');
+            console.log(data);
+        })
+}
+
+function recuperarMesaPorId(id_mesa) {
+    fetch(`http://localhost:8080/mesa`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Usuário não encontrado');
+            }
+            return response.json();
+        })
+        .then(usuario => {
+            const tabela = document.getElementById('tabelaUsuarios').querySelector('tbody');
+            tabela.innerHTML = '';
+
+            const usuarios = Array.isArray(usuario) ? usuario : [usuario];
+            usuarios.forEach(u => {
+                console.log(u)
+                const row = `
+                    <tr class="text">
+                        <td>${u.numero_id || 'Não disponível'}</td>
+                        <td>${u.quantidade_cadeiras || 'Não disponível'}</td>
+                        <td>
+                            <button class="table-button"" onclick="editarDadosEmail('${u.email}')">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>                            
+                            </button>
+                        </td>
+                        <td>
+                            <button class="table-button" onclick="removerMesaId('${u.numero_id}')">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="m696-440-56-56 83-84-83-83 56-57 84 84 83-84 57 57-84 83 84 84-57 56-83-83-84 83Zm-336-40q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm80-80h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0-80Zm0 400Z"/></svg>
+                            </button>
+                        </td>
+                    </tr>`;
+                tabela.insertAdjacentHTML('beforeend', row);
+            });
+        })
+        .catch(error => {
+            alert('Erro ao buscar dados: ' + error.message);
+        });
+}
+
+function removerMesaId(id_mesa){
+    fetch(`http://localhost:8080/mesa/${id_mesa}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao deletar Mesa');
+            }
+            alert('Mesa excluida!');
+            get_mesa();
+        })
+        .catch(error => {
+            alert('Não foi possível deletar. Usuário possui associação como Cliente ou Funcionário' );
+        });
+}

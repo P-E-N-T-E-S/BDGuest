@@ -57,4 +57,19 @@ public class SpringController {
     public String recuperarFuncionario(Model model) {
         return "recuperar_funcionario";
     }
+
+    @GetMapping("cadastrar_mesa")
+    public String cadastrarMesa(Model model) {
+        return "adicionar_mesa";
+    }
+
+    @GetMapping("recuperar_mesa")
+    public String recuperarMesa(Model model) {
+        return "recuperar_mesa";
+    }
+
+    @GetMapping("editar_mesa")
+    public String editarMesa(Model model) {
+        return "editar_mesa";
+    }
 }

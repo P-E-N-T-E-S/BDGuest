@@ -9,7 +9,6 @@
     <script type="text/javascript" src="/index.js" defer> </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-
 </head>
 <body>
 <nav id="sidebar">
@@ -42,44 +41,19 @@
     </ul>
 </nav>
 <main>
-    <div> </div>
-    <div class="container-column">
-        <div class="container">
-            <h2> Prato mais vendido </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
+    <div class="form">
+        <div class="form-body">
+            <div class="form-column">
+                <label for="identificador_mesa">Numero Identificador:</label>
+                <input type="text" id="identificador_mesa" name="cpf" class="form-item" required>
+            </div>
+            <div class="form-column">
+                <label for="quantidade_cadeiras">Quantidade de Cadeiras:</label>
+                <input type="text" id="quantidade_cadeiras" name="nome" class="form-item" required>
+            </div>
         </div>
-        <div class="container">
-            <h2> Pedidos realizados hoje </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
-        </div>
-        <div class="container">
-            <h2> Lucro Bruto </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
-        </div>
-    </div>
-    <div class="container-column">
-        <div class="container">
-            <h2> Hello World </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
-        </div>
-        <div class="container">
-            <h2> Hello World </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
-        </div>
-    </div>
-    <div class="container-column">
-        <div class="container">
-            <h2> Prato mais vendido </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
-        </div>
-        <div class="container">
-            <h2> Pedidos realizados hoje </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
-        </div>
-        <div class="container">
-            <h2> Lucro Bruto </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
-        </div>
+        <button style="width: 150px; align-items: center; margin-top: 10px" onclick="registrar_mesa()">Enviar</button>
+
     </div>
 </main>
 </body>
