@@ -288,11 +288,3 @@ CREATE FUNCTION garcom_atendente (id_mesa INT)
 
     END //
 DELIMITER ;
-
-SELECT P.nome, COUNT(*) as p_realizados
-FROM Pedidos_log PL
-JOIN Garcom G on PL.cpf_garcom = G.cpf
-JOIN Funcionario F ON G.cpf = F.cpf
-JOIN Pessoa P on F.cpf = P.cpf
-GROUP BY P.nome
-HAVING COUNT(*) > (SELECT AVG(PE.pedidos) FROM (SELECT COUNT(*) as pedidos FROM Pedidos_log PL GROUP BY PL.cpf_garcom) as PE)
