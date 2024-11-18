@@ -14,7 +14,7 @@
 <nav id="sidebar">
     <ul>
         <li class="">
-            <a href="">
+            <a href="home">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/></svg>
                 <span> Home </span></a>
         </li>
@@ -38,19 +38,50 @@
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="m240-160 60-150q9-23 29-36.5t45-13.5h66v-161q-153-5-256.5-45T80-660q0-58 117-99t283-41q167 0 283.5 41T880-660q0 54-103.5 94T520-521v161h66q24 0 44.5 13.5T660-310l60 150h-80l-48-120H368l-48 120h-80Zm240-440q97 0 183-17t126-43q-40-26-126-43t-183-17q-97 0-183 17t-126 43q40 26 126 43t183 17Zm0-60Z"/></svg>
                 <span> Mesa </span></a>
         </li>
+        <li>
+            <a href="recuperar_garcom">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17-62.5t47-43.5q60-30 124.5-46T480-440q67 0 131.5 16T736-378q30 15 47 43.5t17 62.5v112H160Zm320-400q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm160 228v92h80v-32q0-11-5-20t-15-14q-14-8-29.5-14.5T640-332Zm-240-21v53h160v-53q-20-4-40-5.5t-40-1.5q-20 0-40 1.5t-40 5.5ZM240-240h80v-92q-15 5-30.5 11.5T260-306q-10 5-15 14t-5 20v32Zm400 0H320h320ZM480-640Z"/></svg>
+                <span> Garçom </span>
+            </a>
+        </li>
+        <li>
+            <a href="recuperar_estoque">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M160-200h80v-320h480v320h80v-426L480-754 160-626v426Zm-80 80v-560l400-160 400 160v560H640v-320H320v320H80Zm280 0v-80h80v80h-80Zm80-120v-80h80v80h-80Zm80 120v-80h80v80h-80ZM240-520h480-480Z"/></svg>
+                <span> Estoque </span>
+            </a>
+        </li>
     </ul>
 </nav>
 <main>
-    <div class="form" style="align-items: center;">
-        <h1> Editar Dados </h1>
-        <input id="valor_alterado" style="width: 500px; height: 20px; margin-top: 20px; margin-bottom: 5px">
-        <select id="classe_valor">
-            <option>data_contratacao</option>
-            <option>salario</option>
-            <option>horario_entrada</option>
-            <option>horario_saida</option>
-        </select>
-        <button class="botao-gen" type="submit" onclick="editarDados_funcionario()"> Editar </button>
+
+    <div class="container-form">
+        <h1> Pesquisar Estoques por Estado </h1>
+        <input style="padding-bottom: 5px; width: 400px;" id="get_estado">
+        <button type="submit" class="botao-gen" onclick="getID_estoque()"> Botão </button>
+    </div>
+    <div class="data-exibit">
+        <div class="button">
+            <a href="adicionar_cliente" class="button"><button> <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg> Adicionar Estoque </button></a>
+        </div>
+        <table class="text" id="tabelaUsuarios" border="1" style="width: 100%">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Rua</th>
+                <th>Numero</th>
+                <th>Bairra</th>
+                <th>Estado</th>
+                <th>Cidade</th>
+                <th>CEP</th>
+                <th>Refrigerado</th>
+                <th>Editar</th>
+                <th>Excluir</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+    </div>
     </div>
 </main>
 </body>

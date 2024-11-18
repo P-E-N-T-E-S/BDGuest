@@ -9,7 +9,6 @@
     <script type="text/javascript" src="/index.js" defer> </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-
 </head>
 <body>
 <nav id="sidebar">
@@ -54,44 +53,15 @@
     </ul>
 </nav>
 <main>
-    <div> </div>
-    <div class="container-column">
-        <div class="container">
-            <h2> Prato mais vendido </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
-        </div>
-        <div class="container">
-            <h2> Pedidos realizados hoje </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
-        </div>
-        <div class="container">
-            <h2> Lucro Bruto </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
-        </div>
-    </div>
-    <div class="container-column">
-        <div class="container">
-            <h2> Hello World </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
-        </div>
-        <div class="container">
-            <h2> Hello World </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
-        </div>
-    </div>
-    <div class="container-column">
-        <div class="container">
-            <h2> Prato mais vendido </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
-        </div>
-        <div class="container">
-            <h2> Pedidos realizados hoje </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
-        </div>
-        <div class="container">
-            <h2> Lucro Bruto </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
-        </div>
+    <div class="form" style="align-items: center;">
+        <h1> Editar Dados </h1>
+        <input id="valor_alterado" style="width: 500px; height: 20px; margin-top: 20px; margin-bottom: 5px">
+        <select id="classe_valor">
+            <option>fidelidade</option>
+            <option>metodo_pagamento_1</option>
+            <option>metodo_pagamento_2</option>
+        </select>
+        <button class="botao-gen" type="submit" onclick="editarDados_cliente()"> Editar </button>
     </div>
 </main>
 </body>

@@ -479,7 +479,6 @@ function editarDados_funcionario(cpf) {
         });
 }
 
-
 function get_mesa() {
     const id_mesa = document.getElementById('id-mesa').value;
     recuperarMesaPorId(id_mesa)
@@ -560,6 +559,275 @@ function removerMesaId(id_mesa){
             }
             alert('Mesa excluida!');
             get_mesa();
+        })
+        .catch(error => {
+            alert('Não foi possível deletar. Usuário possui associação como Cliente ou Funcionário' );
+        });
+}
+
+function getCPF_garcom() {
+    const cpf = document.getElementById('cpf_get_garcom').value;
+    recuperarDadosPorCPF_garcom(cpf);
+}
+
+function cadastrar_garcom() {
+    const dados_garcom = {
+        cpf: document.getElementById('cpf').value.trim(),
+        cpf_gerente: document.getElementById('cpf_gerente').value.trim() || null,
+        mesas_atendidas: document.getElementById('mesas_atendidas').value
+            .split(',')
+            .map(mesa => parseInt(mesa.trim()))
+            .filter(mesa => !isNaN(mesa)) // Remove valores inválidos
+    };
+
+    console.log(dados_garcom);
+
+    // Make the POST request
+    fetch('http://localhost:8080/garcom', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dados_garcom),
+    })
+        .then(response => {
+            // Handle HTTP errors
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error.message || 'Erro ao cadastrar funcionário.');
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Success message and logging
+            alert('Funcionário cadastrado com sucesso!');
+            console.log('Resposta do servidor:', data);
+        })
+}
+
+function recuperarDadosPorCPF_garcom(cpf) {
+    fetch(`http://localhost:8080/garcom/cpf?valor=${cpf}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Funcionário não encontrado');
+            }
+            return response.json();
+        })
+
+        .then(usuario => {
+            const tabela = document.getElementById('tabelaUsuarios').querySelector('tbody');
+            tabela.innerHTML = '';
+
+            const usuarios = Array.isArray(usuario) ? usuario : [usuario];
+            console.log(usuario)
+
+            usuarios.forEach(u => {
+                const row = `
+                    <tr class="text">
+                        <td>${u.funcionario.pessoa.nome || 'Não disponível'}</td>
+                        <td>${u.cpf || 'Não disponível'}</td>
+                        <td>${u.funcionario.pessoa.telefone || 'Não disponível'}</td>
+                        <td>${u.funcionario.horario_entrada || 'Não disponível'}</td>
+                        <td>${u.funcionario.horario_saida|| 'Não disponível'} </td>
+                        <td>R$${u.funcionario.salario || 'Não disponivel'}</td>
+                        <td>${u.cpf_gerente || 'Gerente' }</td>
+                        <td>
+                            <button class="table-button" onclick="editarDadosCPF_garcom(${u.cpf})">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>                            
+                            </button>
+                        </td>
+                        <td>
+                            <button class="table-button" onclick="deletarDadosGarcomCPF('${u.cpf}')">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="m696-440-56-56 83-84-83-83 56-57 84 84 83-84 57 57-84 83 84 84-57 56-83-83-84 83Zm-336-40q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm80-80h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0-80Zm0 400Z"/></svg>
+                            </button>
+                        </td>
+                    </tr>`;
+                tabela.insertAdjacentHTML('beforeend', row);
+            });
+        })
+        .catch(error => {
+            alert('Erro ao buscar dados: ' + error.message);
+        });
+}
+
+function deletarDadosGarcomCPF(cpf) {
+    fetch(`http://localhost:8080/garcom/cpf?valor=${cpf}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao deletar usuário');
+            }
+            alert('Usuário deletado com sucesso!');
+            getCPF_garcom();
+        })
+        .catch(error => {
+            alert('Não foi possível deletar. Usuário possui associação como Cliente ou Funcionário' );
+        });
+}
+
+function editarDadosCPF_garcom(cpf) {
+    const userData = JSON.parse(localStorage.getItem('userData'));
+    fetch(`http://localhost:8080/garcom/cpf?valor=${cpf}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao buscar dados para edição.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const userData = data[0] || {};
+            if (!userData.cpf) {
+                throw new Error('Dados não encontrados.');
+            }
+            localStorage.setItem('userData', JSON.stringify(userData));
+            window.location.href = '/editar_garcom';
+        })
+        .catch(error => {
+            alert('Erro ao buscar dados: ' + error.message);
+            console.log(userData)
+        });
+}
+
+function editarDados_garcom(cpf) {
+    const userData = JSON.parse(localStorage.getItem('userData'));
+    if (!userData) {
+        alert('Dados do usuário não encontrados.');
+        return;
+    }
+    cpf = userData.cpf
+    const mesas = document.getElementById('mesas').value
+        .split(',')
+        .map(mesa => parseInt(mesa.trim()))
+        .filter(mesa => !isNaN(mesa)) // Remove valores inválidos
+    console.log(userData)
+
+    const data2 = {
+        cpf, mesas
+    }
+
+    fetch(`http://localhost:8080/garcom/mesas`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data2)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao atualizar dados.');
+            }
+            alert('Dados atualizados com sucesso!');
+        })
+        .catch(error => {
+            alert('Erro ao atualizar dados: ' + error.message);
+        });
+}
+
+function getID_estoque() {
+    const estado = document.getElementById('get_estado').value;
+    recuperarEstoquePorEstado(estado);
+}
+
+function cadastrar_estoque() {
+    const dados_estoque = {
+        id: parseInt(document.getElementById('id').value.trim()),
+        rua: document.getElementById('rua').value.trim(),
+        numero: parseInt(document.getElementById('numero').value.trim()),
+        bairro: document.getElementById('bairro').value.trim(),
+        estado: document.getElementById('Estado').value.trim(),
+        cidade: document.getElementById('Cidade').value.trim(),
+        cep: document.getElementById('CEP').value.trim(),
+        refrigerado: document.getElementById('Refrigerado').checked // Captura valor booleano
+    };
+
+    console.log(dados_estoque);
+
+    // Make the POST request
+    fetch('http://localhost:8080/estoque', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dados_estoque),
+    })
+        .then(response => {
+            // Handle HTTP errors
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error.message || 'Erro ao cadastrar funcionário.');
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Success message and logging
+            alert('Funcionário cadastrado com sucesso!');
+            console.log('Resposta do servidor:', data);
+        })
+}
+
+function recuperarEstoquePorEstado(estado) {
+    fetch(`http://localhost:8080/estoque/estado?valor=${estado}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Usuário não encontrado');
+            }
+            return response.json();
+        })
+        .then(usuario => {
+            const tabela = document.getElementById('tabelaUsuarios').querySelector('tbody');
+            tabela.innerHTML = '';
+
+            const usuarios = Array.isArray(usuario) ? usuario : [usuario];
+            usuarios.forEach(u => {
+                console.log(u)
+                const row = `
+                    <tr class="text">
+                        <td>${u.id || 'Não disponível'}</td>
+                        <td>${u.rua || 'Não disponível'}</td>
+                        <td>${u.numero || 'Não disponível'}</td>
+                        <td>${u.bairro || 'Não disponível'}</td>
+                        <td>${u.estado || 'Não disponível'}</td>
+                        <td>${u.cidade || 'Não disponível'}</td>
+                        <td>${u.cep || 'Não disponível'}</td>
+                        <td>${u.refrigerado || 'Não disponível'}</td>
+                        <td>
+                            <button class="table-button"" onclick="editarDadosEmail('${u.email}')">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>                            
+                            </button>
+                        </td>
+                        <td>
+                            <button class="table-button" onclick="deletarPorId('${u.id}')">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="m696-440-56-56 83-84-83-83 56-57 84 84 83-84 57 57-84 83 84 84-57 56-83-83-84 83Zm-336-40q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm80-80h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0-80Zm0 400Z"/></svg>
+                            </button>
+                        </td>
+                    </tr>`;
+                tabela.insertAdjacentHTML('beforeend', row);
+            });
+        })
+        .catch(error => {
+            alert('Erro ao buscar dados: ' + error.message);
+        });
+}
+
+function deletarPorId(id) {
+    fetch(`http://localhost:8080/estoque/id?valor=${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao deletar usuário');
+            }
+            alert('Usuário deletado com sucesso!');
+            getID_estoque();
         })
         .catch(error => {
             alert('Não foi possível deletar. Usuário possui associação como Cliente ou Funcionário' );
