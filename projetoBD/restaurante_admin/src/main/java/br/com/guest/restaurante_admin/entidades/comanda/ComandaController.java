@@ -58,6 +58,6 @@ public class ComandaController {
     @PutMapping("/{id}/cancelar-chamado")
     public ResponseEntity<String> cancelarChamado(@PathVariable Integer id) {
         comandaService.cancelarChamado(id);
-        return new ResponseEntity<>("Garcom chamado", HttpStatus.OK);
+        return new ResponseEntity<>("Chamado cancelado", HttpStatus.OK);
     }
 }

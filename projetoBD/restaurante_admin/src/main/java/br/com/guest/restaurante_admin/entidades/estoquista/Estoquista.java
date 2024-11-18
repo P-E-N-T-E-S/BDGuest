@@ -9,7 +9,7 @@ public class Estoquista {
     private Estoque estoque;
 
     private String cpf;
-    @JsonProperty("cpg_gerente")
+    @JsonProperty("cpf_gerente")
     private String cpfGerente;
     @JsonProperty("estoque_id")
     private Integer estoqueId;

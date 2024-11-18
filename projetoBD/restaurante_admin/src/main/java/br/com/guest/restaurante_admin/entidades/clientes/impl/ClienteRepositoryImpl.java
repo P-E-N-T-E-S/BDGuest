@@ -48,7 +48,7 @@ public class ClienteRepositoryImpl implements ClienteRepository {
 
     @Override
     public void atualizarClientePorCpf(Cliente cliente, String cpf) {
-        String sql = "UPDATE Cliente SET fidelidade = ?, metodo_pagamento_1 = ?, metodo_pagamento_2 = ? WHERE cpf = ?";
+        String sql = "UPDATE Cliente SET fidelidade = ?, metodo_pagamento1 = ?, metodo_pagamento2 = ? WHERE cpf = ?";
         jdbcTemplate.update(sql, cliente.getFidelidade(), cliente.getMetodoPagamento1(), cliente.getMetodoPagamento2(), cliente.getCpf());
     }
 

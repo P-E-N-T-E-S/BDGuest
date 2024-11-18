@@ -12,7 +12,6 @@ public class Garcom {
     @JsonProperty("cpf_gerente")
     private String gerenteCpf;
     @JsonProperty("mesas_atendidas")
-    @JsonIgnore
     private List<Integer> mesasAtendidas;
 
     private Funcionario funcionario;

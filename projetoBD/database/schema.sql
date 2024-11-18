@@ -125,8 +125,8 @@ CREATE TABLE Reserva (
 CREATE TABLE Atende (
     fk_Garcom_cpf VARCHAR(11),
     fk_Mesas_numero_id SMALLINT,
-    CONSTRAINT fk_Garcom_Atende FOREIGN KEY (fk_Garcom_cpf) REFERENCES Garcom(cpf),
-    CONSTRAINT fk_Mesa_Atende FOREIGN KEY (fk_Mesas_numero_id) REFERENCES Mesa(numero_id)
+    CONSTRAINT fk_Garcom_Atende FOREIGN KEY (fk_Garcom_cpf) REFERENCES Garcom(cpf) ON DELETE CASCADE,
+    CONSTRAINT fk_Mesa_Atende FOREIGN KEY (fk_Mesas_numero_id) REFERENCES Mesa(numero_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Pedido (
@@ -136,13 +136,14 @@ CREATE TABLE Pedido (
     horario DATETIME,
     quantidade INTEGER,
     status VARCHAR(10),
+    deletar BOOLEAN DEFAULT FALSE,
     CONSTRAINT fk_Comanda_Pedido FOREIGN KEY (id_comanda) REFERENCES Comanda(numero_id),
     CONSTRAINT fk_Menu_Pedido FOREIGN KEY (id_menu) REFERENCES Menu(numero),
     CONSTRAINT check_status CHECK ( status IN ('PRONTO', 'FAZENDO', 'ENTREGUE') )
 );
 
-CREATE TABLE Pedidos_log( -- TODO: Colocar o cpf do garcom aq
-    id INT PRIMARY KEY,
+CREATE TABLE Pedidos_log(
+    id_pedido INT PRIMARY KEY AUTO_INCREMENT,
     horario_pedido DATETIME,
     id_prato INTEGER,
     quantidade INT,
@@ -177,7 +178,7 @@ CREATE TRIGGER inicializar_comanda BEFORE INSERT ON Comanda
 DELIMITER ;
 
 DELIMITER //
-CREATE TRIGGER log_pedidos AFTER DELETE ON Pedido
+CREATE TRIGGER log_pedidos BEFORE DELETE ON Pedido
     FOR EACH ROW
     BEGIN
 
@@ -186,6 +187,8 @@ CREATE TRIGGER log_pedidos AFTER DELETE ON Pedido
         DECLARE idade INT;
         DECLARE garcom_cpf VARCHAR(11);
 
+        IF OLD.deletar = FALSE THEN
+
         SELECT M.nome, PE.bairro, TIMESTAMPDIFF(YEAR, PE.data_nascimento, CURDATE()), cpf_garcom
         INTO nome_prato, bairro, idade, garcom_cpf
         FROM Pedido P JOIN Comanda C on P.id_comanda = C.numero_id
@@ -193,19 +196,15 @@ CREATE TRIGGER log_pedidos AFTER DELETE ON Pedido
         JOIN Pessoa PE on C.cpf_pessoa = PE.cpf
         JOIN Garcom G on G.cpf = C.cpf_garcom;
 
-        INSERT INTO Pedidos_log(id, horario_pedido, id_prato, quantidade, nome_prato, cliente_bairro, cliente_idade, cpf_garcom)
-        VALUES (OLD.id_pedido,OLD.horario, OLD.id_menu, OLD.quantidade,nome_prato, bairro, idade , garcom_cpf);
+        INSERT INTO Pedidos_log(horario_pedido, id_prato, quantidade, nome_prato, cliente_bairro, cliente_idade, cpf_garcom)
+        VALUES (OLD.horario, OLD.id_menu, OLD.quantidade, nome_prato, bairro, idade , garcom_cpf);
+
+        ELSE
+            UPDATE Produto p JOIN Usa u ON p.id = u.produto SET p.quantidade = p.quantidade + (u.quantidade * OLD.quantidade ) WHERE prato_menu = OLD.id_menu;
+
+        END if;
 
 END //
-
-DELIMITER ;
-
-DELIMITER //
-CREATE TRIGGER retorne_ingredientes AFTER DELETE ON Pedidos_log
-    FOR EACH ROW
-    BEGIN
-        UPDATE Produto p JOIN Usa u ON p.id = u.produto SET p.quantidade = p.quantidade + (u.quantidade * OLD.quantidade ) WHERE prato_menu = OLD.id_prato;
-    end //
 
 DELIMITER ;
 
@@ -288,11 +287,3 @@ CREATE FUNCTION garcom_atendente (id_mesa INT)
 
     END //
 DELIMITER ;
-
-SELECT P.nome, COUNT(*) as p_realizados
-FROM Pedidos_log PL
-JOIN Garcom G on PL.cpf_garcom = G.cpf
-JOIN Funcionario F ON G.cpf = F.cpf
-JOIN Pessoa P on F.cpf = P.cpf
-GROUP BY P.nome
-HAVING COUNT(*) > (SELECT AVG(PE.pedidos) FROM (SELECT COUNT(*) as pedidos FROM Pedidos_log PL GROUP BY PL.cpf_garcom) as PE)

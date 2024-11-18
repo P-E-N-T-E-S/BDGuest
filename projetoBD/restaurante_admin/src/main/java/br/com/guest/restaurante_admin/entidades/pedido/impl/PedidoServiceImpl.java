@@ -2,7 +2,6 @@ package br.com.guest.restaurante_admin.entidades.pedido.impl;
 
 import br.com.guest.restaurante_admin.entidades.clientes.Cliente;
 import br.com.guest.restaurante_admin.entidades.clientes.ClienteService;
-import br.com.guest.restaurante_admin.entidades.comanda.Comanda;
 import br.com.guest.restaurante_admin.entidades.comanda.ComandaService;
 import br.com.guest.restaurante_admin.entidades.pedido.Pedido;
 import br.com.guest.restaurante_admin.entidades.pedido.PedidoRepository;
@@ -55,7 +54,7 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public void excluirPedido(Integer idPedido) {
         pedidoRepository.excluirPedido(idPedido);
-        pedidoRepository.apagarLog(idPedido);
+        pedidoRepository.definirDelecao(idPedido);
     }
 
     @Override

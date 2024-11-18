@@ -11,6 +11,6 @@ public interface PedidoRepository {
     void excluirPedidoPorComanda(Integer idComanda);
     void alterarPedido(Pedido pedido, Integer idComanda);
     double calcularTotal(Integer idComanda);
-    void apagarLog(Integer idPedido);
     void alterarStatus(Integer idPedido, String status);
+    void definirDelecao(Integer idPedido);
 }

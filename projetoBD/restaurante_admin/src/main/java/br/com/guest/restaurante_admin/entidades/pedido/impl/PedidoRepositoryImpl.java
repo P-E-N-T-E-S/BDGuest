@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class PedidoRepositoryImpl implements PedidoRepository { //TODO: ajeitar os ids de pedidos, funcoes de alterar os status e listar pedidos por garcom
+public class PedidoRepositoryImpl implements PedidoRepository {
 
     private JdbcTemplate jdbcTemplate;
 
@@ -31,7 +31,7 @@ public class PedidoRepositoryImpl implements PedidoRepository { //TODO: ajeitar 
 
     @Override
     public List<Pedido> listarPorComanda(Integer idComanda) {
-        String sql = "SELECT * FROM Menu M join Pedido P on M.numero = P.id_comanda WHERE id_comanda = ?";
+        String sql = "SELECT * FROM Menu M join Pedido P on M.numero = P.id_menu WHERE id_comanda = ?";
         return jdbcTemplate.query(sql, new MapeadorPedido(), idComanda);
     }
 
@@ -66,14 +66,16 @@ public class PedidoRepositoryImpl implements PedidoRepository { //TODO: ajeitar 
     }
 
     @Override
-    public void apagarLog(Integer idPedido) {
-        String sql = "DELETE FROM Pedidos_log WHERE id = ?";
-        jdbcTemplate.update(sql, idPedido);
-    }
-
-    @Override
     public void alterarStatus(Integer idPedido, String status) {
         String sql = "UPDATE Pedido SET status = ? WHERE id_pedido = ?";
         jdbcTemplate.update(sql, status, idPedido);
     }
+
+    @Override
+    public void definirDelecao(Integer idPedido) {
+        String sql = "UPDATE Pedido SET deletar = TRUE WHERE id_pedido = ?";
+        jdbcTemplate.update(sql, idPedido);
+    }
+
+
 }

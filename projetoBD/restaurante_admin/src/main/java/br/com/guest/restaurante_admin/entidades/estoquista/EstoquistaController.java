@@ -53,7 +53,7 @@ public class EstoquistaController {
     public ResponseEntity<String> alterarEstoquista(@PathVariable String filtro, @RequestParam String valor, @RequestBody HashMap<String,Object> camposAlterado){
         try {
             estoquistaService.alterarEstoquistaPorFiltro(filtro, valor, (String)camposAlterado.get("campo"), (String)camposAlterado.get("valor"));
-            return new ResponseEntity<>("Estoquista(s) excluídos com sucesso", HttpStatus.OK);
+            return new ResponseEntity<>("Estoquista(s) alterado com sucesso", HttpStatus.OK);
         }catch (FiltroNaoDisponivelException e){
             return new ResponseEntity<>("Filtro: "+e.getMessage()+" não disponível",HttpStatus.BAD_REQUEST);
         }catch (CampoDeAlteracaoNaoEncontradoException e){
