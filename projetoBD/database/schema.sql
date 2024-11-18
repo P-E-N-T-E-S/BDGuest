@@ -287,3 +287,5 @@ CREATE FUNCTION garcom_atendente (id_mesa INT)
 
     END //
 DELIMITER ;
+
+SELECT HOUR(horario_pedido) as hora, COUNT(*) as pedidos FROM Pedidos_log GROUP BY HOUR(horario_pedido)

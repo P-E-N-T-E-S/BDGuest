@@ -61,7 +61,7 @@ public class DashboardRepositoryImpl implements DashboardRepository {
 
     @Override
     public List<Map<String, Object>> distribuicaoDosPedidosPorHoraDoDia() {
-        String sql = "SELECT HOUR(horario) as hora, COUNT(*) as pedidos FROM Pedido GROUP BY HOUR(horario)";
+        String sql = "SELECT HOUR(horario_pedido) as hora, COUNT(*) as pedidos FROM Pedidos_log GROUP BY HOUR(horario_pedido)";
         return jdbcTemplate.queryForList(sql);
     }
 }

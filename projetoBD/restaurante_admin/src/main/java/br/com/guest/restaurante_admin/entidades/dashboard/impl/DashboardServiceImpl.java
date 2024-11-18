@@ -80,11 +80,11 @@ public class DashboardServiceImpl implements DashboardService {
     @Override
     public Map<String, Object> produtosProximosAValidade() {
         List<Map<String, Object>> query = dashboardRepository.produtosProximosAValidade();
-        List<BigDecimal> diasFaltantes = new ArrayList<>();
+        List<Long> diasFaltantes = new ArrayList<>();
         List<String> prato = new ArrayList<>();
         for (Map<String, Object> map : query) {
             prato.add((String)map.get("prato"));
-            diasFaltantes.add((BigDecimal)map.get("dias_para_estragar"));
+            diasFaltantes.add((Long)map.get("dias_para_estragar"));
         }
         Map<String, Object> resposta = new HashMap<>();
         resposta.put("pratos", prato);

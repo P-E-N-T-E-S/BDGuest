@@ -53,8 +53,8 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     public void excluirPedido(Integer idPedido) {
-        pedidoRepository.excluirPedido(idPedido);
         pedidoRepository.definirDelecao(idPedido);
+        pedidoRepository.excluirPedido(idPedido);
     }
 
     @Override

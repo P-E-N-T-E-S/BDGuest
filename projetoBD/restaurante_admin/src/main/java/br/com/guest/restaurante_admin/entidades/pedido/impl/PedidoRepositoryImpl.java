@@ -25,7 +25,7 @@ public class PedidoRepositoryImpl implements PedidoRepository {
 
     @Override
     public List<Pedido> buscarPedidoPorGarcom(String garcom) {
-        String sql = "SELECT * FROM Pedido P JOIN Comanda C ON C.numero_id = P.id_comanda WHERE C.cpf_garcom = ?";
+        String sql = "SELECT P.*, M.* FROM Pedido P JOIN Comanda C ON C.numero_id = P.id_comanda JOIN Menu M on P.id_menu = M.numero WHERE C.cpf_garcom = ?";
         return jdbcTemplate.query(sql, new MapeadorPedido(), garcom);
     }
 
@@ -55,8 +55,8 @@ public class PedidoRepositoryImpl implements PedidoRepository {
 
     @Override
     public void alterarPedido(Pedido pedido, Integer idComanda) {
-        String sql = "UPDATE Pedido set id_menu = ?, horario = ?, quantidade = ? WHERE id_comanda = ? AND id_menu = ? AND horario = ?";
-        jdbcTemplate.update(sql, pedido.getIdPrato(), pedido.getHorario(), pedido.getQuantidade(), idComanda, pedido.getIdPrato(), pedido.getHorario());
+        String sql = "UPDATE Pedido set id_menu = ?, quantidade = ? WHERE id_pedido = ?";
+        jdbcTemplate.update(sql, pedido.getIdPrato(), pedido.getHorario(), pedido.getQuantidade(), pedido.getIdPedido());
     }
 
     @Override
@@ -76,6 +76,4 @@ public class PedidoRepositoryImpl implements PedidoRepository {
         String sql = "UPDATE Pedido SET deletar = TRUE WHERE id_pedido = ?";
         jdbcTemplate.update(sql, idPedido);
     }
-
-
 }
