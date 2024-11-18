@@ -55,7 +55,7 @@ public class DashboardRepositoryImpl implements DashboardRepository {
 
     @Override
     public List<Map<String, Object>> produtosProximosAValidade() {
-        String sql = "SELECT P.nome as prato, DATEDIFF(P.validade, DATE(NOW())) as dias_para_estragar FROM Produto P ORDER BY DATEDIFF(P.validade, DATE(NOW())) LIMIT 10";
+        String sql = "SELECT P.nome as prato, DATEDIFF(DATE(NOW()), P.validade) as dias_para_estragar FROM Produto P ORDER BY DATEDIFF(P.validade, DATE(NOW())) LIMIT 10";
         return jdbcTemplate.queryForList(sql);
     }
 
