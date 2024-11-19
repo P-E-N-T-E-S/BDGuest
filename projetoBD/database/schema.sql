@@ -107,8 +107,8 @@ CREATE TABLE Contem (
     produto int,
     estoque INTEGER,
     PRIMARY KEY (produto, estoque),
-    CONSTRAINT fk_Produto_Contem FOREIGN KEY (produto) REFERENCES Produto(id),
-    CONSTRAINT fk_Estoque_Contem FOREIGN KEY (estoque) REFERENCES Estoque(id)
+    CONSTRAINT fk_Produto_Contem FOREIGN KEY (produto) REFERENCES Produto(id) ON DELETE CASCADE,
+    CONSTRAINT fk_Estoque_Contem FOREIGN KEY (estoque) REFERENCES Estoque(id) ON DELETE RESTRICT
 );
 
 CREATE TABLE Reserva (
@@ -287,5 +287,3 @@ CREATE FUNCTION garcom_atendente (id_mesa INT)
 
     END //
 DELIMITER ;
-
-SELECT HOUR(horario_pedido) as hora, COUNT(*) as pedidos FROM Pedidos_log GROUP BY HOUR(horario_pedido)
