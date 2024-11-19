@@ -161,7 +161,6 @@ CREATE TRIGGER horario_pedido BEFORE INSERT ON Pedido
     FOR EACH ROW
     BEGIN
         SET NEW.horario = NOW();
-        SET NEW.status = 'FAZENDO';
 end //
 
 DELIMITER ;
