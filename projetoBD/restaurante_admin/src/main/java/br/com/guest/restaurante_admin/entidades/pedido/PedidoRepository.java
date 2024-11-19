@@ -12,5 +12,4 @@ public interface PedidoRepository {
     void alterarPedido(Pedido pedido, Integer idComanda);
     double calcularTotal(Integer idComanda);
     void alterarStatus(Integer idPedido, String status);
-    void definirDelecao(Integer idPedido);
 }

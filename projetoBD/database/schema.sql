@@ -68,7 +68,7 @@ CREATE TABLE Comanda (
     nome_cliente VARCHAR(50),
     mesa SMALLINT,
     cpf_garcom VARCHAR(11),
-    chamando_garcom BOOLEAN,
+    chamando_garcom BOOLEAN DEFAULT FALSE,
     CONSTRAINT fk_Cliente_Comanda FOREIGN KEY (cpf_pessoa) REFERENCES Cliente(cpf),
     CONSTRAINT fk_Mesa_Comanda FOREIGN KEY (mesa) REFERENCES Mesa(numero_id),
     CONSTRAINT fk_Garcom_Comanda FOREIGN KEY (cpf_garcom) REFERENCES Garcom(cpf)
@@ -135,11 +135,10 @@ CREATE TABLE Pedido (
     id_menu INTEGER,
     horario DATETIME,
     quantidade INTEGER,
-    status VARCHAR(10),
-    deletar BOOLEAN DEFAULT FALSE,
+    status VARCHAR(10) DEFAULT 'EM ESPERA',
     CONSTRAINT fk_Comanda_Pedido FOREIGN KEY (id_comanda) REFERENCES Comanda(numero_id),
     CONSTRAINT fk_Menu_Pedido FOREIGN KEY (id_menu) REFERENCES Menu(numero),
-    CONSTRAINT check_status CHECK ( status IN ('PRONTO', 'FAZENDO', 'ENTREGUE') )
+    CONSTRAINT check_status CHECK ( status IN ('PRONTO', 'FAZENDO', 'ENTREGUE', 'EM ESPERA') ) -- TODO: ajusta para ter tag em espera
 );
 
 CREATE TABLE Pedidos_log(
@@ -172,7 +171,6 @@ CREATE TRIGGER inicializar_comanda BEFORE INSERT ON Comanda
     FOR EACH ROW
     BEGIN
         SET NEW.acesso = NOW();
-        SET NEW.chamando_garcom = FALSE;
     end //
 
 DELIMITER ;
@@ -187,7 +185,7 @@ CREATE TRIGGER log_pedidos BEFORE DELETE ON Pedido
         DECLARE idade INT;
         DECLARE garcom_cpf VARCHAR(11);
 
-        IF OLD.deletar = FALSE THEN
+        IF OLD.status = 'ENTREGUE' THEN
 
         SELECT M.nome, PE.bairro, TIMESTAMPDIFF(YEAR, PE.data_nascimento, CURDATE()), cpf_garcom
         INTO nome_prato, bairro, idade, garcom_cpf
@@ -199,7 +197,7 @@ CREATE TRIGGER log_pedidos BEFORE DELETE ON Pedido
         INSERT INTO Pedidos_log(horario_pedido, id_prato, quantidade, nome_prato, cliente_bairro, cliente_idade, cpf_garcom)
         VALUES (OLD.horario, OLD.id_menu, OLD.quantidade, nome_prato, bairro, idade , garcom_cpf);
 
-        ELSE
+        ELSEIF OLD.status = 'EM ESPERA' THEN
             UPDATE Produto p JOIN Usa u ON p.id = u.produto SET p.quantidade = p.quantidade + (u.quantidade * OLD.quantidade ) WHERE prato_menu = OLD.id_menu;
 
         END if;

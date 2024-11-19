@@ -70,10 +70,4 @@ public class PedidoRepositoryImpl implements PedidoRepository {
         String sql = "UPDATE Pedido SET status = ? WHERE id_pedido = ?";
         jdbcTemplate.update(sql, status, idPedido);
     }
-
-    @Override
-    public void definirDelecao(Integer idPedido) {
-        String sql = "UPDATE Pedido SET deletar = TRUE WHERE id_pedido = ?";
-        jdbcTemplate.update(sql, idPedido);
-    }
 }
