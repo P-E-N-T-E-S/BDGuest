@@ -70,35 +70,35 @@
         </li>
     </ul>
 </nav>
-
 <main>
-    <div class="form">
-        <div class="form-body">
-            <div class="form-column">
-                <label for="cpf">CPF:</label>
-                <input type="text" id="cpf" name="cpf" class="form-item" required>
-            </div>
-            <div class="form-column">
-                <label for="fidelidade">fidelidade:</label>
-                <input type="text" id="fidelidade" name="nome" class="form-item" required>
-            </div>
+
+    <div class="container-form">
+        <h1> Pesquisar Pessoa por CPF </h1>
+        <input style="padding-bottom: 5px; width: 400px;" id="distribuidora-produto">
+        <button type="submit" class="botao-gen" onclick="getIdProduto()"> Botão </button>
+    </div>
+    <div class="data-exibit">
+        <div class="button">
+            <a href="adicionar_produto" class="button"><button> <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg> Adicionar Produto </button></a>
         </div>
-
-        <div class="form-body">
-            <div class="form-column">
-                <label for="metodo_pagamento_1">Método de Pagamento 1:</label>
-                <input type="text" id="metodo_pagamento_1" name="rua" class="form-item" required>
-            </div>
-            <div class="form-column">
-                <label for="metodo_pagamento_2">Método de Pagamento 2:</label>
-                <input type="text" id="metodo_pagamento_2" name="bairro" class="form-item" required>
-            </div>
-        </div>
-
-
-        <button style="width: 150px; align-items: center; margin-top: 10px" onclick="cadastrar_cliente()">Enviar</button>
+        <table class="text" id="tabelaUsuarios" border="1" style="width: 100%">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Validade</th>
+                <th>Quantidade</th>
+                <th>Distribuidora</th>
+                <th>Estoques</th>
+                <th>Medida</th>
+                <th>Editar</th>
+                <th>Deletar</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
 
     </div>
-</main>
+    </main>
 </body>
 </html>
