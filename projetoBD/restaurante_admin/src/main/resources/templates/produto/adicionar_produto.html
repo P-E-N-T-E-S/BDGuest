@@ -75,28 +75,41 @@
     <div class="form">
         <div class="form-body">
             <div class="form-column">
-                <label for="cpf">CPF:</label>
-                <input type="text" id="cpf" name="cpf" class="form-item" required>
+                <label for="id">Numero de Identificação:</label>
+                <input type="text" id="id" name="cpf" class="form-item" required>
             </div>
             <div class="form-column">
-                <label for="fidelidade">fidelidade:</label>
-                <input type="text" id="fidelidade" name="nome" class="form-item" required>
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome" class="form-item" required>
             </div>
         </div>
 
         <div class="form-body">
             <div class="form-column">
-                <label for="metodo_pagamento_1">Método de Pagamento 1:</label>
-                <input type="text" id="metodo_pagamento_1" name="rua" class="form-item" required>
+                <label for="validade">Prazo de Validade:</label>
+                <input type="date" id="validade" name="rua" class="form-item" required>
             </div>
             <div class="form-column">
-                <label for="metodo_pagamento_2">Método de Pagamento 2:</label>
-                <input type="text" id="metodo_pagamento_2" name="bairro" class="form-item" required>
+                <label for="quantidade">Quantidade:</label>
+                <input type="text" id="quantidade" name="bairro" class="form-item" required>
             </div>
         </div>
 
-
-        <button style="width: 150px; align-items: center; margin-top: 10px" onclick="cadastrar_cliente()">Enviar</button>
+        <div class="form-body">
+            <div class="form-column">
+                <label for="distribuidora">Distribuidora:</label>
+                <input type="text" id="distribuidora" name="rua" class="form-item" required>
+            </div>
+            <div class="form-column">
+                <label for="estoques">Estoques:</label>
+                <input type="text" id="estoques" name="bairro" class="form-item" required>
+            </div>
+        </div>
+        <div class="form-column">
+            <label for="medida">Medida:</label>
+            <input type="text" id="medida" name="bairro" class="form-item" required>
+        </div>
+        <button style="width: 150px; align-items: center; margin-top: 10px" onclick="cadastrar_produto()">Enviar</button>
 
     </div>
 </main>

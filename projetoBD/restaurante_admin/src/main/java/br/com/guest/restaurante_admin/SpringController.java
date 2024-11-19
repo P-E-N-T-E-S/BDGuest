@@ -97,4 +97,54 @@ public class SpringController {
     public String recuperarEstoque(Model model) {
         return "estoque/recuperar_estoque";
     }
+
+    @GetMapping("editar_estoque")
+    public String editarEstoque(Model model) {
+        return "estoque/editar_estoque";
+    }
+
+    @GetMapping("adicionar_estoquista")
+    public String adicionarEstoquista(Model model) {
+        return "estoquista/adicionar_estoquista";
+    }
+
+    @GetMapping("recuperar_estoquista")
+    public String recuperarEstoquista(Model model) {
+        return "estoquista/recuperar_estoquista";
+    }
+
+    @GetMapping("editar_estoquista")
+    public String editarEstoquista(Model model) {
+        return "estoquista/editar_estoquista";
+    }
+
+    @GetMapping("adicionar_produto")
+    public String adicionarProduto(Model model) {
+        return "produto/adicionar_produto";
+    }
+
+    @GetMapping("recuperar_produto")
+    public String recuperarProduto(Model model) {
+        return "produto/recuperar_produto";
+    }
+
+    @GetMapping("editar_produto")
+    public String editarProduto(Model model) {
+        return "produto/editar_produto";
+    }
+
+    @GetMapping("adicionar_reserva")
+    public String adicionarReserva(Model model) {
+        return "reserva/adicionar_reserva";
+    }
+
+    @GetMapping("recuperar_reserva")
+    public String recuperarReserva(Model model) {
+        return "reserva/recuperar_reserva";
+    }
+
+    @GetMapping("editar_reserva")
+    public String editarReserva(Model model) {
+        return "reserva/editar_reserva";
+    }
 }
