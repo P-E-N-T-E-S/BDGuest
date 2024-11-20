@@ -12,4 +12,5 @@ public interface PedidoRepository {
     void alterarPedido(Pedido pedido, Integer idComanda);
     double calcularTotal(Integer idComanda);
     void alterarStatus(Integer idPedido, String status);
+    List<Pedido> buscarPedidoNaoEntregue(Integer idComanda);
 }

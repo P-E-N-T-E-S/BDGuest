@@ -70,4 +70,10 @@ public class PedidoRepositoryImpl implements PedidoRepository {
         String sql = "UPDATE Pedido SET status = ? WHERE id_pedido = ?";
         jdbcTemplate.update(sql, status, idPedido);
     }
+
+    @Override
+    public List<Pedido> buscarPedidoNaoEntregue(Integer idComanda) {
+        String sql = "SELECT * FROM Menu M join Pedido P on M.numero = P.id_menu WHERE id_comanda = ? AND NOT status = 'ENTREGUE'";
+        return jdbcTemplate.query(sql, new MapeadorPedido(), idComanda);
+    }
 }

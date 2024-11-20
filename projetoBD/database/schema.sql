@@ -286,3 +286,5 @@ CREATE FUNCTION garcom_atendente (id_mesa INT)
     END //
 DELIMITER ;
 
+SELECT * FROM Menu M join Pedido P on M.numero = P.id_menu WHERE id_comanda = 3 AND NOT status = 'ENTREGUE'
+

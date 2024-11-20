@@ -8,6 +8,7 @@ import br.com.guest.restaurante_admin.entidades.pedido.PedidoRepository;
 import br.com.guest.restaurante_admin.entidades.pedido.PedidoService;
 import br.com.guest.restaurante_admin.execoes.ComandaNaoExistenteOuVazia;
 import br.com.guest.restaurante_admin.execoes.IngredientesInsuficientesException;
+import br.com.guest.restaurante_admin.execoes.PedidosNaoEntreguesException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -62,8 +63,11 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    public double desassociarPedidos(Integer idComanda) throws ComandaNaoExistenteOuVazia {
+    public double desassociarPedidos(Integer idComanda) throws ComandaNaoExistenteOuVazia, PedidosNaoEntreguesException {
         try {
+            if(!pedidoRepository.buscarPedidoNaoEntregue(idComanda).isEmpty()) {
+                throw new PedidosNaoEntreguesException("Ainda há pedidos prontos ou fazendo");
+            }
             String cpfCliente = comandaService.buscarComandaPorId(idComanda).getCpfPessoa();
             double valorTotal = pedidoRepository.calcularTotal(idComanda);
             pedidoRepository.excluirPedidoPorComanda(idComanda);
