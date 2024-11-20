@@ -162,4 +162,24 @@ public class SpringController {
     public String editarPrato(Model model) {
         return "prato/editar_prato";
     }
+
+    @GetMapping("adicionar_comanda")
+    public String adicionarComanda(Model model) {
+        return "comanda/adicionar_comanda";
+    }
+
+    @GetMapping("recuperar_comanda")
+    public String recuperarComanda(Model model) {
+        return "comanda/recuperar_comandas";
+    }
+
+    @GetMapping("recuperar_comanda_c")
+    public String recuperarComandaC(Model model) {
+        return "comanda/recuperar_comanda_c";
+    }
+
+    @GetMapping("editar_comanda")
+    public String editarComanda(Model model) {
+        return "comanda/editar_comanda";
+    }
 }
