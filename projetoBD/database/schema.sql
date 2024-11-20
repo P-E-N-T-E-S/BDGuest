@@ -40,14 +40,6 @@ CREATE TABLE Garcom (
     CONSTRAINT fk_Gerente_Garcom FOREIGN KEY (cpf_gerente) REFERENCES Garcom(cpf)
 );
 
-CREATE TABLE Estoquista (
-    cpf varchar(11) PRIMARY KEY,
-    cpf_gerente varchar(11),
-    estoque INTEGER,
-    CONSTRAINT fk_Funcionario_Estoquista FOREIGN KEY (cpf) REFERENCES Funcionario(cpf),
-    CONSTRAINT fk_Gerente_Estoquista FOREIGN KEY (cpf_gerente) REFERENCES Estoquista(cpf)
-);
-
 CREATE TABLE Mesa (
     numero_id SMALLINT PRIMARY KEY,
     quantidade_cadeiras SMALLINT
@@ -94,6 +86,15 @@ CREATE TABLE Estoque (
     numero INTEGER
 );
 
+CREATE TABLE Estoquista (
+    cpf varchar(11) PRIMARY KEY,
+    cpf_gerente varchar(11),
+    estoque INTEGER,
+    CONSTRAINT fk_Funcionario_Estoquista FOREIGN KEY (cpf) REFERENCES Funcionario(cpf),
+    CONSTRAINT fk_Gerente_Estoquista FOREIGN KEY (cpf_gerente) REFERENCES Estoquista(cpf),
+    CONSTRAINT fk_Estoquista_Estoque FOREIGN KEY (estoque) REFERENCES Estoque(id)
+);
+
 CREATE TABLE Usa (
     produto int,
     prato_menu INTEGER,
@@ -118,7 +119,7 @@ CREATE TABLE Reserva (
     cpf_cliente VARCHAR(11),
     numero_mesa SMALLINT,
     PRIMARY KEY (cpf_cliente, data),
-    CONSTRAINT fk_Cliente_Reserva FOREIGN KEY (cpf_cliente) REFERENCES Cliente(cpf),
+    CONSTRAINT fk_Cliente_Reserva FOREIGN KEY (cpf_cliente) REFERENCES Cliente(cpf) ON DELETE CASCADE,
     CONSTRAINT fk_Mesa_Reserva FOREIGN KEY (numero_mesa) REFERENCES Mesa(numero_id)
 );
 
@@ -138,7 +139,7 @@ CREATE TABLE Pedido (
     status VARCHAR(10) DEFAULT 'EM ESPERA',
     CONSTRAINT fk_Comanda_Pedido FOREIGN KEY (id_comanda) REFERENCES Comanda(numero_id),
     CONSTRAINT fk_Menu_Pedido FOREIGN KEY (id_menu) REFERENCES Menu(numero),
-    CONSTRAINT check_status CHECK ( status IN ('PRONTO', 'FAZENDO', 'ENTREGUE', 'EM ESPERA') ) -- TODO: ajusta para ter tag em espera
+    CONSTRAINT check_status CHECK ( status IN ('PRONTO', 'FAZENDO', 'ENTREGUE', 'EM ESPERA') )
 );
 
 CREATE TABLE Pedidos_log(
@@ -284,3 +285,4 @@ CREATE FUNCTION garcom_atendente (id_mesa INT)
 
     END //
 DELIMITER ;
+

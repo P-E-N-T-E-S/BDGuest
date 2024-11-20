@@ -47,14 +47,4 @@ public class UsaServiceImpl implements UsaService {
     public void deletarUsoPorPrato(Integer idPrato) {
         usaRepository.deletarUsoPorPrato(idPrato);
     }
-
-    @Override
-    public void reduzirQuantidadePorPrato(Integer pratoId, Integer quantidade) {
-        usaRepository.reduzirQuantidadePorPrato(pratoId, quantidade);
-    }
-
-    @Override
-    public void aumentarQuantidadePorPrato(Integer pratoId, Integer quantidade) {
-        usaRepository.aumentarQuantidadePorPrato(pratoId, quantidade);
-    }
 }

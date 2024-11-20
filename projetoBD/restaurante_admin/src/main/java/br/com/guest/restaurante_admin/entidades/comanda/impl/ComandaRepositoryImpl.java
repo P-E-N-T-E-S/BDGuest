@@ -58,4 +58,10 @@ public class ComandaRepositoryImpl implements ComandaRepository {
         String sql = "UPDATE COMANDA SET chamando_garcom = FALSE WHERE numero_id = ?";
         jdbcTemplate.update(sql, id);
     }
+
+    @Override
+    public List<Comanda> buscarComandaPorCpf(String cpf) {
+        String sql = "SELECT * FROM Comanda WHERE cpf_pessoa = ?";
+        return jdbcTemplate.query(sql, new MapeadorComanda(), cpf);
+    }
 }

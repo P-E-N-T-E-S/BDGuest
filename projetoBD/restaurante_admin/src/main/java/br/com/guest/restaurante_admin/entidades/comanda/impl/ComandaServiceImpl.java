@@ -64,4 +64,9 @@ public class ComandaServiceImpl implements ComandaService {
     public void cancelarChamado(Integer id) {
         comandaRepository.cancelarChamado(id);
     }
+
+    @Override
+    public List<Comanda> buscarComandaPorCpf(String cpf) {
+        return comandaRepository.buscarComandaPorCpf(cpf);
+    }
 }
