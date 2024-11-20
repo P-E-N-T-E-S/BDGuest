@@ -76,7 +76,7 @@
     <div class="container-column">
         <div class="container">
             <h2> Prato mais vendido </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
+            <canvas id="myChart" class="graph" style="height: 200px; width: 300px"> </canvas>
         </div>
         <div class="container">
             <h2> Pedidos realizados hoje </h2>
@@ -114,3 +114,79 @@
 </main>
 </body>
 </html>
+<script>
+    const ctx = document.getElementById('myChart');
+    let chartInstance = null; // Variável para armazenar a instância do gráfico
+
+    fetch('http://localhost:8080/dashboard/quantidade_reservas_dia')
+        .then(response => response.json())
+        .then(data => {
+            if (!data.datas || !data.reservas || data.datas.length !== data.reservas.length) {
+                console.error('Dados inválidos recebidos da API');
+                return;
+            }
+
+            // Criação do gráfico com os dados da API
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.datas, // Labels para o eixo X
+                    datasets: [{
+                        label: 'Reservas por Dia',
+                        color: 'rgb(0,0,0)',
+                        data: data.reservas, // Dados para o eixo Y
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgb(0,0,0)',
+                        borderWidth: 1,
+                        fill: false, // Para o gráfico de linha não preencher a área abaixo
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true, // Garante proporção correta
+                    scales: {
+                        y: {
+                            beginAtZero: true, // Garante que a escala do eixo Y começa do zero
+                            suggestedMax: Math.max(...data.reservas) + 1, // Sugere um valor máximo dinâmico
+                            title: {
+                                display: true,
+                                text: 'Quantidade de Reservas',
+                                label: data.reservas
+                            },
+                            ticks: {
+                                // Mostra os valores no eixo Y
+                                callback: function(value) {
+                                    return value; // Retorna o valor diretamente no eixo Y
+                                }
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Datas'
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return data.datas[index]; // Retorna a data correspondente ao índice
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                // Exibe os valores no tooltip
+                                label: function(tooltipItem) {
+                                    return tooltipItem.label + ': ' + tooltipItem.raw; // Exibe o valor da reserva
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Erro ao carregar os dados:', error);
+        });
+
+</script>

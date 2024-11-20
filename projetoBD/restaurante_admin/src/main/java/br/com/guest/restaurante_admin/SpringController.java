@@ -147,4 +147,19 @@ public class SpringController {
     public String editarReserva(Model model) {
         return "reserva/editar_reserva";
     }
+
+    @GetMapping("adicionar_prato")
+    public String adicionarPrato(Model model) {
+        return "prato/adicionar_prato";
+    }
+
+    @GetMapping("recuperar_prato")
+    public String recuperarPrato(Model model) {
+        return "prato/recuperar_prato";
+    }
+
+    @GetMapping("editar_prato")
+    public String editarPrato(Model model) {
+        return "prato/editar_prato";
+    }
 }
