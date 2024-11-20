@@ -182,4 +182,19 @@ public class SpringController {
     public String editarComanda(Model model) {
         return "comanda/editar_comanda";
     }
+
+    @GetMapping("adicionar_pedido")
+    public String adicionarPedido(Model model) {
+        return "pedido/adicionar_pedido";
+    }
+
+    @GetMapping("recuperar_pedido")
+    public String recuperarPedido(Model model) {
+        return "pedido/recuperar_pedido";
+    }
+
+    @GetMapping("editar_pedido")
+    public String editarPedido(Model model) {
+        return "pedido/editar_pedido";
+    }
 }

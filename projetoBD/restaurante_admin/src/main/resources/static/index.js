@@ -1729,7 +1729,11 @@ function get_comanda_c(){
                         <td>${u.cpf_pessoa || 'Não disponível'}</td>
                         <td>${u.nome_cliente || 'Não disponível'}</td>
                         <td>R$${u.mesa_id || 'Não disponível'}</td>
-                        <td>${u.chamando_garcom} </td>
+                        <td> 
+                            <button class="table-button" onclick="get_comanda_for_pedido('${u.numero_id}')">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M80-200v-80h800v80H80Zm40-120v-40q0-128 78.5-226T400-710v-10q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720v10q124 26 202 124t78 226v40H120Zm82-80h556q-14-104-93-172t-185-68q-106 0-184.5 68T202-400Zm278 0Z"/></svg>
+                            </button> 
+                        </td>
                         <td>
                             <button class="table-button"" onclick="editarDadosIdEstoque('${u.id}')">
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>                            
@@ -1858,6 +1862,11 @@ function editarDados_comanda() {
     console.log(data2)
 }
 
+function get_comanda_for_pedido(id){
+    localStorage.setItem('id_comanda', id)
+    window.location.href = '/adicionar_pedido'
+}
+
 function cadastrar_pedido(id_comanda){
     const dados_pedido = {
         id_pedido: document.getElementById('id_pedido').value.trim(),
@@ -1865,25 +1874,128 @@ function cadastrar_pedido(id_comanda){
         quantidade: document.getElementById('quantidade').value.trim(),
     };
 
-    fetch('http://localhost:8080/comanda/2/pedidos', {
+    id_comanda = localStorage.getItem('id_comanda')
+
+    fetch(`http://localhost:8080/comanda/${id_comanda}/pedidos`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(dados_prato),
+        body: JSON.stringify(dados_pedido),
     })
         .then(response => {
             // Handle HTTP errors
             if (!response.ok) {
                 return response.json().then(error => {
-                    throw new Error(error.message || 'Erro ao cadastrar Produto.');
+                    throw new Error(error.message || 'Erro ao Registrar Pedido.');
                 });
             }
             return response.json();
         })
         .then(data => {
             // Success message and logging
-            alert('Prato cadastrado com sucesso!');
+            alert('Pedido registrado com sucesso!');
             console.log('Resposta do servidor:', data);
         })
+}
+
+function  get_pedidos(){
+    const id = document.getElementById('id_comanda').value;
+    console.log(id)
+    if(id === ''){
+        alert("Campo de Comanda Vazio")
+    }
+    else {
+        fetch(`http://localhost:8080/comanda/${id}/pedidos`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Comanda não encontrado');
+                }
+                return response.json();
+            })
+            .then(usuario => {
+                const tabela = document.getElementById('tabelaUsuarios').querySelector('tbody');
+                tabela.innerHTML = '';
+
+                const usuarios = Array.isArray(usuario) ? usuario : [usuario];
+                usuarios.forEach(u => {
+                    console.log(u)
+                    const row = `
+                    <tr class="text">
+                        <td>${u.id_pedido || 'Não disponível'}</td>
+                        <td>${id || 'Não disponível'}</td>
+                        <td>${u.id_prato || 'Não disponível'}</td>
+                        <td>${u.status || 'Não disponível'}</td>
+                        <td> 
+                            <button class="table-button" onclick="alterar_status_pedido('${id}', '${u.id_pedido}' ,'${u.status}')">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M120-240v-80h520v80H120Zm664-40L584-480l200-200 56 56-144 144 144 144-56 56ZM120-440v-80h400v80H120Zm0-200v-80h520v80H120Z"/></svg>
+                            </button> 
+                        </td>
+                        <td>
+                            <button class="table-button" onclick="editarDadosIdEstoque('${u.id}')">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>                            
+                            </button>
+                        </td>
+                        <td>
+                            <button class="table-button" onclick="deletar_pedido(${id}, '${ u.id_pedido}')">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="m696-440-56-56 83-84-83-83 56-57 84 84 83-84 57 57-84 83 84 84-57 56-83-83-84 83Zm-336-40q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm80-80h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0-80Zm0 400Z"/></svg>
+                            </button>
+                        </td>
+                    </tr>`;
+                    tabela.insertAdjacentHTML('beforeend', row);
+                });
+            })
+            .catch(error => {
+                alert('Erro ao buscar dados: ' + error.message);
+            });
+    }
+}
+
+function alterar_status_pedido(id, id_pedido, status) {
+    if (status === 'EM ESPERA') {
+        alert("Estados Restantes: Fazendo -> Pronto -> Entregue")
+        fetch(`http://localhost:8080/comanda/${id}/pedidos/${id_pedido}/status?status=FAZENDO`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+    } else if (status === 'FAZENDO') {
+        alert("Estados Restantes: Pronto -> Entregue")
+        fetch(`http://localhost:8080/comanda/${id}/pedidos/${id_pedido}/status?status=PRONTO`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+    } else if (status === 'PRONTO') {
+        fetch(`http://localhost:8080/comanda/${id}/pedidos/${id_pedido}/status?status=ENTREGUE`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+    } else if (status === 'ENTREGUE') {
+        alert("Pedido já foi entregue");
+    }
+    get_pedidos()
+}
+
+function deletar_pedido(id, id_pedido) {
+    fetch(`http://localhost:8080/comanda/${id}/pedidos/${id_pedido}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao deletar o pedido');
+            }
+            alert('Pedido deletado com sucesso!');
+            getIdProduto(); // Certifique-se que essa função esteja definida no contexto.
+        })
+        .catch(error => {
+            alert('Não foi possível deletar o pedido. Verifique associações ou dependências.');
+        });
 }
