@@ -1,3 +1,4 @@
+
 function toggleSubMenu(button) {
     button.nextElementSibling.classList.toggle('show');
     button.classList.toggle('rotate');
@@ -1173,7 +1174,7 @@ function recuperarProdutoPorID(distribuidora) {
                         <td>${u.estoques || 'Não disponível'}</td>
                         <td>${u.medida || 'Não disponível'}</td>
                         <td>
-                            <button class="table-button"" onclick="editarDadosIdEstoque('${u.id}')">
+                            <button class="table-button" onclick="editarDadosID_Produto('${u.id}')">
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>                            
                             </button>
                         </td>
@@ -1460,4 +1461,117 @@ function deletarReserva(cpf, data){
         .catch(error => {
             alert('Não foi possível deletar. Usuário possui associação como Cliente ou Funcionário' );
         });
+}
+
+function cadastrar_prato(){
+    const dados_prato = {
+        id: document.getElementById('id').value.trim(),
+        nome: document.getElementById('nome').value.trim(),
+        imagem_link: document.getElementById('imagem_link').value.trim(),
+        descricao: document.getElementById('descricao').value.trim(),
+        preco: document.getElementById('preco').value.trim(),
+        ingredientes: [document.getElementById('ingredientes').value
+            .trim()
+            .split(',')
+            .map(id => parseInt(id.trim(), 10))], // Colocando o array dentro de outro array
+    };
+
+    console.log(dados_prato.ingredientes)
+    // Make the POST request
+    fetch('http://localhost:8080/prato', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dados_prato),
+    })
+        .then(response => {
+            // Handle HTTP errors
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error.message || 'Erro ao cadastrar Produto.');
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Success message and logging
+            alert('Prato cadastrado com sucesso!');
+            console.log('Resposta do servidor:', data);
+        })
+}
+
+function getPratos(){
+    const cpf = document.getElementById('get_id_prato').value;
+
+    recuperarPratosporId(cpf);
+}
+
+function recuperarPratosporId(id){
+    fetch(`http://localhost:8080/prato/numero?valor=${id}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Usuário não encontrado');
+            }
+            return response.json();
+        })
+        .then(usuario => {
+            const tabela = document.getElementById('tabelaUsuarios').querySelector('tbody');
+            tabela.innerHTML = '';
+
+            const usuarios = Array.isArray(usuario) ? usuario : [usuario];
+            usuarios.forEach(u => {
+                console.log(u)
+                const row = `
+                    <tr class="text">
+                        <td>${u.id || 'Não disponível'}</td>
+                        <td>${u.nome || 'Não disponível'}</td>
+                        <td>${u.descricao || 'Não disponível'}</td>
+                        <td>${u.preco || 'Não disponível'}</td>
+                        <td>
+                            <button class="table-button"" onclick="editarDadosIdEstoque('${u.id}')">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>                            
+                            </button>
+                        </td>
+                        <td>
+                            <button class="table-button" onclick="deletarpPratoporId('${u.id}')">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="m696-440-56-56 83-84-83-83 56-57 84 84 83-84 57 57-84 83 84 84-57 56-83-83-84 83Zm-336-40q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm80-80h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0-80Zm0 400Z"/></svg>
+                            </button>
+                        </td>
+                    </tr>`;
+                tabela.insertAdjacentHTML('beforeend', row);
+            });
+        })
+        .catch(error => {
+            alert('Erro ao buscar dados: ' + error.message);
+        });
+}
+
+async function deletarpPratoporId(id) {
+    try {
+        const response = await fetch(`http://localhost:8080/prato/numero?valor=${id}`);
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || 'Erro ao obter os dados da reserva.');
+        }
+        const dados = await response.json(); // Converte a resposta para JSON
+
+        console.log("Olha o log dos dados")
+        console.log(dados)
+
+        // Fazendo a requisição DELETE para deletar
+        fetch(`http://localhost:8080/prato/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dados) // Enviando os dados obtidos no corpo da requisição
+        });
+
+        alert('Usuário deletado com sucesso!');
+        getIdProduto(); // Chama a função que você deseja após a exclusão
+    } catch (error) {
+        alert('Não foi possível deletar. Usuário possui associação como Cliente ou Funcionário');
+        console.error(error);
+    }
 }

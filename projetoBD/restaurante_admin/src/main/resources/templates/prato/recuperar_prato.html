@@ -9,7 +9,6 @@
     <script type="text/javascript" src="/index.js" defer> </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-
 </head>
 <body>
 <nav id="sidebar">
@@ -54,7 +53,7 @@
         <li>
             <a href="recuperar_estoquista">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M160-200h80v-320h480v320h80v-426L480-754 160-626v426Zm-80 80v-560l400-160 400 160v560H640v-320H320v320H80Zm280 0v-80h80v80h-80Zm80-120v-80h80v80h-80Zm80 120v-80h80v80h-80ZM240-520h480-480Z"/></svg>                <span> Estoque </span>
-            <span> Estoquista </span>
+                <span> Estoquista </span>
             </a>
         </li>
         <li>
@@ -72,121 +71,32 @@
     </ul>
 </nav>
 <main>
-    <div> </div>
-    <div class="container-column">
-        <div class="container">
-            <h2> Prato mais vendido </h2>
-            <canvas id="myChart" class="graph" style="height: 200px; width: 300px"> </canvas>
-        </div>
-        <div class="container">
-            <h2> Pedidos realizados hoje </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
-        </div>
-        <div class="container">
-            <h2> Lucro Bruto </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
-        </div>
+
+    <div class="container-form">
+        <h1> Pesquisar Cliente por CPF </h1>
+        <input style="padding-bottom: 5px; width: 400px;" id="get_id_prato">
+        <button type="submit" class="botao-gen" onclick="getPratos()"> Botão </button>
     </div>
-    <div class="container-column">
-        <div class="container">
-            <h2> Hello World </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
+    <div class="data-exibit">
+        <div class="button">
+            <a href="adicionar_prato" class="button"><button> <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg> Adicionar Prato </button></a>
         </div>
-        <div class="container">
-            <h2> Hello World </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
-        </div>
+        <table class="text" id="tabelaUsuarios" border="1" style="width: 100%">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nome</th>
+                <th>Descricao</th>
+                <th>Preço</th>
+                <th>Editar</th>
+                <th>Deletar</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
     </div>
-    <div class="container-column">
-        <div class="container">
-            <h2> Prato mais vendido </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
-        </div>
-        <div class="container">
-            <h2> Pedidos realizados hoje </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
-        </div>
-        <div class="container">
-            <h2> Lucro Bruto </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
-        </div>
     </div>
 </main>
 </body>
 </html>
-<script>
-    const ctx = document.getElementById('myChart');
-    let chartInstance = null; // Variável para armazenar a instância do gráfico
-
-    fetch('http://localhost:8080/dashboard/quantidade_reservas_dia')
-        .then(response => response.json())
-        .then(data => {
-            if (!data.datas || !data.reservas || data.datas.length !== data.reservas.length) {
-                console.error('Dados inválidos recebidos da API');
-                return;
-            }
-
-            // Criação do gráfico com os dados da API
-            chartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: data.datas, // Labels para o eixo X
-                    datasets: [{
-                        label: 'Reservas por Dia',
-                        color: 'rgb(0,0,0)',
-                        data: data.reservas, // Dados para o eixo Y
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgb(0,0,0)',
-                        borderWidth: 1,
-                        fill: false, // Para o gráfico de linha não preencher a área abaixo
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true, // Garante proporção correta
-                    scales: {
-                        y: {
-                            beginAtZero: true, // Garante que a escala do eixo Y começa do zero
-                            suggestedMax: Math.max(...data.reservas) + 1, // Sugere um valor máximo dinâmico
-                            title: {
-                                display: true,
-                                text: 'Quantidade de Reservas',
-                                label: data.reservas
-                            },
-                            ticks: {
-                                // Mostra os valores no eixo Y
-                                callback: function(value) {
-                                    return value; // Retorna o valor diretamente no eixo Y
-                                }
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Datas'
-                            },
-                            ticks: {
-                                callback: function(value, index, values) {
-                                    return data.datas[index]; // Retorna a data correspondente ao índice
-                                }
-                            }
-                        }
-                    },
-                    plugins: {
-                        tooltip: {
-                            callbacks: {
-                                // Exibe os valores no tooltip
-                                label: function(tooltipItem) {
-                                    return tooltipItem.label + ': ' + tooltipItem.raw; // Exibe o valor da reserva
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        })
-        .catch(error => {
-            console.error('Erro ao carregar os dados:', error);
-        });
-
-</script>
