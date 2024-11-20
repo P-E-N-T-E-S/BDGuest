@@ -192,7 +192,8 @@ CREATE TRIGGER log_pedidos BEFORE DELETE ON Pedido
         FROM Pedido P JOIN Comanda C on P.id_comanda = C.numero_id
         JOIN Menu M ON P.id_menu = M.numero
         JOIN Pessoa PE on C.cpf_pessoa = PE.cpf
-        JOIN Garcom G on G.cpf = C.cpf_garcom;
+        JOIN Garcom G on G.cpf = C.cpf_garcom
+        WHERE id_pedido = OLD.id_pedido;
 
         INSERT INTO Pedidos_log(horario_pedido, id_prato, quantidade, nome_prato, cliente_bairro, cliente_idade, cpf_garcom)
         VALUES (OLD.horario, OLD.id_menu, OLD.quantidade, nome_prato, bairro, idade , garcom_cpf);
@@ -288,6 +289,5 @@ CREATE FUNCTION garcom_atendente (id_mesa INT)
 
     END //
 DELIMITER ;
-
 
 
