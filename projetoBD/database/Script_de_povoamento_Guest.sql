@@ -1,3 +1,5 @@
+USE GUEST;
+
 -- Povoando a tabela Pessoa
 INSERT INTO Pessoa (cpf, nome, rua, bairro, estado, cidade, cep, email, data_nascimento, telefone, telefone_2) VALUES
 ('12345678909', 'João Silva', 'Rua A', 'Centro', 'SP', 'São Paulo', 12345678, 'joao@gmail.com', '1990-05-20', '(11) 99999-1111', '(11) 98888-1111'),
@@ -25,10 +27,14 @@ INSERT INTO Garcom (cpf, cpf_gerente) VALUES
 ('12345678909', NULL),
 ('45678912300', '12345678909');
 
+INSERT INTO Estoque (id, rua, refrigerado, bairro, cep, cidade, estado, numero) VALUES
+(1, 'Rua D', TRUE, 'Centro', '12345678', 'São Paulo', 'SP', 50),
+(2, 'Rua E', TRUE, 'Centro', '87654321', 'São Paulo', 'SP', 100);
+
 -- Povoando a tabela Estoquista
 INSERT INTO Estoquista (cpf, cpf_gerente, estoque) VALUES
-('98765432100', NULL, 50),
-('78912345600', '98765432100', 100);
+('98765432100', NULL, 1),
+('78912345600', '98765432100', 2);
 
 -- Povoando a tabela Mesa
 INSERT INTO Mesa (numero_id, quantidade_cadeiras) VALUES
@@ -45,10 +51,6 @@ INSERT INTO Menu (nome, imagem, descricao, preco, numero) VALUES
 INSERT INTO Produto (nome, validade, quantidade, distribuidora, medida) VALUES
 ('Queijo Mussarela', '2024-01-10', 20, 'Distribuidora A', 'kg'),
 ('Molho de Tomate', '2023-12-15', 30, 'Distribuidora B', 'litros');
-
--- Povoando a tabela Estoque
-INSERT INTO Estoque (id, rua, refrigerado, bairro, cep, cidade, estado, numero) VALUES
-(1, 'Rua D', TRUE, 'Centro', '12345678', 'São Paulo', 'SP', 101);
 
 -- Povoando a tabela Usa
 INSERT INTO Usa (produto, prato_menu, quantidade) VALUES

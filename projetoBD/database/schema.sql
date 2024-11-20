@@ -210,6 +210,7 @@ DELIMITER //
 CREATE TRIGGER reduzir_ingredientes_update AFTER UPDATE ON Pedido
     FOR EACH ROW
     BEGIN
+        IF(OLD.quantidade != NEW.quantidade OR OLD.id_menu != NEW.id_menu) THEN
 
                 IF (SELECT P.quantidade
             FROM Produto P
@@ -225,6 +226,8 @@ CREATE TRIGGER reduzir_ingredientes_update AFTER UPDATE ON Pedido
         UPDATE Produto p JOIN Usa u ON p.id = u.produto SET p.quantidade = p.quantidade + (u.quantidade * OLD.quantidade ) WHERE prato_menu = OLD.id_menu;
 
         UPDATE Produto p JOIN Usa u ON p.id = u.produto SET p.quantidade = p.quantidade - (u.quantidade * NEW.quantidade ) WHERE prato_menu = NEW.id_menu;
+
+        END IF;
     end //
 
 DELIMITER ;
@@ -286,5 +289,5 @@ CREATE FUNCTION garcom_atendente (id_mesa INT)
     END //
 DELIMITER ;
 
-SELECT * FROM Menu M join Pedido P on M.numero = P.id_menu WHERE id_comanda = 3 AND NOT status = 'ENTREGUE'
+
 
