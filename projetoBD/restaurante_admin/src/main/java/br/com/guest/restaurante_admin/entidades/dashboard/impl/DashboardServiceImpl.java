@@ -65,10 +65,10 @@ public class DashboardServiceImpl implements DashboardService {
     public Map<String, Object> garconsPedidosAcimaDaMedia() {
         List<Map<String, Object>> query = dashboardRepository.garconsPedidosAcimaDaMedia();
         List<String> nome = new ArrayList<>();
-        List<Integer> pedidos = new ArrayList<>();
+        List<Long> pedidos = new ArrayList<>();
         for (Map<String, Object> map : query) {
             nome.add((String)map.get("nome"));
-            pedidos.add((Integer)map.get("pedidos"));
+            pedidos.add((Long)map.get("p_realizados"));
         }
         Map<String, Object> resposta = new HashMap<>();
         resposta.put("nome", nome);
@@ -84,7 +84,7 @@ public class DashboardServiceImpl implements DashboardService {
         List<String> prato = new ArrayList<>();
         for (Map<String, Object> map : query) {
             prato.add((String)map.get("prato"));
-            diasFaltantes.add((Long)map.get("dias_para_estragar"));
+            diasFaltantes.add((Long)map.get("dias_para_estragar") * -1);
         }
         Map<String, Object> resposta = new HashMap<>();
         resposta.put("pratos", prato);

@@ -6,6 +6,7 @@ import br.com.guest.restaurante_admin.entidades.pessoa.Pessoa;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -16,7 +17,9 @@ public class Reserva {
 
     @JsonProperty("cpf_cliente")
     private String cpfCliente;
-    private Date data;
+    @JsonProperty("data")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate data;
     @JsonProperty("horario_entrada")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private LocalTime horarioEntrada;
@@ -25,7 +28,7 @@ public class Reserva {
     @JsonProperty("numero_mesa")
     private Integer numeroMesa;
 
-    public Reserva(Cliente cliente, Mesa mesa, String cpfCliente, Date data, LocalTime horarioEntrada, Integer quantidadePessoas, Integer numeroMesa) {
+    public Reserva(Cliente cliente, Mesa mesa, String cpfCliente, LocalDate data, LocalTime horarioEntrada, Integer quantidadePessoas, Integer numeroMesa) {
         this.cliente = cliente;
         this.mesa = mesa;
         this.cpfCliente = cpfCliente;
@@ -51,11 +54,11 @@ public class Reserva {
         this.cpfCliente = cpfCliente;
     }
 
-    public Date getData() {
+    public LocalDate getData() {
         return data;
     }
 
-    public void setData(Date data) {
+    public void setData(LocalDate data) {
         this.data = data;
     }
 

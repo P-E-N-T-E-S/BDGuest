@@ -10,6 +10,7 @@ import br.com.guest.restaurante_admin.execoes.*;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -65,14 +66,13 @@ public class ReservaServiceImpl implements ReservaService {
     }
 
     @Override
-    public void atualizarReserva(Reserva reserva, String cpf, Date data) {
+    public void atualizarReserva(Reserva reserva, String cpf, LocalDate data) {
         reservaRepository.atualizarReserva(reserva, cpf, data);
     }
 
     @Override
-    public void excluirReserva(String cpf, Date data) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); //TODO: ajustar isso nas classes que precisam
-        String dataString = dateFormat.format(data);
+    public void excluirReserva(String cpf, LocalDate data) {
+        String dataString = data.toString();
         reservaRepository.excluirReserva(cpf, dataString);
     }
 }

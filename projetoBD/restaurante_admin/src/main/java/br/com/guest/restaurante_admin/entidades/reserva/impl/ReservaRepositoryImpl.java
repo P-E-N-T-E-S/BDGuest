@@ -7,6 +7,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class ReservaRepositoryImpl implements ReservaRepository {
     }
 
     @Override
-    public void atualizarReserva(Reserva reserva, String cpf, Date data) {
+    public void atualizarReserva(Reserva reserva, String cpf, LocalDate data) {
         String sql = "UPDATE Reserva SET horario_entrada = ?, quantidade_pessoas = ?, numero_mesa = ? WHERE cpf_cliente = ? AND data = ?";
         jdbcTemplate.update(sql, reserva.getHorarioEntrada(), reserva.getQuantidadePessoas(), reserva.getNumeroMesa(), cpf, data);
 

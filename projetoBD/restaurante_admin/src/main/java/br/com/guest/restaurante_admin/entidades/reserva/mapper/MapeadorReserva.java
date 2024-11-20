@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -38,7 +39,7 @@ public class MapeadorReserva implements RowMapper<Reserva> {
         Cliente cliente = new Cliente(pessoa, cpf, fidelidade, metodoPagamento1, metodoPagamento2);
 
         String cpfCliente = rs.getString("cpf_cliente");
-        Date data = rs.getDate("data");
+        LocalDate data = rs.getDate("data").toLocalDate();
         Integer quantidadePessoas = rs.getInt("quantidade_pessoas");
         Integer id_mesa = rs.getInt("numero_mesa");
         LocalTime horarioEntrada = rs.getTime("horario_entrada").toLocalTime();

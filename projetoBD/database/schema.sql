@@ -290,4 +290,4 @@ CREATE FUNCTION garcom_atendente (id_mesa INT)
     END //
 DELIMITER ;
 
-
+SELECT P.*, M.* FROM Pedido P JOIN Comanda C ON C.numero_id = P.id_comanda JOIN Menu M on P.id_menu = M.numero
