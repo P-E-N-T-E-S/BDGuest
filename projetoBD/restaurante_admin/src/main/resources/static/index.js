@@ -1193,7 +1193,7 @@ function recuperarProdutoPorID(distribuidora) {
 }
 
 function deletarProdutoPorId(id){
-    fetch(`http://localhost:8080/produto/?=${id}`, {
+    fetch(`http://localhost:8080/produto/${id}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
@@ -1338,7 +1338,7 @@ function recuperarReserva(cpf, valor_procura){
                             </button>
                         </td>
                         <td>
-                            <button class="table-button" onclick="deletarReserva('${u.cpf_cliente}', ${u.data})">
+                            <button class="table-button" onclick="deletarReserva('${u.cpf_cliente}', '${u.data}')">
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="m696-440-56-56 83-84-83-83 56-57 84 84 83-84 57 57-84 83 84 84-57 56-83-83-84 83Zm-336-40q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm80-80h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0-80Zm0 400Z"/></svg>
                             </button>
                         </td>
@@ -1377,7 +1377,7 @@ function recuperarReserva(cpf, valor_procura){
                             </button>
                         </td>
                         <td>
-                            <button class="table-button" onclick="deletarReserva('${u.cpf_cliente}', ${u.data})">
+                            <button class="table-button" onclick="deletarReserva('${u.cpf_cliente}', '${u.data}')">
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="m696-440-56-56 83-84-83-83 56-57 84 84 83-84 57 57-84 83 84 84-57 56-83-83-84 83Zm-336-40q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm80-80h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0-80Zm0 400Z"/></svg>
                             </button>
                         </td>
@@ -1416,7 +1416,7 @@ function recuperarReserva(cpf, valor_procura){
                             </button>
                         </td>
                         <td>
-                            <button class="table-button" onclick="deletarReserva('${u.cpf_cliente}', ${u.data})">
+                            <button class="table-button" onclick="deletarReserva('${u.cpf_cliente}', '${u.data}')">
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="m696-440-56-56 83-84-83-83 56-57 84 84 83-84 57 57-84 83 84 84-57 56-83-83-84 83Zm-336-40q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm80-80h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0-80Zm0 400Z"/></svg>
                             </button>
                         </td>
@@ -1430,37 +1430,48 @@ function recuperarReserva(cpf, valor_procura){
     }
 }
 
-function deletarReserva(cpf, data){
-    const dados  = fetch(`http://localhost:8080/reserva/${cpf}/data?data=${data}`)
-        .then(response => {
-        // Verifica se a resposta foi bem-sucedida
+async function deletarReserva(cpf, data) {
+    try {
+        console.log(cpf);
+        console.log(data);
+
+        // Busca os dados da reserva
+        const response = await fetch(`http://localhost:8080/reserva/${cpf}/data?data=${data}`);
         if (!response.ok) {
-            return response.json().then(error => {
-                throw new Error(error.message || 'Erro ao obter os dados da reserva.');
-            });
+            const error = await response.json();
+            throw new Error(error.message || 'Erro ao obter os dados da reserva.');
         }
-        return response.json(); // Converte a resposta para JSON
-    })
+        const dados = await response.json();
 
-    console.log("Olha o log dos dados")
-    console.log(dados)
+        data = {
+            cpf_cliente: cpf,
+            data: dados.data,
+            horario_entrada: dados.horario_entrada,
+            numero_mesa: dados.numero_mesa,
+            quantidade_pessoas: dados.quantidade_pessoas
+        }
 
-    fetch(`http://localhost:8080/reserva`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        }, body: JSON.stringify(dados)
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Erro ao deletar usuário');
-            }
-            alert('Usuário deletado com sucesso!');
-            getIdProduto();
-        })
-        .catch(error => {
-            alert('Não foi possível deletar. Usuário possui associação como Cliente ou Funcionário' );
+        console.log("Olha o log dos dados:");
+        console.log(data);
+
+        // Deleta a reserva
+        const deleteResponse = await fetch(`http://localhost:8080/reserva`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
         });
+
+        if (!deleteResponse.ok) {
+            throw new Error('Erro ao deletar usuário');
+        }
+
+        alert('Usuário deletado com sucesso!');
+        getReserva();
+    } catch (error) {
+        alert(error.message || 'Ocorreu um erro inesperado.');
+    }
 }
 
 function cadastrar_prato(){
@@ -1527,7 +1538,7 @@ function recuperarPratosporId(id){
                         <td>${u.id || 'Não disponível'}</td>
                         <td>${u.nome || 'Não disponível'}</td>
                         <td>${u.descricao || 'Não disponível'}</td>
-                        <td>${u.preco || 'Não disponível'}</td>
+                        <td>R$${u.preco || 'Não disponível'}</td>
                         <td>
                             <button class="table-button"" onclick="editarDadosIdEstoque('${u.id}')">
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>                            
@@ -1569,9 +1580,310 @@ async function deletarpPratoporId(id) {
         });
 
         alert('Usuário deletado com sucesso!');
-        getIdProduto(); // Chama a função que você deseja após a exclusão
+        getPratos(); // Chama a função que você deseja após a exclusão
     } catch (error) {
-        alert('Não foi possível deletar. Usuário possui associação como Cliente ou Funcionário');
+        alert('Não foi possível deletar. ');
         console.error(error);
     }
+}
+
+function cadastrar_comanda(){
+    const dados_prato = {
+        numero_id: document.getElementById('numero_id_add').value.trim(),
+        cpf_pessoa: document.getElementById('cpf_pessoa_add').value.trim(),
+        nome_cliente: document.getElementById('nome_cliente_add').value.trim(),
+        acesso: null,
+        mesa_id: document.getElementById('mesa_id_add').value.trim(),
+    };
+
+    fetch('http://localhost:8080/comanda', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dados_prato),
+    })
+        .then(response => {
+            // Handle HTTP errors
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error.message || 'Erro ao cadastrar Produto.');
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Success message and logging
+            alert('Prato cadastrado com sucesso!');
+            console.log('Resposta do servidor:', data);
+        })
+}
+
+function get_comanda(){
+   const id = document.getElementById('comanda_id_get').value;
+    if(id === ''){
+        fetch(`http://localhost:8080/comanda`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Usuário não encontrado');
+                }
+                return response.json();
+            })
+            .then(usuario => {
+                const tabela = document.getElementById('tabelaUsuarios').querySelector('tbody');
+                tabela.innerHTML = '';
+
+                const usuarios = Array.isArray(usuario) ? usuario : [usuario];
+                usuarios.forEach(u => {
+                    console.log(u)
+                    const row = `
+                    <tr class="text">
+                        <td>${u.numero_id || 'Não disponível'}</td>
+                        <td>${u.cpf_pessoa || 'Não disponível'}</td>
+                        <td>${u.nome_cliente || 'Não disponível'}</td>
+                        <td>${u.mesa_id || 'Não disponível'}</td>
+                        <td>${u.chamando_garcom} </td>
+                        <td>
+                            <button class="table-button" onclick="editarDadosID_comanda('${u.numero_id}')">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>                            
+                            </button>
+                        </td>
+                        <td>
+                            <button class="table-button" onclick="deletar_comanda('${u.numero_id}')">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="m696-440-56-56 83-84-83-83 56-57 84 84 83-84 57 57-84 83 84 84-57 56-83-83-84 83Zm-336-40q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm80-80h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0-80Zm0 400Z"/></svg>
+                            </button>
+                        </td>
+                    </tr>`;
+                    tabela.insertAdjacentHTML('beforeend', row);
+                });
+            })
+            .catch(error => {
+                alert('Erro ao buscar dados: ' + error.message);
+            });
+    }
+    else {
+        fetch(`http://localhost:8080/comanda/${id}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Usuário não encontrado');
+                }
+                return response.json();
+            })
+            .then(usuario => {
+                const tabela = document.getElementById('tabelaUsuarios').querySelector('tbody');
+                tabela.innerHTML = '';
+
+                const usuarios = Array.isArray(usuario) ? usuario : [usuario];
+                usuarios.forEach(u => {
+                    console.log(u)
+                    const row = `
+                    <tr class="text">
+                        <td>${u.numero_id || 'Não disponível'}</td>
+                        <td>${u.cpf_pessoa || 'Não disponível'}</td>
+                        <td>${u.nome_cliente || 'Não disponível'}</td>
+                        <td>${u.mesa_id || 'Não disponível'}</td>
+                        <td>${u.chamando_garcom} </td>
+                        <td>
+                            <button class="table-button" onclick="editarDadosIdEstoque('${u.numero_id}')">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>                            
+                            </button>
+                        </td>
+                        <td>
+                            <button class="table-button" onclick="deletar_comanda('${u.numero_id}')">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="m696-440-56-56 83-84-83-83 56-57 84 84 83-84 57 57-84 83 84 84-57 56-83-83-84 83Zm-336-40q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm80-80h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0-80Zm0 400Z"/></svg>
+                            </button>
+                        </td>
+                    </tr>`;
+                    tabela.insertAdjacentHTML('beforeend', row);
+                });
+            })
+            .catch(error => {
+                alert('Erro ao buscar dados: ' + error.message);
+            });
+    }
+}
+
+function get_comanda_c(){
+    const id = document.getElementById('comanda_id_get_cliente').value;
+    if(id === ''){
+        alert("Cpf Não inserido")
+    }
+    else {
+        fetch(`http://localhost:8080/comanda/cpf/${id}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Usuário não encontrado');
+                }
+                return response.json();
+            })
+            .then(usuario => {
+                const tabela = document.getElementById('tabelaUsuarios').querySelector('tbody');
+                tabela.innerHTML = '';
+
+                const usuarios = Array.isArray(usuario) ? usuario : [usuario];
+                usuarios.forEach(u => {
+                    console.log(u)
+                    const row = `
+                    <tr class="text">
+                        <td>${u.numero_id || 'Não disponível'}</td>
+                        <td>${u.cpf_pessoa || 'Não disponível'}</td>
+                        <td>${u.nome_cliente || 'Não disponível'}</td>
+                        <td>R$${u.mesa_id || 'Não disponível'}</td>
+                        <td>${u.chamando_garcom} </td>
+                        <td>
+                            <button class="table-button"" onclick="editarDadosIdEstoque('${u.id}')">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>                            
+                            </button>
+                        </td>
+                        <td>
+                            <button class="table-button" onclick="deletarpPratoporId('${u.id}')">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="m696-440-56-56 83-84-83-83 56-57 84 84 83-84 57 57-84 83 84 84-57 56-83-83-84 83Zm-336-40q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm80-80h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0-80Zm0 400Z"/></svg>
+                            </button>
+                        </td>
+                    </tr>`;
+                    tabela.insertAdjacentHTML('beforeend', row);
+                });
+            })
+            .catch(error => {
+                alert('Erro ao buscar dados: ' + error.message);
+            });
+    }
+}
+
+function deletar_comanda(id){
+    fetch(`http://localhost:8080/comanda/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao deletar usuário');
+            }
+            alert('Usuário deletado com sucesso!');
+            getIdProduto();
+        })
+        .catch(error => {
+            alert('Não foi possível deletar. Usuário possui associação como Cliente ou Funcionário' );
+        });
+}
+
+function editarDadosID_comanda(id) {
+    const dadoComanda = JSON.parse(localStorage.getItem('dadoComanda'));
+    fetch(`http://localhost:8080/comanda/${id}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao buscar dados para edição.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const dadoComanda = data;
+            localStorage.setItem('dadoComanda', JSON.stringify(dadoComanda));
+            console.log(dadoComanda)
+            console.log("Teste")
+            window.location.href = '/editar_comanda';
+        })
+        .catch(error => {
+            alert('Erro ao buscar dados: ' + error.message);
+        });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const dadoComanda = JSON.parse(localStorage.getItem('dadoComanda'));
+
+    if (!dadoComanda) {
+        fetch(`http://localhost:8080/comanda/${id}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar dados para edição.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const dadoComanda = data[0] || {};
+                localStorage.setItem('dadoComanda', JSON.stringify(dadoComanda));
+                preencherFormulario(dadoComanda); // Preenche o formulário com os dados carregados.
+            })
+            .catch(error => {
+                alert('Erro ao buscar dados: ' + error.message);
+            });
+    } else {
+        preencherFormulario(dadoComanda); // Preenche o formulário com os dados do localStorage.
+    }
+});
+
+function preencherFormulario(dados) {
+    const campos = ['cpf_pessoa', 'numero_id', 'nome_cliente', 'mesa_id'];
+    campos.forEach(campo => {
+        const input = document.getElementById(campo);
+        if (input) input.value = dados[campo] || '';
+    });
+}
+
+function editarDados_comanda() {
+    const dadoComanda = JSON.parse(localStorage.getItem('dadoComanda'));
+    if (!dadoComanda) {
+        alert('Dados do usuário não encontrados.');
+        return;
+    }
+    id = dadoComanda.numero_id
+    console.log(dadoComanda.id)
+
+    const data2 = {
+        numero_id: document.getElementById('numero_id').value.trim(),
+        cpf_pessoa: document.getElementById('cpf_pessoa').value.trim(),
+        nome_cliente: document.getElementById('nome_cliente').value.trim(),
+        acesso: dadoComanda.acesso,
+        mesa_id: document.getElementById('mesa_id').value.trim(),
+    }
+
+    fetch(`http://localhost:8080/comanda/${dadoComanda.numero_id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data2)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao atualizar dados.');
+            }
+            alert('Dados atualizados com sucesso!');
+        })
+        .catch(error => {
+            alert('Erro ao atualizar dados: ' + error.message);
+        });
+    console.log(data2)
+}
+
+function cadastrar_pedido(id_comanda){
+    const dados_pedido = {
+        id_pedido: document.getElementById('id_pedido').value.trim(),
+        id_prato: document.getElementById('id_prato').value.trim(),
+        quantidade: document.getElementById('quantidade').value.trim(),
+    };
+
+    fetch('http://localhost:8080/comanda/2/pedidos', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dados_prato),
+    })
+        .then(response => {
+            // Handle HTTP errors
+            if (!response.ok) {
+                return response.json().then(error => {
+                    throw new Error(error.message || 'Erro ao cadastrar Produto.');
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Success message and logging
+            alert('Prato cadastrado com sucesso!');
+            console.log('Resposta do servidor:', data);
+        })
 }
