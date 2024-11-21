@@ -7,6 +7,7 @@ public interface PedidoService {
     List<Pedido> listarPorComanda(Integer idComanda);
     List<Pedido> listarPorPrato(Integer idComanda, Integer idPrato);
     List<Pedido> listarPorGarcom(String garcom);
+    Pedido buscarPorId(Integer id);
     void excluirPedido(Integer idPedido);
     void alterarPedido(Pedido pedido, Integer idComanda);
     double desassociarPedidos(Integer idComanda);

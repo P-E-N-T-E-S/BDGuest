@@ -84,7 +84,7 @@ public class DashboardServiceImpl implements DashboardService {
         List<String> prato = new ArrayList<>();
         for (Map<String, Object> map : query) {
             prato.add((String)map.get("prato"));
-            diasFaltantes.add((Long)map.get("dias_para_estragar") * -1);
+            diasFaltantes.add((Long)map.get("dias_para_estragar"));
         }
         Map<String, Object> resposta = new HashMap<>();
         resposta.put("pratos", prato);
