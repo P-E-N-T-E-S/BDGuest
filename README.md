@@ -71,8 +71,14 @@ Você precisa de um banco de dados configurado para rodar a aplicação. Caso ai
 
 ## ▶️ Executando a Aplicação
 
-### 📦 1. Subindo o container do banco
-Primeiro você deve acessar a pasta `database` e abrir um terminal nela, primeiro verifique-se se o seu docker engine está rodando e execute o comando `docker compose up -d`, lembre de deixar esse terminal aberto até o fim da execução da aplicação
+### 🗒️ 1. Criando o Arquivo `.env`
+Crie o arquivo `.env` na pasta `restaurante_admin` (que contém o `src`) com o seguinte conteúdo:
+
+```env
+DATABASE_URL=jdbc:mysql://localhost:3306/BDGuest
+DATABASE_USERNAME={Seu Usuário}
+DATABASE_PASSWORD={Sua Senha}
+```
 ### 💻 2. Rodando no Terminal
 
 ### 2.1 MacOS ou Linux
