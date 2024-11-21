@@ -1,6 +1,5 @@
 package br.com.guest.restaurante_admin.config;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,11 +10,9 @@ import javax.sql.DataSource;
 @Configuration
 public class DataSourceConfig {
 
-    Dotenv dotenv = Dotenv.configure().load();
-
-    private String datasourceUrl = dotenv.get("DATABASE_URL");
-    private String datasourceUsername = dotenv.get("DATABASE_USERNAME");
-    private String datasourcePassword = dotenv.get("DATABASE_PASSWORD");
+    private String datasourceUrl = "jdbc:mysql://localhost:3307/GUEST";
+    private String datasourceUsername = "restaurante-admin";
+    private String datasourcePassword = "garcom";
 
     @Bean
     public DataSource dataSource() {
