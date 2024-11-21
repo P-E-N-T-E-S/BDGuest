@@ -1,6 +1,6 @@
 package br.com.guest.restaurante_admin.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,12 +11,11 @@ import javax.sql.DataSource;
 @Configuration
 public class DataSourceConfig {
 
-    @Value("${my.app.datasource_url}")
-    private String datasourceUrl;
-    @Value("${my.app.datasource_username}")
-    private String datasourceUsername;
-    @Value("${my.app.datasource_password}")
-    private String datasourcePassword;
+    Dotenv dotenv = Dotenv.configure().load();
+
+    private String datasourceUrl = dotenv.get("DATABASE_URL");
+    private String datasourceUsername = dotenv.get("DATABASE_USERNAME");
+    private String datasourcePassword = dotenv.get("DATABASE_PASSWORD");
 
     @Bean
     public DataSource dataSource() {

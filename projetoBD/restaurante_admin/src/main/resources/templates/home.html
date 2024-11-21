@@ -15,7 +15,7 @@
 <nav id="sidebar">
     <ul>
         <li class="">
-            <a href="">
+            <a href="home">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/></svg>
                 <span> Home </span></a>
         </li>
@@ -39,48 +39,391 @@
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="m240-160 60-150q9-23 29-36.5t45-13.5h66v-161q-153-5-256.5-45T80-660q0-58 117-99t283-41q167 0 283.5 41T880-660q0 54-103.5 94T520-521v161h66q24 0 44.5 13.5T660-310l60 150h-80l-48-120H368l-48 120h-80Zm240-440q97 0 183-17t126-43q-40-26-126-43t-183-17q-97 0-183 17t-126 43q40 26 126 43t183 17Zm0-60Z"/></svg>
                 <span> Mesa </span></a>
         </li>
+        <li>
+            <a href="recuperar_garcom">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17-62.5t47-43.5q60-30 124.5-46T480-440q67 0 131.5 16T736-378q30 15 47 43.5t17 62.5v112H160Zm320-400q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm160 228v92h80v-32q0-11-5-20t-15-14q-14-8-29.5-14.5T640-332Zm-240-21v53h160v-53q-20-4-40-5.5t-40-1.5q-20 0-40 1.5t-40 5.5ZM240-240h80v-92q-15 5-30.5 11.5T260-306q-10 5-15 14t-5 20v32Zm400 0H320h320ZM480-640Z"/></svg>
+                <span> Garçom </span>
+            </a>
+        </li>
+        <li>
+            <a href="recuperar_estoque">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M160-200h80v-320h480v320h80v-426L480-754 160-626v426Zm-80 80v-560l400-160 400 160v560H640v-320H320v320H80Zm280 0v-80h80v80h-80Zm80-120v-80h80v80h-80Zm80 120v-80h80v80h-80ZM240-520h480-480Z"/></svg>
+                <span> Estoque </span>
+            </a>
+        </li>
+        <li>
+            <a href="recuperar_estoquista">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M160-200h80v-320h480v320h80v-426L480-754 160-626v426Zm-80 80v-560l400-160 400 160v560H640v-320H320v320H80Zm280 0v-80h80v80h-80Zm80-120v-80h80v80h-80Zm80 120v-80h80v80h-80ZM240-520h480-480Z"/></svg>
+            <span> Estoquista </span>
+            </a>
+        </li>
+        <li>
+            <a href="recuperar_produto">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M160-120v-240h640v240h-80v-160H240v160h-80Zm20-280q-25 0-42.5-17.5T120-460q0-25 17.5-42.5T180-520q25 0 42.5 17.5T240-460q0 25-17.5 42.5T180-400Zm100 0v-360q0-33 23.5-56.5T360-840h240q33 0 56.5 23.5T680-760v360H280Zm500 0q-25 0-42.5-17.5T720-460q0-25 17.5-42.5T780-520q25 0 42.5 17.5T840-460q0 25-17.5 42.5T780-400Zm-420-80h240v-280H360v280Zm0 0h240-240Z"/></svg>
+                <span> Produtos </span>
+            </a>
+        </li>
+        <li>
+            <a href="recuperar_reserva">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M160-120v-240h640v240h-80v-160H240v160h-80Zm20-280q-25 0-42.5-17.5T120-460q0-25 17.5-42.5T180-520q25 0 42.5 17.5T240-460q0 25-17.5 42.5T180-400Zm100 0v-360q0-33 23.5-56.5T360-840h240q33 0 56.5 23.5T680-760v360H280Zm500 0q-25 0-42.5-17.5T720-460q0-25 17.5-42.5T780-520q25 0 42.5 17.5T840-460q0 25-17.5 42.5T780-400Zm-420-80h240v-280H360v280Zm0 0h240-240Z"/></svg>
+                <span> Reserva </span>
+            </a>
+        </li>
     </ul>
 </nav>
 <main>
     <div> </div>
     <div class="container-column">
-        <div class="container">
-            <h2> Prato mais vendido </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
+        <div class="container" style="width: 26.5vw">
+            <h1> Prato mais vendido </h1>
+            <h2 id="test"></h2>
         </div>
-        <div class="container">
-            <h2> Pedidos realizados hoje </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
+        <div class="container" style="width: 26.5vw">
+            <h1> Pedidos realizados hoje: </h1>
+            <h2 id="test2"></h2>
         </div>
-        <div class="container">
-            <h2> Lucro Bruto </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
-        </div>
-    </div>
-    <div class="container-column">
-        <div class="container">
-            <h2> Hello World </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
-        </div>
-        <div class="container">
-            <h2> Hello World </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
+        <div class="container" style="width: 26.5vw">
+            <h1> Lucro Bruto </h1>
+            <h2 id="test3"></h2>
         </div>
     </div>
     <div class="container-column">
         <div class="container">
-            <h2> Prato mais vendido </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
+            <h2> Lucro Bruto Obtido: </h2>
+            <canvas id="myChart2" class="graph" style="height: 200px; width: 37.5vw"> </canvas>
+        </div>
+        <div class="container">
+            <h2> Pedidos Realizados Hoje: </h2>
+            <canvas id="myChart" class="graph" style="height: 200px; width: 37.5vw"> </canvas>
+        </div>
+    </div>
+    <div class="container-column">
+        <div class="container">
+            <h2> Pedidos feitos por Hora do Dia </h2>
+            <canvas id="myChart3" class="graph" style="height: 250px; width: 23.5vw"> </canvas>
         </div>
         <div class="container">
             <h2> Pedidos realizados hoje </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
+            <canvas id="myChart4" class="graph" style="height: 250px; width: 23.5vw"> </canvas>
         </div>
         <div class="container">
             <h2> Lucro Bruto </h2>
-            <p> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam consectetur veritatis reprehenderit labore unde. Aliquid labore beatae pariatur fuga! Odit eaque rem ea voluptates reiciendis quia? Reprehenderit rem sed corrupti. </p>
+            <canvas id="myChart5" class="graph" style="height: 250px; width: 23.5vw"> </canvas>
         </div>
     </div>
 </main>
 </body>
 </html>
+
+<script>
+    const ctx = document.getElementById('myChart');
+    let chartInstance = null; // Variável para armazenar a instância do gráfico
+
+    fetch('http://localhost:8080/dashboard/quantidade_reservas_dia')
+        .then(response => response.json())
+        .then(data => {
+            if (!data.datas || !data.reservas || data.datas.length !== data.reservas.length) {
+                console.error('Dados inválidos recebidos da API');
+                return;
+            }
+
+            // Criação do gráfico com os dados da API
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.datas, // Labels para o eixo X
+                    datasets: [{
+                        label: 'Reservas por Dia',
+                        color: 'rgb(0,0,0)',
+                        data: data.reservas, // Dados para o eixo Y
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1,
+                        fill: false, // Para o gráfico de linha não preencher a área abaixo
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true, // Garante proporção correta
+                    scales: {
+                        y: {
+                            beginAtZero: true, // Garante que a escala do eixo Y começa do zero
+                            suggestedMax: Math.max(...data.reservas) + 1, // Sugere um valor máximo dinâmico
+                            title: {
+                                display: true,
+                                text: 'Quantidade de Reservas',
+                                label: data.reservas
+                            },
+                            ticks: {
+                                // Mostra os valores no eixo Y
+                                callback: function(value) {
+                                    return value; // Retorna o valor diretamente no eixo Y
+                                }
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Datas'
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return data.datas[index]; // Retorna a data correspondente ao índice
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                // Exibe os valores no tooltip
+                                label: function(tooltipItem) {
+                                    return tooltipItem.label + ': ' + tooltipItem.raw; // Exibe o valor da reserva
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Erro ao carregar os dados:', error);
+        });
+</script>
+
+<script>
+    const ctx2 = document.getElementById('myChart2');
+    let chartInstance2 = null; // Variável para armazenar a instância do segundo gráfico
+
+    fetch('http://localhost:8080/dashboard/pratos_por_dia')
+        .then(response => response.json())
+        .then(data => {
+            if (!data.datas || !data.vendas || data.datas.length !== data.vendas.length) {
+                console.log(data)
+            }
+
+            // Criação do segundo gráfico com os dados da API
+            chartInstance2 = new Chart(ctx2, {
+                type: 'line', // Tipo de gráfico (altere conforme necessário)
+                data: {
+                    labels: data.datas, // Labels para o eixo X
+                    datasets: [{
+                        label: 'Pratos vendidos por Dia',
+                        data: data.vendas, // Dados para o eixo Y
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true, // Inicia o eixo Y do zero
+                            title: {
+                                display: true,
+                                text: 'Quantidade de Pratos'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Datas'
+                            }
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Erro ao carregar os dados do segundo gráfico:', error);
+        });
+</script>
+
+<script>
+    const ctx3 = document.getElementById('myChart3');
+    let chartInstance3 = null; // Variável para armazenar a instância do segundo gráfico
+
+    fetch('http://localhost:8080/dashboard/distribuicao_pedidos_hora')
+        .then(response => response.json())
+        .then(data => {
+            if (!data.hora || !data.pedidos || data.hora.length !== data.pedidos.length) {
+                console.log(data)
+            }
+
+            // Criação do segundo gráfico com os dados da API
+            chartInstance3 = new Chart(ctx3, {
+                type: 'bar', // Tipo de gráfico (altere conforme necessário)
+                data: {
+                    labels: data.hora, // Labels para o eixo X
+                    datasets: [{
+                        label: 'Pratos vendidos por Hora',
+                        data: data.pedidos, // Dados para o eixo Y
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true, // Inicia o eixo Y do zero
+                            title: {
+                                display: true,
+                                text: 'Quantidade de Pratos'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Datas'
+                            }
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Erro ao carregar os dados do segundo gráfico:', error);
+        });
+</script>
+
+<script>
+    const ctx4 = document.getElementById('myChart4');
+    let chartInstance4 = null; // Variável para armazenar a instância do segundo gráfico
+
+    fetch('http://localhost:8080/dashboard/produtos_proximos_validade')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            // Criação do segundo gráfico com os dados da API
+            chartInstance4 = new Chart(ctx4, {
+                type: 'bar', // Tipo de gráfico (altere conforme necessário)
+                data: {
+                    labels: data.pratos, // Labels para o eixo X
+                    datasets: [{
+                        label: 'Tempo restante de Validade',
+                        data: data.dias_faltantes, // Dados para o eixo Y
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1,
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true, // Inicia o eixo Y do zero
+                            title: {
+                                display: true,
+                                text: 'Quantidade de Dias'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Produtos'
+                            }
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Erro ao carregar os dados do segundo gráfico:', error);
+        });
+</script>
+
+<script>
+    const ctx5 = document.getElementById('myChart5');
+    let chartInstance5 = null; // Variável para armazenar a instância do segundo gráfico
+
+    fetch('http://localhost:8080/dashboard/garcons_acima_media')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            // Criação do segundo gráfico com os dados da API
+            chartInstance5 = new Chart(ctx5, {
+                type: 'bar', // Tipo de gráfico (altere conforme necessário)
+                data: {
+                    labels: data.nome, // Labels para o eixo X
+                    datasets: [{
+                        label: 'Tempo restante de Validade',
+                        data: data.pedidos, // Dados para o eixo Y
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true, // Inicia o eixo Y do zero
+                            title: {
+                                display: true,
+                                text: 'Quantidade de Dias'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Produtos'
+                            }
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Erro ao carregar os dados do segundo gráfico:', error);
+        });
+</script>
+
+<script>
+    fetch('http://localhost:8080/dashboard/prato_mais_vendido')
+        .then(response => response.json()) // Converte a resposta para JSON
+        .then(data => {
+            const elemento = document.getElementById('test');
+            elemento.textContent = `Prato: ${data.prato || 'Não disponível'} - Vendas: ${data.vendas || 'Não disponível'}`;
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('Erro ao buscar dados:', error);
+            document.getElementById('test').textContent = 'Erro ao carregar os dados';
+        });
+</script>
+
+<script>
+    fetch('http://localhost:8080/dashboard/pedidos_hoje')
+        .then(response => response.json()) // Converte a resposta para JSON
+        .then(data => {
+            const elemento = document.getElementById('test2');
+            elemento.textContent = `${data || 'Não disponível'}`;
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('Erro ao buscar dados:', error);
+            document.getElementById('test').textContent = 'Erro ao carregar os dados';
+        });
+</script>
+
+<script>
+    fetch('http://localhost:8080/dashboard/media_garcom')
+        .then(response => response.json()) // Converte a resposta para JSON
+        .then(data => {
+            const elemento = document.getElementById('test3');
+            elemento.textContent = `${data || 'Não disponível'}`;
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('Erro ao buscar dados:', error);
+            document.getElementById('test').textContent = 'Erro ao carregar os dados';
+        });
+</script>

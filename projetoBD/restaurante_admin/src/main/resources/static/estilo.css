@@ -12,10 +12,21 @@ html{
 body{
     min-height: 100vh;
     min-height: 100dvh;
-    background-color: #67667A;
-    color: white;
+    background-color: #f8f8f8;
+    color: black;
     display: grid;
     grid-template-columns: auto 1fr;
+}
+
+button{
+    margin: 3px;
+    background-color: #ff8800;
+    font-family: "Roboto Condensed", sans-serif;
+    border: none;
+    border-radius: 3px;
+    color: white;
+    fill: white;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 #sidebar{
@@ -112,17 +123,23 @@ body{
     margin-right: 30%;
     margin-left: 35%;
     margin-top: 5vh;
-    border: 2px solid white;
     align-items: center;
     padding: 5px;
-    border-radius: 5px;
+    border-radius: 10px;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
 }
 
 .botao-gen{
     margin: 3px;
     width: 80px;
-    background-color: white;
+    background-color: #ff8800;
+    font-family: "Roboto Condensed", sans-serif;
     border: none;
+    height: 20px;
+    width: 70px;
+    border-radius: 3px;
+    color: white;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .botao-gen:hover{
@@ -131,16 +148,56 @@ body{
 
 .data-exibit{
     margin-top: 100px;
-    width: 100%;
+    display: flex;
+    justify-content: center;
     align-items: center;
+    flex-direction: column;
     text-align: center;
-
 }
 
-th, td {
-    border: 2px solid white; /* Define a largura, estilo e cor da borda */
-    padding: 8px; /* Adiciona espaçamento interno nas células */
-    text-align: center; /* Centraliza o texto nas células */
+/* Estilo geral da tabela */
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse; /* Remove os espaços entre as bordas das células */
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Garante que as bordas arredondadas não sejam cortadas */
+    background-color: #f9f9f9; /* Cor de fundo suave */
+}
+
+/* Estilo para as células de cabeçalho */
+th {
+    padding: 15px;
+    background-color: #ff8800; /* Cor de fundo do cabeçalho */
+    color: white; /* Texto branco */
+    font-weight: bold;
+    text-align: center;
+    border: 2px solid #ddd; /* Bordas suaves */
+}
+
+/* Estilo para as células de dados */
+td {
+    padding: 12px;
+    border: 2px solid #ddd; /* Bordas suaves */
+    text-align: center;
+    color: #555; /* Cor do texto */
+}
+
+/* Estilo para as linhas pares da tabela */
+tr:nth-child(even) {
+    background-color: #f9f9f9; /* Cor de fundo para linhas pares */
+}
+
+/* Estilo para as linhas ímpares da tabela */
+tr:nth-child(odd) {
+    background-color: #f1f1f1; /* Cor de fundo para linhas ímpares */
+}
+
+/* Adiciona um efeito de borda no passar do mouse */
+td:hover, th:hover {
+    background-color: #ddd;
+    transition: background-color 0.3s ease;
 }
 
 .body-container {
@@ -190,18 +247,17 @@ th, td {
 
 .graph{
     margin: 3vb;
-    height: 150px;
-    width: 300px;
 }
 
 .form{
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     margin: 3vb;
-    border-style: solid;
-    border-color: white;
     border-radius: 5px;
+    border: solid 1px grey;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
 
 }
 
@@ -232,10 +288,9 @@ th, td {
 }
 
 .table-button{
-    background-color: #67667A;
     border: none;
-    fill: white;
 }
+
 
 .table-button:hover{
     cursor: pointer;
@@ -248,6 +303,11 @@ th, td {
 .button-container{
     border: solid #FFFFFF;
     border-radius: 3px;
-    background-color: #67667A;
+    background-color: orange;
     padding: 5px;
+}
+
+.container{
+    border: solid grey 1px;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
 }

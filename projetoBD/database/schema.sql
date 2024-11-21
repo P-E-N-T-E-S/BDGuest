@@ -40,14 +40,6 @@ CREATE TABLE Garcom (
     CONSTRAINT fk_Gerente_Garcom FOREIGN KEY (cpf_gerente) REFERENCES Garcom(cpf)
 );
 
-CREATE TABLE Estoquista (
-    cpf varchar(11) PRIMARY KEY,
-    cpf_gerente varchar(11),
-    estoque INTEGER,
-    CONSTRAINT fk_Funcionario_Estoquista FOREIGN KEY (cpf) REFERENCES Funcionario(cpf),
-    CONSTRAINT fk_Gerente_Estoquista FOREIGN KEY (cpf_gerente) REFERENCES Estoquista(cpf)
-);
-
 CREATE TABLE Mesa (
     numero_id SMALLINT PRIMARY KEY,
     quantidade_cadeiras SMALLINT
@@ -68,7 +60,7 @@ CREATE TABLE Comanda (
     nome_cliente VARCHAR(50),
     mesa SMALLINT,
     cpf_garcom VARCHAR(11),
-    chamando_garcom BOOLEAN,
+    chamando_garcom BOOLEAN DEFAULT FALSE,
     CONSTRAINT fk_Cliente_Comanda FOREIGN KEY (cpf_pessoa) REFERENCES Cliente(cpf),
     CONSTRAINT fk_Mesa_Comanda FOREIGN KEY (mesa) REFERENCES Mesa(numero_id),
     CONSTRAINT fk_Garcom_Comanda FOREIGN KEY (cpf_garcom) REFERENCES Garcom(cpf)
@@ -94,6 +86,15 @@ CREATE TABLE Estoque (
     numero INTEGER
 );
 
+CREATE TABLE Estoquista (
+    cpf varchar(11) PRIMARY KEY,
+    cpf_gerente varchar(11),
+    estoque INTEGER,
+    CONSTRAINT fk_Funcionario_Estoquista FOREIGN KEY (cpf) REFERENCES Funcionario(cpf),
+    CONSTRAINT fk_Gerente_Estoquista FOREIGN KEY (cpf_gerente) REFERENCES Estoquista(cpf),
+    CONSTRAINT fk_Estoquista_Estoque FOREIGN KEY (estoque) REFERENCES Estoque(id)
+);
+
 CREATE TABLE Usa (
     produto int,
     prato_menu INTEGER,
@@ -107,8 +108,8 @@ CREATE TABLE Contem (
     produto int,
     estoque INTEGER,
     PRIMARY KEY (produto, estoque),
-    CONSTRAINT fk_Produto_Contem FOREIGN KEY (produto) REFERENCES Produto(id),
-    CONSTRAINT fk_Estoque_Contem FOREIGN KEY (estoque) REFERENCES Estoque(id)
+    CONSTRAINT fk_Produto_Contem FOREIGN KEY (produto) REFERENCES Produto(id) ON DELETE CASCADE,
+    CONSTRAINT fk_Estoque_Contem FOREIGN KEY (estoque) REFERENCES Estoque(id) ON DELETE RESTRICT
 );
 
 CREATE TABLE Reserva (
@@ -118,15 +119,15 @@ CREATE TABLE Reserva (
     cpf_cliente VARCHAR(11),
     numero_mesa SMALLINT,
     PRIMARY KEY (cpf_cliente, data),
-    CONSTRAINT fk_Cliente_Reserva FOREIGN KEY (cpf_cliente) REFERENCES Cliente(cpf),
+    CONSTRAINT fk_Cliente_Reserva FOREIGN KEY (cpf_cliente) REFERENCES Cliente(cpf) ON DELETE CASCADE,
     CONSTRAINT fk_Mesa_Reserva FOREIGN KEY (numero_mesa) REFERENCES Mesa(numero_id)
 );
 
 CREATE TABLE Atende (
     fk_Garcom_cpf VARCHAR(11),
     fk_Mesas_numero_id SMALLINT,
-    CONSTRAINT fk_Garcom_Atende FOREIGN KEY (fk_Garcom_cpf) REFERENCES Garcom(cpf),
-    CONSTRAINT fk_Mesa_Atende FOREIGN KEY (fk_Mesas_numero_id) REFERENCES Mesa(numero_id)
+    CONSTRAINT fk_Garcom_Atende FOREIGN KEY (fk_Garcom_cpf) REFERENCES Garcom(cpf) ON DELETE CASCADE,
+    CONSTRAINT fk_Mesa_Atende FOREIGN KEY (fk_Mesas_numero_id) REFERENCES Mesa(numero_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Pedido (
@@ -135,14 +136,14 @@ CREATE TABLE Pedido (
     id_menu INTEGER,
     horario DATETIME,
     quantidade INTEGER,
-    status VARCHAR(10),
+    status VARCHAR(10) DEFAULT 'EM ESPERA',
     CONSTRAINT fk_Comanda_Pedido FOREIGN KEY (id_comanda) REFERENCES Comanda(numero_id),
     CONSTRAINT fk_Menu_Pedido FOREIGN KEY (id_menu) REFERENCES Menu(numero),
-    CONSTRAINT check_status CHECK ( status IN ('PRONTO', 'FAZENDO', 'ENTREGUE') )
+    CONSTRAINT check_status CHECK ( status IN ('PRONTO', 'FAZENDO', 'ENTREGUE', 'EM ESPERA') )
 );
 
-CREATE TABLE Pedidos_log( -- TODO: Colocar o cpf do garcom aq
-    id INT PRIMARY KEY,
+CREATE TABLE Pedidos_log(
+    id_pedido INT PRIMARY KEY AUTO_INCREMENT,
     horario_pedido DATETIME,
     id_prato INTEGER,
     quantidade INT,
@@ -161,7 +162,6 @@ CREATE TRIGGER horario_pedido BEFORE INSERT ON Pedido
     FOR EACH ROW
     BEGIN
         SET NEW.horario = NOW();
-        SET NEW.status = 'FAZENDO';
 end //
 
 DELIMITER ;
@@ -171,13 +171,12 @@ CREATE TRIGGER inicializar_comanda BEFORE INSERT ON Comanda
     FOR EACH ROW
     BEGIN
         SET NEW.acesso = NOW();
-        SET NEW.chamando_garcom = FALSE;
     end //
 
 DELIMITER ;
 
 DELIMITER //
-CREATE TRIGGER log_pedidos AFTER DELETE ON Pedido
+CREATE TRIGGER log_pedidos BEFORE DELETE ON Pedido
     FOR EACH ROW
     BEGIN
 
@@ -186,26 +185,25 @@ CREATE TRIGGER log_pedidos AFTER DELETE ON Pedido
         DECLARE idade INT;
         DECLARE garcom_cpf VARCHAR(11);
 
+        IF OLD.status = 'ENTREGUE' THEN
+
         SELECT M.nome, PE.bairro, TIMESTAMPDIFF(YEAR, PE.data_nascimento, CURDATE()), cpf_garcom
         INTO nome_prato, bairro, idade, garcom_cpf
         FROM Pedido P JOIN Comanda C on P.id_comanda = C.numero_id
         JOIN Menu M ON P.id_menu = M.numero
         JOIN Pessoa PE on C.cpf_pessoa = PE.cpf
-        JOIN Garcom G on G.cpf = C.cpf_garcom;
+        JOIN Garcom G on G.cpf = C.cpf_garcom
+        WHERE id_pedido = OLD.id_pedido;
 
-        INSERT INTO Pedidos_log(id, horario_pedido, id_prato, quantidade, nome_prato, cliente_bairro, cliente_idade, cpf_garcom)
-        VALUES (OLD.id_pedido,OLD.horario, OLD.id_menu, OLD.quantidade,nome_prato, bairro, idade , garcom_cpf);
+        INSERT INTO Pedidos_log(horario_pedido, id_prato, quantidade, nome_prato, cliente_bairro, cliente_idade, cpf_garcom)
+        VALUES (OLD.horario, OLD.id_menu, OLD.quantidade, nome_prato, bairro, idade , garcom_cpf);
+
+        ELSEIF OLD.status = 'EM ESPERA' THEN
+            UPDATE Produto p JOIN Usa u ON p.id = u.produto SET p.quantidade = p.quantidade + (u.quantidade * OLD.quantidade ) WHERE prato_menu = OLD.id_menu;
+
+        END if;
 
 END //
-
-DELIMITER ;
-
-DELIMITER //
-CREATE TRIGGER retorne_ingredientes AFTER DELETE ON Pedidos_log
-    FOR EACH ROW
-    BEGIN
-        UPDATE Produto p JOIN Usa u ON p.id = u.produto SET p.quantidade = p.quantidade + (u.quantidade * OLD.quantidade ) WHERE prato_menu = OLD.id_prato;
-    end //
 
 DELIMITER ;
 
@@ -213,6 +211,7 @@ DELIMITER //
 CREATE TRIGGER reduzir_ingredientes_update AFTER UPDATE ON Pedido
     FOR EACH ROW
     BEGIN
+        IF(OLD.quantidade != NEW.quantidade OR OLD.id_menu != NEW.id_menu) THEN
 
                 IF (SELECT P.quantidade
             FROM Produto P
@@ -228,6 +227,8 @@ CREATE TRIGGER reduzir_ingredientes_update AFTER UPDATE ON Pedido
         UPDATE Produto p JOIN Usa u ON p.id = u.produto SET p.quantidade = p.quantidade + (u.quantidade * OLD.quantidade ) WHERE prato_menu = OLD.id_menu;
 
         UPDATE Produto p JOIN Usa u ON p.id = u.produto SET p.quantidade = p.quantidade - (u.quantidade * NEW.quantidade ) WHERE prato_menu = NEW.id_menu;
+
+        END IF;
     end //
 
 DELIMITER ;
@@ -287,4 +288,3 @@ CREATE FUNCTION garcom_atendente (id_mesa INT)
     RETURN cpf_garcom;
 
     END //
-DELIMITER ;

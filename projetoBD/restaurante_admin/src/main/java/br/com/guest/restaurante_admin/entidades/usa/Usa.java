@@ -7,8 +7,8 @@ public class Usa {
     private Produto produto;
     private Prato prato;
 
-    private Integer produtoId;
     private Integer pratoId;
+    private Integer produtoId;
     private Integer quantidade;
 
     public Usa(Produto produto, Prato prato, Integer produtoId, Integer pratoId) {
@@ -18,9 +18,9 @@ public class Usa {
         this.pratoId = pratoId;
     }
 
-    public Usa(Integer produtoId, Integer pratoId, Integer quantidade) {
-        this.produtoId = produtoId;
+    public Usa(Integer pratoId, Integer produtoId, Integer quantidade) {
         this.pratoId = pratoId;
+        this.produtoId = produtoId;
         this.quantidade = quantidade;
     }
 

@@ -58,4 +58,10 @@ public class ComandaRepositoryImpl implements ComandaRepository {
         String sql = "UPDATE COMANDA SET chamando_garcom = FALSE WHERE numero_id = ?";
         jdbcTemplate.update(sql, id);
     }
+
+    @Override
+    public List<Comanda> buscarComandaPorCpf(String cpf) {
+        String sql = "SELECT nome, horario_entrada, horario_saida, M.numero_id, quantidade_cadeiras, C.numero_id, cpf_pessoa, acesso, nome_cliente, mesa, chamando_garcom FROM Mesa M JOIN Comanda C on C.mesa = M.numero_id JOIN Garcom G ON G.cpf = C.cpf_garcom JOIN Funcionario F on G.cpf = F.cpf JOIN Pessoa P on F.cpf = P.cpf WHERE cpf_pessoa = ?";
+        return jdbcTemplate.query(sql, new MapeadorComanda(), cpf);
+    }
 }

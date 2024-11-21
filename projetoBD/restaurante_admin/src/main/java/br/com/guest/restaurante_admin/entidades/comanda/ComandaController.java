@@ -37,6 +37,11 @@ public class ComandaController {
         return new ResponseEntity<>(comandaService.buscarComandaPorId(id), HttpStatus.OK);
     }
 
+    @GetMapping("/cpf/{cpf}")
+    public ResponseEntity<List<Comanda>> buscarComandaPorCpf(@PathVariable String cpf) {
+        return new ResponseEntity<>(comandaService.buscarComandaPorCpf(cpf), HttpStatus.OK);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<String> atualizarComanda(@RequestBody Comanda comanda, @PathVariable Integer id) {
             comandaService.alterarComanda(comanda, id);
@@ -58,6 +63,6 @@ public class ComandaController {
     @PutMapping("/{id}/cancelar-chamado")
     public ResponseEntity<String> cancelarChamado(@PathVariable Integer id) {
         comandaService.cancelarChamado(id);
-        return new ResponseEntity<>("Garcom chamado", HttpStatus.OK);
+        return new ResponseEntity<>("Chamado cancelado", HttpStatus.OK);
     }
 }

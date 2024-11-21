@@ -10,4 +10,5 @@ public interface ComandaRepository {
     void alterarComanda(Comanda comanda, Integer id);
     void chamarGarcom(Integer id);
     void cancelarChamado(Integer id);
+    List<Comanda> buscarComandaPorCpf(String cpf);
 }
