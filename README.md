@@ -64,18 +64,23 @@ cd <diretório do projeto>
 ## 🛢️ Configurar o Banco de Dados
 Você precisa de um banco de dados configurado para rodar a aplicação. Caso ainda não tenha configurado, siga os passos abaixo:
 
-1. 📂 **Acesse a pasta `database`.**
+1. 📦 Subindo o container do banco
+Primeiro você deve acessar a pasta `database` e abrir um terminal nela, primeiro verifique-se se o seu docker engine está rodando e execute o comando `docker compose up -d`, lembre de deixar esse terminal aberto até o fim da execução da aplicação<br/>
+1.1 Dados de acesso ao banco:
+- HOST: localhost
+- PORT: 3307
+- USERNAME: restaurante-admin
+- PASSWORD: garcom
+
+2. 📂 **Acesse a pasta `database`.**
    - Na pasta, você encontrará dois arquivos:
      - **`schema.sql`**: Execute este arquivo para criar a estrutura do banco de dados.
      - **`Script_de_povoamento_Guest.sql`**: Execute este arquivo para inserir os dados iniciais e povoar as tabelas criadas.
 
 ## ▶️ Executando a Aplicação
+### 💻 1. Rodando no Terminal
 
-### 📦 1. Subindo o container do banco
-Primeiro você deve acessar a pasta `database` e abrir um terminal nela, primeiro verifique-se se o seu docker engine está rodando e execute o comando `docker compose up -d`, lembre de deixar esse terminal aberto até o fim da execução da aplicação
-### 💻 2. Rodando no Terminal
-
-### 2.1 MacOS ou Linux
+### 1.1 MacOS ou Linux
 1. Certifique-se de que o terminal esteja na pasta `restaurante_admin`.
 2. Execute o comando para preparar o script:
    ```bash
