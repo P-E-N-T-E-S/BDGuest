@@ -1,0 +1,18 @@
+services:
+  mysql:
+    container_name: restaurante-admin
+    image: mysql:latest
+    command: --log-bin-trust-function-creators=1
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_DATABASE: 'GUEST'
+      MYSQL_USER: 'restaurante-admin'
+      MYSQL_PASSWORD: 'garcom'
+      MYSQL_ROOT_PASSWORD: 'garcom'
+      MYSQL_ROOT_HOST: '%'
+    volumes:
+      - restaurante-admin:/var/lib/mysql
+
+volumes:
+  restaurante-admin:
