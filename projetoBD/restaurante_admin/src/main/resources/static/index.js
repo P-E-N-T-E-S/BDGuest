@@ -349,7 +349,7 @@ function cadastrar_funcionario() {
             // Handle HTTP errors
             if (!response.ok) {
                 return response.json().then(error => {
-                    throw new Error(error.message || 'Erro ao cadastrar funcionário.');
+                   alert(error.message || 'Erro ao cadastrar funcionário.');
                 });
             }
             return response.json();
@@ -414,7 +414,7 @@ function deletarDadosFuncionarioCPF(cpf) {
     })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Erro ao deletar usuário');
+                alert('Erro ao deletar Funcionário');
             }
             alert('Usuário deletado com sucesso!');
             getCPF_funcionario();
@@ -442,7 +442,7 @@ function editarDadosCPF_funcionario(cpf) {
             window.location.href = '/editar_funcionario';
         })
         .catch(error => {
-            alert('Erro ao buscar dados: ' + error.message);
+            alert('Erro ao editar: ' + error.message);
             console.log(userData)
         });
 }
@@ -682,7 +682,7 @@ function cadastrar_garcom() {
             // Handle HTTP errors
             if (!response.ok) {
                 return response.json().then(error => {
-                    throw new Error(error.message || 'Erro ao cadastrar funcionário.');
+                    alert(error.message || 'Erro ao cadastrar funcionário.');
                 });
             }
             return response.json();
@@ -763,14 +763,14 @@ function editarDadosCPF_garcom(cpf) {
     fetch(`http://localhost:8080/garcom/cpf?valor=${cpf}`)
         .then(response => {
             if (!response.ok) {
-                throw new Error('Erro ao buscar dados para edição.');
+                alert('Erro ao buscar dados para edição.');
             }
             return response.json();
         })
         .then(data => {
             const userData = data[0] || {};
             if (!userData.cpf) {
-                throw new Error('Dados não encontrados.');
+                alert('Dados não encontrados.');
             }
             localStorage.setItem('userData', JSON.stringify(userData));
             window.location.href = '/editar_garcom';
@@ -1214,14 +1214,15 @@ function cadastrar_produto() {
             // Handle HTTP errors
             if (!response.ok) {
                 return response.json().then(error => {
-                    throw new Error(error.message || 'Erro ao cadastrar Produto.');
+                    alert(error.message || 'Erro ao cadastrar Produto.');
+                    return response.json();
                 });
             }
-            return response.json();
+
         })
         .then(data => {
             // Success message and logging
-            alert('Estoquista cadastrado com sucesso!');
+            alert('Produto cadastrado com sucesso!');
             console.log('Resposta do servidor:', data);
         })
 }
@@ -1287,11 +1288,11 @@ function deletarProdutoPorId(id){
             if (!response.ok) {
                 throw new Error('Erro ao deletar usuário');
             }
-            alert('Usuário deletado com sucesso!');
+            alert('Produto deletado com sucesso!');
             getIdProduto();
         })
         .catch(error => {
-            alert('Não foi possível deletar. Usuário possui associação como Cliente ou Funcionário' );
+            alert('Não foi possível deletar. Produto possui associações' );
         });
 }
 
@@ -1604,10 +1605,10 @@ function cadastrar_prato(){
             // Handle HTTP errors
             if (!response.ok) {
                 return response.json().then(error => {
-                    throw new Error(error.message || 'Erro ao cadastrar Produto.');
+                    alert(error.message || 'Erro ao cadastrar Produto.');
+                    return response.json();
                 });
             }
-            return response.json();
         })
         .then(data => {
             // Success message and logging
@@ -1789,15 +1790,14 @@ function cadastrar_comanda(){
             // Handle HTTP errors
             if (!response.ok) {
                 return response.json().then(error => {
-                    throw new Error(error.message || 'Erro ao cadastrar Produto.');
+                    alert(error.message || 'Erro ao cadastrar Produto.');
+                    return response.json();
                 });
             }
-            return response.json();
         })
         .then(data => {
-            // Success message and logging
-            alert('Prato cadastrado com sucesso!');
-            console.log('Resposta do servidor:', data);
+                alert('Comanda cadastrada com sucesso!');
+                console.log('Resposta do servidor:', data);
         })
 }
 
@@ -2069,10 +2069,9 @@ function cadastrar_pedido(id_comanda){
             // Handle HTTP errors
             if (!response.ok) {
                 return response.json().then(error => {
-                    throw new Error(error.message || 'Erro ao Registrar Pedido.');
+                    alert(error.message || 'Erro ao Registrar Pedido.');
                 });
             }
-            return response.json();
         })
         .then(data => {
             // Success message and logging
