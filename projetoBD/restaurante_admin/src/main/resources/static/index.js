@@ -1382,11 +1382,11 @@ function getReserva() {
 
 function cadastrar_reserva(){
     const dados_reserva = {
-        cpf_cliente: document.getElementById('cpf_cliente').value.trim(),
-        data: document.getElementById('data').value.trim(),
-        horario_entrada: document.getElementById('horario_entrada').value.trim(),
-        quantidade_pessoas: document.getElementById('quantidade_pessoas').value.trim(),
-        numero_mesa: document.getElementById('numero_mesa').value.trim(),
+        cpf_cliente: document.getElementById('cpf_cliente_add').value.trim(),
+        data: document.getElementById('data_add').value.trim(),
+        horario_entrada: document.getElementById('horario_entrada_add').value.trim(),
+        quantidade_pessoas: document.getElementById('quantidade_pessoas_add').value.trim(),
+        numero_mesa: document.getElementById('numero_mesa_add').value.trim(),
     };
 
     // Make the POST request
@@ -1435,10 +1435,8 @@ function recuperarReserva(cpf, valor_procura){
                         <td>${u.cpf_cliente || 'Não disponível'}</td>
                         <td>${u.data || 'Não disponível'}</td>
                         <td>${u.horario_entrada || 'Não disponível'}</td>
-                        <td>${u.quantidade_pessoas || 'Não disponível'}</td>
-                        <td>${u.numero_mesa || 'Não disponível'}</td>
                         <td>
-                            <button class="table-button"" onclick="editarDadosIdEstoque('${u.cpf_cliente}')">
+                            <button class="table-button" onclick="editarDadosID_reserva('${u.cpf_cliente}', '${u.data}')">
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>                            
                             </button>
                         </td>
@@ -1474,10 +1472,8 @@ function recuperarReserva(cpf, valor_procura){
                         <td>${u.cpf_cliente || 'Não disponível'}</td>
                         <td>${u.data || 'Não disponível'}</td>
                         <td>${u.horario_entrada || 'Não disponível'}</td>
-                        <td>${u.quantidade_pessoas || 'Não disponível'}</td>
-                        <td>${u.numero_mesa || 'Não disponível'}</td>
                         <td>
-                            <button class="table-button"" onclick="editarDadosIdEstoque('${u.cpf_cliente}')">
+                            <button class="table-button" onclick="editarDadosID_reserva('${u.cpf_cliente}', '${u.data}')">
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>                            
                             </button>
                         </td>
@@ -1533,6 +1529,93 @@ function recuperarReserva(cpf, valor_procura){
                 alert('Erro ao buscar dados: ' + error.message);
             });
     }
+}
+
+function editarDadosID_reserva(cpf, data) {
+    const dadoReserva = JSON.parse(localStorage.getItem('dadoReserva'));
+    fetch(`http://localhost:8080/reserva/${cpf}/data?data=${data}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao buscar dados para edição.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const dadoReserva = data;
+            localStorage.setItem('dadoReserva', JSON.stringify(dadoReserva));
+            console.log(dadoReserva)
+            console.log("Teste")
+            window.location.href = '/editar_reserva';
+        })
+        .catch(error => {
+            alert('Erro ao buscar dados: ' + error.message);
+        });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const dadoReserva = JSON.parse(localStorage.getItem('dadoReserva'));
+
+    if (!dadoReserva) {
+        fetch(`http://localhost:8080/reserva/${dadoReserva.cpf}/data?data=${dadoReserva.data}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar dados para edição.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const dadoReserva= data[0] || {};
+                localStorage.setItem('dadoReserva', JSON.stringify(dadoReserva));
+                preencherFormulario(dadoReserva); // Preenche o formulário com os dados carregados.
+            })
+            .catch(error => {
+                alert('Erro ao buscar dados: ' + error.message);
+            });
+    } else {
+        preencherFormulario_reserva(dadoReserva); // Preenche o formulário com os dados do localStorage.
+    }
+});
+
+function preencherFormulario_reserva(dados) {
+    const campos = ['cpf_cliente', 'data', 'horario_entrada', 'quantidad_pessoas', 'numero_mesa'];
+    campos.forEach(campo => {
+        const input = document.getElementById(campo);
+        if (input) input.value = dados[campo] || '';
+    });
+}
+
+function editarDados_reserva() {
+    const dadoReserva = JSON.parse(localStorage.getItem('dadoReserva'));
+    if (!dadoReserva) {
+        alert('Dados do usuário não encontrados.');
+        return;
+    }
+
+    const data2 = {
+        cpf_cliente: document.getElementById('cpf_cliente').value.trim(),
+        data: document.getElementById('data').value.trim(),
+        horario_entrada: document.getElementById('horario_entrada').value.trim(),
+        quantidade_pessoas: document.getElementById('quantidade_pessoas').value.trim(),
+        numero_mesa: document.getElementById('numero_mesa').value.trim()
+    }
+
+    fetch(`http://localhost:8080/reserva`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data2)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao atualizar dados.');
+            }
+            alert('Dados atualizados com sucesso!');
+        })
+        .catch(error => {
+            alert('Erro ao atualizar dados: ' + error.message);
+        });
+    console.log(data2)
 }
 
 async function deletarReserva(cpf, data) {
