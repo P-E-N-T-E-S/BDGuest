@@ -53,6 +53,11 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
+    public Pedido buscarPorId(Integer id) {
+        return pedidoRepository.buscarPorId(id);
+    }
+
+    @Override
     public void excluirPedido(Integer idPedido) {
         pedidoRepository.excluirPedido(idPedido);
     }

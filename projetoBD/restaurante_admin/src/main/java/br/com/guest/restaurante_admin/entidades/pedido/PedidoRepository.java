@@ -7,6 +7,7 @@ public interface PedidoRepository {
     List<Pedido> buscarPedidoPorGarcom(String garcom);
     List<Pedido> listarPorComanda(Integer idComanda);
     List<Pedido> listarPorPrato(Integer idComanda, Integer idPrato);
+    Pedido buscarPorId(Integer id);
     void excluirPedido(Integer idPedido);
     void excluirPedidoPorComanda(Integer idComanda);
     void alterarPedido(Pedido pedido, Integer idComanda);

@@ -42,6 +42,12 @@ public class PedidoRepositoryImpl implements PedidoRepository {
     }
 
     @Override
+    public Pedido buscarPorId(Integer id) {
+        String sql = "SELECT * FROM Menu M join Pedido P on M.numero = P.id_comanda WHERE id_pedido = ?";
+        return jdbcTemplate.queryForObject(sql, new MapeadorPedido(), id);
+    }
+
+    @Override
     public void excluirPedido(Integer idPedido) {
         String sql = "DELETE FROM Pedido WHERE id_pedido = ?";
         jdbcTemplate.update(sql, idPedido);

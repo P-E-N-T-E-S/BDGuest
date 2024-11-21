@@ -42,6 +42,11 @@ public class PedidoController {
         return new ResponseEntity<>(pedidoService.listarPorGarcom(cpfGarcom), HttpStatus.OK);
     }
 
+    @GetMapping("/id/{id}")
+    public ResponseEntity<Pedido> buscarPedidoPorId(@PathVariable Integer id) {
+        return new ResponseEntity<>(pedidoService.buscarPorId(id), HttpStatus.OK);
+    }
+
     @PutMapping
     public ResponseEntity<String> alterarPedido(@PathVariable Integer idComanda, @RequestBody Pedido pedido) {
         pedidoService.alterarPedido(pedido, idComanda);
