@@ -1,9 +1,4 @@
 
-function toggleSubMenu(button) {
-    button.nextElementSibling.classList.toggle('show');
-    button.classList.toggle('rotate');
-}
-
 function enviarDados() {
     const dados_pessoa = {
         cpf: document.getElementById('cpf').value,
@@ -354,7 +349,7 @@ function cadastrar_funcionario() {
             // Handle HTTP errors
             if (!response.ok) {
                 return response.json().then(error => {
-                    throw new Error(error.message || 'Erro ao cadastrar funcionário.');
+                   alert(error.message || 'Erro ao cadastrar funcionário.');
                 });
             }
             return response.json();
@@ -419,7 +414,7 @@ function deletarDadosFuncionarioCPF(cpf) {
     })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Erro ao deletar usuário');
+                alert('Erro ao deletar Funcionário');
             }
             alert('Usuário deletado com sucesso!');
             getCPF_funcionario();
@@ -447,7 +442,7 @@ function editarDadosCPF_funcionario(cpf) {
             window.location.href = '/editar_funcionario';
         })
         .catch(error => {
-            alert('Erro ao buscar dados: ' + error.message);
+            alert('Erro ao editar: ' + error.message);
             console.log(userData)
         });
 }
@@ -534,7 +529,7 @@ function recuperarMesaPorId(id_mesa) {
                         <td>${u.numero_id || 'Não disponível'}</td>
                         <td>${u.quantidade_cadeiras || 'Não disponível'}</td>
                         <td>
-                            <button class="table-button"" onclick="editarDadosEmail('${u.email}')">
+                            <button class="table-button" onclick="editarDadosID_mesa('${u.numero_id}')">
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>                            
                             </button>
                         </td>
@@ -571,6 +566,92 @@ function removerMesaId(id_mesa){
         });
 }
 
+function editarDadosID_mesa(id) {
+    const dadoComanda = JSON.parse(localStorage.getItem('dadoMesa'));
+    fetch(`http://localhost:8080/mesa/${id}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao buscar dados para edição.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const dadoMesa = data;
+            localStorage.setItem('dadoMesa', JSON.stringify(dadoMesa));
+            console.log(dadoMesa)
+            console.log("Teste")
+            window.location.href = '/editar_mesa';
+        })
+        .catch(error => {
+            alert('Erro ao buscar dados: ' + error.message);
+        });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const dadoComanda = JSON.parse(localStorage.getItem('dadoMesa'));
+
+    if (!dadoMesa) {
+        fetch(`http://localhost:8080/mesa/${id}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar dados para edição.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const dadoMesa = data[0] || {};
+                localStorage.setItem('dadoMesa', JSON.stringify(dadoMesa));
+                preencherFormulario(dadoMesa); // Preenche o formulário com os dados carregados.
+            })
+            .catch(error => {
+                alert('Erro ao buscar dados: ' + error.message);
+            });
+    } else {
+        preencherFormularioMesa(dadoMesa); // Preenche o formulário com os dados do localStorage.
+    }
+});
+
+function preencherFormularioMesa(dados) {
+    const campos = ['numero_id', 'quantidade_cadeiras'];
+    campos.forEach(campo => {
+        const input = document.getElementById(campo);
+        if (input) input.value = dados[campo] || '';
+    });
+}
+
+function editarDados_mesa() {
+    const dadoMesa = JSON.parse(localStorage.getItem('dadoMesa'));
+    if (!dadoMesa) {
+        alert('Dados do usuário não encontrados.');
+        return;
+    }
+    id = dadoMesa.numero_id
+    console.log(dadoMesa.id)
+
+    const data2 = {
+        numero_id: document.getElementById('numero_id').value.trim(),
+        quantidade_cadeiras: document.getElementById('quantidade_cadeiras').value.trim(),
+    }
+
+    fetch(`http://localhost:8080/mesa/${data2.numero_id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data2)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao atualizar dados.');
+            }
+            alert('Dados atualizados com sucesso!');
+        })
+        .catch(error => {
+            alert('Erro ao atualizar dados: ' + error.message);
+        });
+    console.log(data2)
+}
+
 function getCPF_garcom() {
     const cpf = document.getElementById('cpf_get_garcom').value;
     const filtro = document.getElementById('campo_pesquisa').value
@@ -601,7 +682,7 @@ function cadastrar_garcom() {
             // Handle HTTP errors
             if (!response.ok) {
                 return response.json().then(error => {
-                    throw new Error(error.message || 'Erro ao cadastrar funcionário.');
+                    alert(error.message || 'Erro ao cadastrar funcionário.');
                 });
             }
             return response.json();
@@ -682,14 +763,14 @@ function editarDadosCPF_garcom(cpf) {
     fetch(`http://localhost:8080/garcom/cpf?valor=${cpf}`)
         .then(response => {
             if (!response.ok) {
-                throw new Error('Erro ao buscar dados para edição.');
+                alert('Erro ao buscar dados para edição.');
             }
             return response.json();
         })
         .then(data => {
             const userData = data[0] || {};
             if (!userData.cpf) {
-                throw new Error('Dados não encontrados.');
+                alert('Dados não encontrados.');
             }
             localStorage.setItem('userData', JSON.stringify(userData));
             window.location.href = '/editar_garcom';
@@ -843,42 +924,52 @@ function deletarPorId(id) {
 }
 
 function editarDadosIdEstoque(id) {
-    const dadosAtuaisEstoque = JSON.parse(localStorage.getItem('DadosEstoque'));
-
     fetch(`http://localhost:8080/estoque/id?valor=${id}`)
         .then(response => {
+            // Verifica se a resposta foi bem-sucedida
             if (!response.ok) {
-                throw new Error('Erro ao buscar dados para edição.');
+                throw new Error('Erro ao buscar os dados do estoque.');
             }
-            return response.json();
+            return response.json();  // Converte a resposta em JSON
         })
         .then(data => {
-            const dadosRecebidos = data[0]
-            localStorage.setItem('DadosEstoque', JSON.stringify(dadosRecebidos));
+            console.log(data);
+            localStorage.setItem('dadosEstoque', JSON.stringify(data));
+            // Redireciona para a página de edição de estoque
             window.location.href = '/editar_estoque';
         })
         .catch(error => {
             alert('Erro ao buscar dados: ' + error.message);
-            console.log(dadosAtuaisEstoque); // Exibe os dados atuais
+            console.error(error);
         });
 }
 
-function editarDadosEstoque(id) {
-    const DadosEstoque = JSON.parse(localStorage.getItem('DadosEstoque'));
-    if (!DadosEstoque) {
-        alert('Dados do usuário não encontrados.');
+// Função para editar dados do estoque com base nos dados armazenados
+function editarDadosEstoque() {
+    const dadosEstoque = JSON.parse(localStorage.getItem('dadosEstoque'));
+    if (!dadosEstoque) {
+        alert('Dados do estoque não encontrados.');
         return;
     }
-    id = DadosEstoque.id
+
+    // Recupera os dados do campo de edição
     const campo = document.getElementById('classe_valor').value;
     const valor = document.getElementById('valor_alterado').value;
-    console.log(DadosEstoque)
 
-    const data = {
-        campo, valor
+    // Verifica se os campos não estão vazios
+    if (!campo || !valor) {
+        alert('Por favor, preencha todos os campos.');
+        return;
     }
+    const data = {
+        campo,
+        valor
+    };
 
-    fetch(`http://localhost:8080/estoque/id?valor=${id}`, {
+    console.log(data)
+
+    // Realiza a requisição PUT para atualizar os dados do estoque
+    fetch(`http://localhost:8080/estoque/id?valor=${dadosEstoque.id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -893,6 +984,7 @@ function editarDadosEstoque(id) {
         })
         .catch(error => {
             alert('Erro ao atualizar dados: ' + error.message);
+            console.error(error);
         });
 }
 
@@ -954,13 +1046,13 @@ function recuperarDadosPorCPF_estoquista(cpf, valor_procura) {
 
                 usuarios.forEach(u => {
                     const row = `
-                    <tr class="text">
-                        <td>${u.estoquista.funcionario.pessoa.nome || 'Não disponível'}</td>
+                                       <tr class="text">
+                        <td>${u.funcionario.pessoa.nome || 'Não disponível'}</td>
                         <td>${u.cpf || 'Não disponível'}</td>
-                        <td>${u.estoquista.funcionario.pessoa.telefone || 'Não disponível'}</td>
-                        <td>${u.estoquista.funcionario.horario_entrada || 'Não disponível'}</td>
-                        <td>${u.estoquista.funcionario.horario_saida|| 'Não disponível'} </td>
-                        <td>R$${u.estoquista.funcionario.salario || 'Não disponivel'}</td>
+                        <td>${u.funcionario.pessoa.telefone || 'Não disponível'}</td>
+                        <td>${u.funcionario.horario_entrada || 'Não disponível'}</td>
+                        <td>${u.funcionario.horario_saida|| 'Não disponível'} </td>
+                        <td>R$${u.funcionario.salario || 'Não disponivel'}</td>
                         <td>${u.cpf_gerente || 'Gerente' }</td>
                         <td>
                             <button class="table-button" onclick="editarDadosCPF_estoquista(${u.cpf})">
@@ -1038,54 +1130,41 @@ function deletarDadosEstoquistaCPF(cpf) {
                 throw new Error('Erro ao deletar usuário');
             }
             alert('Usuário deletado com sucesso!');
-            getCPF_garcom();
+            getCPF_estoquista();
         })
         .catch(error => {
             alert('Não foi possível deletar. Usuário possui associação como Cliente ou Funcionário' );
         });
 }
 
-function editarDadosCPF_estoquista(cpf) {
-    const userData = JSON.parse(localStorage.getItem('userData'));
-    fetch(`http://localhost:8080/garcom/cpf?valor=${cpf}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Erro ao buscar dados para edição.');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const userData = data[0] || {};
-            if (!userData.cpf) {
-                throw new Error('Dados não encontrados.');
-            }
-            localStorage.setItem('userData', JSON.stringify(userData));
-            window.location.href = '/editar_garcom';
-        })
-        .catch(error => {
-            alert('Erro ao buscar dados: ' + error.message);
-            console.log(userData)
-        });
-}
-
-function editarDados_estoquista(cpf) {
+function editarDados_estoquista() {
     const userData = JSON.parse(localStorage.getItem('userData'));
     if (!userData) {
         alert('Dados do usuário não encontrados.');
         return;
     }
-    cpf = userData.cpf
-    const mesas = document.getElementById('mesas').value
-        .split(',')
-        .map(mesa => parseInt(mesa.trim()))
-        .filter(mesa => !isNaN(mesa)) // Remove valores inválidos
-    console.log(userData)
 
-    const data2 = {
-        cpf, mesas
+    const cpf = userData.cpf; // Obtém o CPF do usuário armazenado
+    const valorAlterado = document.getElementById('valor_alterado').value;
+
+    // Verifica se o campo está vazio
+    if (!valorAlterado.trim()) {
+        alert('Por favor, preencha o campo de valor alterado.');
+        return;
     }
 
-    fetch(`http://localhost:8080/garcom/mesas`, {
+    // Prepara os dados a serem enviados
+    const data2 = {
+        campo: 'estoque_id',
+        valor: valorAlterado
+            .split(',') // Divide por vírgulas
+            .map(valor => valor.trim()) // Remove espaços extras
+            .filter(valor => !isNaN(parseInt(valor))) // Remove valores inválidos
+            .join(',') // Junta como string separada por vírgulas
+    };
+
+    // Faz a requisição para atualizar os dados
+    fetch(`http://localhost:8080/estoquista/cpf?valor=${cpf}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -1096,25 +1175,30 @@ function editarDados_estoquista(cpf) {
             if (!response.ok) {
                 throw new Error('Erro ao atualizar dados.');
             }
+            return response.json(); // Caso queira trabalhar com a resposta
+        })
+        .then(data => {
+            console.log('Resposta do servidor:', data); // Exibe a resposta do servidor no console (opcional)
             alert('Dados atualizados com sucesso!');
         })
         .catch(error => {
             alert('Erro ao atualizar dados: ' + error.message);
+            console.error('Erro:', error); // Exibe detalhes do erro no console
         });
 }
 
 function cadastrar_produto() {
     const dados_produto = {
-        id: document.getElementById('id').value.trim(),
-        nome: document.getElementById('nome').value.trim(),
-        validade: document.getElementById('validade').value,
-        quantidade: document.getElementById('quantidade').value.trim(),
-        distribuidora: document.getElementById('distribuidora').value.trim(),
-        estoques: document.getElementById('estoques').value
+        id: document.getElementById('id_add').value.trim(),
+        nome: document.getElementById('nome_add').value.trim(),
+        validade: document.getElementById('validade_add').value,
+        quantidade: document.getElementById('quantidade_add').value.trim(),
+        distribuidora: document.getElementById('distribuidora_add').value.trim(),
+        estoques: document.getElementById('estoques_add').value
             .trim()
             .split(',')
             .map(id => parseInt(id.trim(), 10)),
-        medida: document.getElementById('medida').value.trim(),
+        medida: document.getElementById('medida_add').value.trim(),
     };
 
 
@@ -1130,14 +1214,15 @@ function cadastrar_produto() {
             // Handle HTTP errors
             if (!response.ok) {
                 return response.json().then(error => {
-                    throw new Error(error.message || 'Erro ao cadastrar Produto.');
+                    alert(error.message || 'Erro ao cadastrar Produto.');
+                    return response.json();
                 });
             }
-            return response.json();
+
         })
         .then(data => {
             // Success message and logging
-            alert('Estoquista cadastrado com sucesso!');
+            alert('Produto cadastrado com sucesso!');
             console.log('Resposta do servidor:', data);
         })
 }
@@ -1174,7 +1259,7 @@ function recuperarProdutoPorID(distribuidora) {
                         <td>${u.estoques || 'Não disponível'}</td>
                         <td>${u.medida || 'Não disponível'}</td>
                         <td>
-                            <button class="table-button" onclick="editarDadosID_Produto('${u.id}')">
+                            <button class="table-button" onclick="editarDadosID_produto('${u.id}')">
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>                            
                             </button>
                         </td>
@@ -1203,17 +1288,16 @@ function deletarProdutoPorId(id){
             if (!response.ok) {
                 throw new Error('Erro ao deletar usuário');
             }
-            alert('Usuário deletado com sucesso!');
+            alert('Produto deletado com sucesso!');
             getIdProduto();
         })
         .catch(error => {
-            alert('Não foi possível deletar. Usuário possui associação como Cliente ou Funcionário' );
+            alert('Não foi possível deletar. Produto possui associações' );
         });
 }
 
-function editarDadosID_Produto(id) {
-    const dadoProduto = JSON.parse(localStorage.getItem('dadoProduto'));
-    fetch(`http://localhost:8080/produto/${id}`)
+function editarDadosID_produto(id) {
+    fetch(`http://localhost:8080/produto/id?valor=${id}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Erro ao buscar dados para edição.');
@@ -1221,42 +1305,61 @@ function editarDadosID_Produto(id) {
             return response.json();
         })
         .then(data => {
-            const dadoProduto = data[0] || {};
-            if (!dadoProduto.cpf) {
-                throw new Error('Dados não encontrados.');
-            }
+            const dadoProduto = data;
             localStorage.setItem('dadoProduto', JSON.stringify(dadoProduto));
-            window.location.href = '/editar_produto';
+            console.log(dadoProduto);
+            window.location.href = '/editar_produto'; // Redireciona para a página de edição
         })
         .catch(error => {
             alert('Erro ao buscar dados: ' + error.message);
-            console.log(dadoProduto)
         });
 }
 
-function editarDados_Produto(id) {
+document.addEventListener('DOMContentLoaded', function () {
     const dadoProduto = JSON.parse(localStorage.getItem('dadoProduto'));
+    console.log(dadoProduto[0].id , "Teste")
+
+    if (dadoProduto) {
+        preencherFormulario_produto(dadoProduto[0]); // Preenche o formulário com os dados do localStorage
+    } else {
+        alert('Dados do produto não encontrados no localStorage.');
+    }
+});
+
+function preencherFormulario_produto(dados) {
+    const campos = ['id', 'nome', 'validade', 'quantidade', 'distribuidora', 'estoques', 'medida'];
+    campos.forEach(campo => {
+        const input = document.getElementById(campo);
+        if (input) input.value = dados[campo] || ''; // Preenche os campos ou deixa vazio
+    });
+}
+
+function editarDados_produto() {
+    const dadoProduto = JSON.parse(localStorage.getItem('dadoProduto'));
+    id = dadoProduto.id
+    console.log("ID: ", id)
     if (!dadoProduto) {
-        alert('Dados do usuário não encontrados.');
+        alert('Dados do produto não encontrados.');
         return;
     }
-    id = dadoProduto.id
-    const produto = document.getElementById('produto').value
-        .split(',')
-        .map(mesa => parseInt(mesa.trim()))
-        .filter(mesa => !isNaN(mesa)) // Remove valores inválidos
-    console.log(dadoProduto)
 
     const data2 = {
-        cpf, mesas
-    }
+        id: document.getElementById('id').value.trim(),
+        nome: document.getElementById('nome').value.trim(),
+        validade: document.getElementById('validade').value.trim(),
+        quantidade: document.getElementById('quantidade').value.trim(),
+        distribuidora: document.getElementById('distribuidora').value.trim(),
+        estoques: dadoProduto[0].estoques,
+        medida: document.getElementById('medida').value.trim(),
+    };
 
-    fetch(`http://localhost:8080/garcom/mesas`, {
+
+    fetch(`http://localhost:8080/produto/${data2.id}`, {
         method: 'PUT',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data2)
+        body: JSON.stringify(data2),
     })
         .then(response => {
             if (!response.ok) {
@@ -1267,6 +1370,8 @@ function editarDados_Produto(id) {
         .catch(error => {
             alert('Erro ao atualizar dados: ' + error.message);
         });
+
+    console.log('Dados enviados para atualização:', data2);
 }
 
 function getReserva() {
@@ -1277,11 +1382,11 @@ function getReserva() {
 
 function cadastrar_reserva(){
     const dados_reserva = {
-        cpf_cliente: document.getElementById('cpf_cliente').value.trim(),
-        data: document.getElementById('data').value.trim(),
-        horario_entrada: document.getElementById('horario_entrada').value.trim(),
-        quantidade_pessoas: document.getElementById('quantidade_pessoas').value.trim(),
-        numero_mesa: document.getElementById('numero_mesa').value.trim(),
+        cpf_cliente: document.getElementById('cpf_cliente_add').value.trim(),
+        data: document.getElementById('data_add').value.trim(),
+        horario_entrada: document.getElementById('horario_entrada_add').value.trim(),
+        quantidade_pessoas: document.getElementById('quantidade_pessoas_add').value.trim(),
+        numero_mesa: document.getElementById('numero_mesa_add').value.trim(),
     };
 
     // Make the POST request
@@ -1330,10 +1435,8 @@ function recuperarReserva(cpf, valor_procura){
                         <td>${u.cpf_cliente || 'Não disponível'}</td>
                         <td>${u.data || 'Não disponível'}</td>
                         <td>${u.horario_entrada || 'Não disponível'}</td>
-                        <td>${u.quantidade_pessoas || 'Não disponível'}</td>
-                        <td>${u.numero_mesa || 'Não disponível'}</td>
                         <td>
-                            <button class="table-button"" onclick="editarDadosIdEstoque('${u.cpf_cliente}')">
+                            <button class="table-button" onclick="editarDadosID_reserva('${u.cpf_cliente}', '${u.data}')">
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>                            
                             </button>
                         </td>
@@ -1369,10 +1472,8 @@ function recuperarReserva(cpf, valor_procura){
                         <td>${u.cpf_cliente || 'Não disponível'}</td>
                         <td>${u.data || 'Não disponível'}</td>
                         <td>${u.horario_entrada || 'Não disponível'}</td>
-                        <td>${u.quantidade_pessoas || 'Não disponível'}</td>
-                        <td>${u.numero_mesa || 'Não disponível'}</td>
                         <td>
-                            <button class="table-button"" onclick="editarDadosIdEstoque('${u.cpf_cliente}')">
+                            <button class="table-button" onclick="editarDadosID_reserva('${u.cpf_cliente}', '${u.data}')">
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>                            
                             </button>
                         </td>
@@ -1430,6 +1531,93 @@ function recuperarReserva(cpf, valor_procura){
     }
 }
 
+function editarDadosID_reserva(cpf, data) {
+    const dadoReserva = JSON.parse(localStorage.getItem('dadoReserva'));
+    fetch(`http://localhost:8080/reserva/${cpf}/data?data=${data}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao buscar dados para edição.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const dadoReserva = data;
+            localStorage.setItem('dadoReserva', JSON.stringify(dadoReserva));
+            console.log(dadoReserva)
+            console.log("Teste")
+            window.location.href = '/editar_reserva';
+        })
+        .catch(error => {
+            alert('Erro ao buscar dados: ' + error.message);
+        });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const dadoReserva = JSON.parse(localStorage.getItem('dadoReserva'));
+
+    if (!dadoReserva) {
+        fetch(`http://localhost:8080/reserva/${dadoReserva.cpf}/data?data=${dadoReserva.data}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar dados para edição.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const dadoReserva= data[0] || {};
+                localStorage.setItem('dadoReserva', JSON.stringify(dadoReserva));
+                preencherFormulario(dadoReserva); // Preenche o formulário com os dados carregados.
+            })
+            .catch(error => {
+                alert('Erro ao buscar dados: ' + error.message);
+            });
+    } else {
+        preencherFormulario_reserva(dadoReserva); // Preenche o formulário com os dados do localStorage.
+    }
+});
+
+function preencherFormulario_reserva(dados) {
+    const campos = ['cpf_cliente', 'data', 'horario_entrada', 'quantidad_pessoas', 'numero_mesa'];
+    campos.forEach(campo => {
+        const input = document.getElementById(campo);
+        if (input) input.value = dados[campo] || '';
+    });
+}
+
+function editarDados_reserva() {
+    const dadoReserva = JSON.parse(localStorage.getItem('dadoReserva'));
+    if (!dadoReserva) {
+        alert('Dados do usuário não encontrados.');
+        return;
+    }
+
+    const data2 = {
+        cpf_cliente: document.getElementById('cpf_cliente').value.trim(),
+        data: document.getElementById('data').value.trim(),
+        horario_entrada: document.getElementById('horario_entrada').value.trim(),
+        quantidade_pessoas: document.getElementById('quantidade_pessoas').value.trim(),
+        numero_mesa: document.getElementById('numero_mesa').value.trim()
+    }
+
+    fetch(`http://localhost:8080/reserva`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data2)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao atualizar dados.');
+            }
+            alert('Dados atualizados com sucesso!');
+        })
+        .catch(error => {
+            alert('Erro ao atualizar dados: ' + error.message);
+        });
+    console.log(data2)
+}
+
 async function deletarReserva(cpf, data) {
     try {
         console.log(cpf);
@@ -1476,12 +1664,12 @@ async function deletarReserva(cpf, data) {
 
 function cadastrar_prato(){
     const dados_prato = {
-        id: document.getElementById('id').value.trim(),
-        nome: document.getElementById('nome').value.trim(),
-        imagem_link: document.getElementById('imagem_link').value.trim(),
-        descricao: document.getElementById('descricao').value.trim(),
-        preco: document.getElementById('preco').value.trim(),
-        ingredientes: [document.getElementById('ingredientes').value
+        id: document.getElementById('id_add').value.trim(),
+        nome: document.getElementById('nome_add').value.trim(),
+        imagem_link: document.getElementById('imagem_link_add').value.trim(),
+        descricao: document.getElementById('descricao_add').value.trim(),
+        preco: document.getElementById('preco_add').value.trim(),
+        ingredientes: [document.getElementById('ingredientes_add').value
             .trim()
             .split(',')
             .map(id => parseInt(id.trim(), 10))], // Colocando o array dentro de outro array
@@ -1500,10 +1688,10 @@ function cadastrar_prato(){
             // Handle HTTP errors
             if (!response.ok) {
                 return response.json().then(error => {
-                    throw new Error(error.message || 'Erro ao cadastrar Produto.');
+                    alert(error.message || 'Erro ao cadastrar Produto.');
+                    return response.json();
                 });
             }
-            return response.json();
         })
         .then(data => {
             // Success message and logging
@@ -1540,7 +1728,7 @@ function recuperarPratosporId(id){
                         <td>${u.descricao || 'Não disponível'}</td>
                         <td>R$${u.preco || 'Não disponível'}</td>
                         <td>
-                            <button class="table-button"" onclick="editarDadosIdEstoque('${u.id}')">
+                            <button class="table-button" onclick="editarDadosID_Prato('${u.id}')">
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>                            
                             </button>
                         </td>
@@ -1557,6 +1745,84 @@ function recuperarPratosporId(id){
             alert('Erro ao buscar dados: ' + error.message);
         });
 }
+
+function editarDadosID_Prato(id) {
+    fetch(`http://localhost:8080/prato/numero?valor=${id}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao buscar dados para edição.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const dadoPrato = data;
+            localStorage.setItem('dadoPrato', JSON.stringify(dadoPrato));
+            console.log(dadoPrato);
+            window.location.href = '/editar_prato'; // Redireciona para a página de edição
+        })
+        .catch(error => {
+            alert('Erro ao buscar dados: ' + error.message);
+        });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const dadoPrato = JSON.parse(localStorage.getItem('dadoPrato'));
+    console.log(dadoPrato?.[0]?.id, 'Teste');
+
+    if (dadoPrato) {
+        preencherFormulario_Prato(dadoPrato); // Preenche o formulário com os dados do localStorage
+    } else {
+        alert('Dados do prato não encontrados no localStorage.');
+    }
+});
+
+function preencherFormulario_Prato(dados) {
+    const campos = ['id', 'nome', 'imagem_link', 'descricao', 'preco', 'ingredientes'];
+    campos.forEach(campo => {
+        const input = document.getElementById(campo);
+        if (input) input.value = dados[0]?.[campo] || ''; // Usa o primeiro elemento se for array
+    });
+}
+
+function editarDados_prato() {
+    const dadoPrato = JSON.parse(localStorage.getItem('dadoPrato'));
+    if (!dadoPrato || !dadoPrato[0]?.id) {
+        alert('Dados do prato não encontrados.');
+        return;
+    }
+
+    const id = dadoPrato[0].id; // Obtém o ID do prato
+    console.log('ID:', id);
+
+    const data2 = {
+        id: document.getElementById('id').value.trim(),
+        nome: document.getElementById('nome').value.trim(),
+        imagem_link: document.getElementById('imagem_link').value.trim(),
+        preco: document.getElementById('preco').value.trim(),
+        descricao: document.getElementById('descricao').value.trim(),
+        ingredientes: dadoPrato.ingredientes
+    };
+
+    fetch(`http://localhost:8080/prato/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data2),
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao atualizar dados.');
+            }
+            alert('Dados atualizados com sucesso!');
+        })
+        .catch(error => {
+            alert('Erro ao atualizar dados: ' + error.message);
+        });
+
+    console.log('Dados enviados para atualização:', data2);
+}
+
 
 async function deletarpPratoporId(id) {
     try {
@@ -1607,15 +1873,14 @@ function cadastrar_comanda(){
             // Handle HTTP errors
             if (!response.ok) {
                 return response.json().then(error => {
-                    throw new Error(error.message || 'Erro ao cadastrar Produto.');
+                    alert(error.message || 'Erro ao cadastrar Produto.');
+                    return response.json();
                 });
             }
-            return response.json();
         })
         .then(data => {
-            // Success message and logging
-            alert('Prato cadastrado com sucesso!');
-            console.log('Resposta do servidor:', data);
+                alert('Comanda cadastrada com sucesso!');
+                console.log('Resposta do servidor:', data);
         })
 }
 
@@ -1887,10 +2152,9 @@ function cadastrar_pedido(id_comanda){
             // Handle HTTP errors
             if (!response.ok) {
                 return response.json().then(error => {
-                    throw new Error(error.message || 'Erro ao Registrar Pedido.');
+                    alert(error.message || 'Erro ao Registrar Pedido.');
                 });
             }
-            return response.json();
         })
         .then(data => {
             // Success message and logging
@@ -1937,7 +2201,7 @@ function  get_pedidos(){
                             </button>
                         </td>
                         <td>
-                            <button class="table-button" onclick="deletar_pedido(${id}, '${ u.id_pedido}')">
+                            <button class="table-button" onclick="fechar_pedido(${id}, '${u.id_pedido}', '${u.status}' )">
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="undefined"><path d="m696-440-56-56 83-84-83-83 56-57 84 84 83-84 57 57-84 83 84 84-57 56-83-83-84 83Zm-336-40q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm80-80h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0-80Zm0 400Z"/></svg>
                             </button>
                         </td>
@@ -1979,6 +2243,20 @@ function alterar_status_pedido(id, id_pedido, status) {
         alert("Pedido já foi entregue");
     }
     get_pedidos()
+}
+
+function fechar_pedido(id, id_pedido, status){
+    if(status !== "ENTREGUE"){
+        alert("Pedido ainda não entregue")
+    }else {
+        fetch(`http://localhost:8080/comanda/${id}/pedidos/fechar`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        get_pedidos()
+    }
 }
 
 function deletar_pedido(id, id_pedido) {
